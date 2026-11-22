@@ -1,0 +1,12 @@
+__pycache__/
+.pytest_cache/
+.venv/
+.env
+node_modules/
+.next/
+*.onnx
+*.pt
+*.pth
+/data/
+/artifacts/
+test-results/*.zip
