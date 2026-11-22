@@ -219,6 +219,7 @@ def run(args):
     if args.manifest:
         if not args.asset_root:
             raise ValueError("--asset-root is required with --manifest")
+        print("Auditing manifest and image assets", flush=True)
         errors = audit(args.manifest, args.asset_root)
         if errors:
             raise ValueError("\n".join(errors[:20]))
@@ -230,7 +231,9 @@ def run(args):
             shift=split == "shifted_test", stress=stress,
         ))
     )
-    train_data = cache(dataset("train"))
+    print("Preparing training and validation tensors", flush=True)
+    train_set = dataset("train")
+    train_data = cache(train_set)
     val_data = cache(dataset("validation"))
     base_config = {"width": 8}
     variants = {"baseline": {"local": False, "residual": False}, "local": {}, **ABLATIONS}
@@ -296,6 +299,7 @@ def run(args):
     selected, architecture, fmt = compressed[variant]
     temp, cutoff, bias = (model_rows[variant][key] for key in ("temperature", "confidence_threshold", "bias"))
     save_checkpoint(output / "model.pt", selected, architecture, scope, temp, cutoff, specimen_images, fmt, bias=bias)
+    print("Evaluating the frozen models on test and shifted test", flush=True)
     test_data = cache(dataset("test"))
     shifted_data = cache(dataset("shifted_test"))
     for name, (model, _, _) in compressed.items():
@@ -313,8 +317,13 @@ def run(args):
 
     clean = collect(selected, test_data)
     shifted = collect(selected, shifted_data)
-    run_id = f"{scope}-cpu-{args.epochs}ep-{args.train_sources}src-v2"
+    train_sources = args.train_sources
+    if args.manifest:
+        train_sources = len({row["source_document_id"] for row in train_set.rows})
+    run_id = f"{scope}-cpu-{args.epochs}ep-{train_sources}src-v2"
     meta = {"run_id": run_id, "scope": scope, "epochs": args.epochs, "seeds": list(SEEDS), "selected_model": variant}
+    if args.manifest:
+        meta["manifest_sha256"] = sha256(args.manifest.read_bytes()).hexdigest()
     artifact(output, "summary", {**meta, "training_examples": len(train_data), "validation_examples": len(val_data),
                                 "models": model_rows, "teacher_architecture": teacher_name, "local_selected_seed": seed, "student_curve": student_curve})
     comparison = {}
@@ -324,6 +333,7 @@ def run(args):
                                   "std": float(np.std([trial["validation"][key] for trial in variant_trials], ddof=1))}
                             for key in keys if key != "examples"}
     artifact(output, "ablations", {**meta, "validation_aggregate": comparison, "runs": trials})
+    print("Evaluating blur, low light, JPEG compression, and occlusion", flush=True)
     artifact(output, "robustness", {**meta, "clean": measures(clean, temp, cutoff, bias=bias),
         "stress": {stress: measures(collect(selected, cache(dataset("test", stress))), temp, cutoff, bias=bias) for stress in STRESSES},
         "shifted": measures(shifted, temp, cutoff, bias=bias), "shifted_failure_cases": analyze_failures(shifted, temp, bias)})

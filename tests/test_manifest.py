@@ -2,7 +2,7 @@ import csv
 
 from PIL import Image
 
-from research.manifest import COLUMNS, audit
+from research.manifest import COLUMNS, audit, deduplicate
 
 
 def build_fixture(folder, second_source="doc-a", second_split="train", same_pixels=False):
@@ -35,6 +35,25 @@ def test_source_group_leakage(tmp_path):
 def test_duplicate_content_under_other_id(tmp_path):
     manifest = build_fixture(tmp_path, second_source="doc-b", second_split="test", same_pixels=True)
     assert "identical image bytes" in audit(manifest, tmp_path)[0]
+
+
+def test_sorting_duplicate_groups_preserves_held_out_source(tmp_path):
+    manifest = build_fixture(tmp_path, second_source="doc-b", second_split="test", same_pixels=True)
+    Image.new("L", (20, 10), 135).save(tmp_path / "c.png")
+    with manifest.open(newline="", encoding="utf-8") as stream:
+        original, edited = list(csv.DictReader(stream))
+    edited["original_image_path"] = "c.png"
+    shifted = dict(original, sample_id="c", source_document_id="doc-c", split="shifted_test", image_path="c.png")
+    with manifest.open("w", newline="", encoding="utf-8") as stream:
+        writer = csv.DictWriter(stream, fieldnames=sorted(COLUMNS))
+        writer.writeheader()
+        writer.writerows((original, edited, shifted))
+
+    cleaned = tmp_path / "deduplicated.csv"
+    assert deduplicate(manifest, tmp_path, cleaned) == {"train": 1, "test": 1}
+    assert audit(cleaned, tmp_path) == []
+    with cleaned.open(newline="", encoding="utf-8") as stream:
+        assert [row["sample_id"] for row in csv.DictReader(stream)] == ["c"]
 
 
 def test_mask_must_match_document(tmp_path):

@@ -1,6 +1,6 @@
 # Dataset feasibility audit
 
-This is a public-card review. Exact local counts, dimensions, mask alignment, matching and terms acceptance require authorized files. Do not expose benchmark or user documents in the public demo.
+The candidate review below uses public dataset cards. The local AIForge-Doc receipt audit follows the candidate review.
 
 | Dataset | Published scope | Access and proposed engineering use |
 | --- | --- | --- |
@@ -21,3 +21,18 @@ TDoc-2.8M is an additional public research lead. Its card lists an MIT license, 
 
 - [TDoc-2.8M dataset card](https://huggingface.co/datasets/MohamedDhouib1/TDoc-2.8M)
 - [DocTamper paper](https://openaccess.thecvf.com/content/CVPR2023/html/Qu_Towards_Robust_Tampered_Text_Detection_in_Document_Image_New_Dataset_CVPR_2023_paper.html)
+
+## Local AIForge-Doc v2.0.1 receipt import
+
+The full package contained 3,066 authentic, edited, and mask triplets. The importer found 2,648 receipt pairs and excluded 418 form pairs. The publisher's original train and test receipt source IDs were disjoint, but the manifest audit found byte-identical files under different IDs. Exact-image deduplication removed 31 source groups. It retained one complete source group per duplicate component and prioritized shifted test, in-domain test, validation, then training.
+
+| Partition | CORD pairs | SROIE pairs | WildReceipt pairs | Total pairs |
+| --- | ---: | ---: | ---: | ---: |
+| Train | 616 | 175 | 0 | 791 |
+| Validation | 168 | 60 | 0 | 228 |
+| Test | 197 | 65 | 0 | 262 |
+| Shifted test | 0 | 0 | 1,336 | 1,336 |
+
+The in-domain test partition follows the publisher's test split. A stable source-ID hash assigns validation from the remaining CORD and SROIE receipts. WildReceipt is held out as a source-corpus shift. All edits use GPT-Image-2.
+
+A seeded sample of 24 pairs per corpus had nonempty masks and different authentic and edited pixels. All 72 pairs matched exactly outside the provided masks. Before deduplication, every positive training and validation mask retained foreground at 112 × 160 under the model's nearest-neighbor resize. The median resized foreground area was 0.39% of image pixels for CORD and 1.45% for SROIE. Byte hashing does not catch a duplicate saved with a different encoding or a near-duplicate photograph.

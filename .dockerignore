@@ -8,5 +8,6 @@ __pycache__
 **/.next
 data
 artifacts
+AIForge-Doc-v2.0
 test-results
 *.zip

@@ -33,11 +33,14 @@ The publisher links the [full AIForge-Doc v2 ZIP](https://drive.google.com/file/
 
 ```powershell
 py -m research.aiforge AIForge-Doc-v2.0.zip data/aiforge
-py -m research.manifest data/aiforge/manifest.csv data/aiforge/assets
-py -m research.train --manifest data/aiforge/manifest.csv --asset-root data/aiforge/assets --output artifacts/aiforge
+py -m research.manifest data/aiforge/manifest.csv data/aiforge/assets --deduplicated-output data/aiforge/manifest_deduplicated.csv
+py -m research.train --manifest data/aiforge/manifest_deduplicated.csv --asset-root data/aiforge/assets --output artifacts/aiforge --epochs 8 --threads 6
 ```
 
-The importer keeps originals and edits together by source image. WildReceipt is held out as a source-corpus shift. This version of the benchmark uses one editing generator, so the experiment measures source shift. Import and audit the package locally before training.
+The importer keeps originals and edits together by source image. The deduplication step retains one source per group of byte-identical receipts, prioritizing the held-out splits. Training audits the cleaned manifest before fitting. WildReceipt is held out as a source-corpus shift. The benchmark uses one editing generator.
+
+The eight-epoch experiment and its measured outcomes are documented in the [AIForge-Doc benchmark results](docs/ForgeryLens_AIForge_Results.md).
+
 ## Checks and deployment
 
 ```powershell

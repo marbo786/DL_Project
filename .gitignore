@@ -9,5 +9,6 @@ node_modules/
 *.pth
 /data/
 /artifacts/
+/AIForge-Doc-v2.0/
 test-results/
 *.zip
