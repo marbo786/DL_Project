@@ -33,6 +33,19 @@ py -m research.diagnose calibration --manifest $manifest --asset-root $assets --
 py -m research.diagnose overfit --manifest $manifest --asset-root $assets --pairs 24 --epochs 80 --seed 42 --output artifacts/phase-a/memorization
 ```
 
-## Open questions for the student team
+## Real-receipt memorization
 
-The real-pair memorization run remains pending. Its per-epoch JSONL logs the training loss, both loss components, gradient norms, AUROC, score quantiles by class, and localization metrics. It reuses the same tiny training subset for fitting and scoring, so the scores measure memorization only. If the trace fails to show clear learning, inspect the classification and localization objectives separately before comparing architectures. If it memorizes the subset, use training and validation to isolate the effect of input resolution before changing the backbone. The pair audit includes file format, mode, and byte size for a shortcut check. A predictive shortcut, loss interference, and insufficient capacity remain unconfirmed.
+The existing 4,890-parameter local model ran for 80 epochs on 24 authentic/edited training pairs (48 images, seed 42, 112 × 160 inputs). The same 48 images were scored to measure memorization. The held-out sets were outside the diagnostic.
+
+| Epoch 80 metric | Measured value |
+| --- | ---: |
+| Combined training loss | 0.97955 |
+| Training accuracy | 54.17% |
+| Training ROC-AUC | 0.56771 |
+| Training mask IoU | 0.06961 |
+
+The original recipe failed to memorize this subset. Poor validation results therefore coexist with weak fitting on the sampled training images. The final metrics alone cannot identify loss interference, resolution, optimizer settings, or capacity as the cause.
+
+The controlled follow-up was started with the same training subset, seed, and epoch budget. It included classification-only, localization-only, the original combined loss, a lighter mask loss, doubled input dimensions, and a higher learning rate. The Windows execution environment became unavailable before the logs could be inspected. The status of these runs and the epoch-by-epoch baseline trace remains unverified. The script for the baseline writes its trace to `artifacts/phase-a/memorization/epochs.jsonl`.
+
+AI assistance executed the baseline run and documented the measured results. It is an engineering diagnostic for the project record.

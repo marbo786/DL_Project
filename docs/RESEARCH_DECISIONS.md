@@ -14,3 +14,7 @@ Use one entry per substantive team decision. Record author, date, alternatives, 
 | Final operating point | Frozen configuration, held-out results and model card |
 
 AI assistance disclosure template. Identify the boilerplate modules used, describe your own contributions, and record how you verified and understood the generated infrastructure.
+
+## Phase A diagnostic decision
+
+The original tiny CNN failed to fit 48 training images under its existing combined objective and resize. Keep the existing checkpoint as the historical comparison. The next comparison isolates the classification and localization losses on the same source pairs, then changes one training factor at a time. Holdout evaluation and promotion to public inference remain gated on measured evidence of learning and useful validation performance. The baseline run was executed with AI assistance and is documented in [the failure analysis](MODEL_FAILURE_ANALYSIS.md).
