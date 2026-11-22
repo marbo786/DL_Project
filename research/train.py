@@ -121,7 +121,7 @@ def summary_metrics(outputs, **options):
     return {key: value for key, value in metrics.items() if key not in ("reliability", "confusion_matrix", "selective")}
 
 
-def train(variant, config, train_data, val_data, epochs, seed, teacher=None):
+def train(variant, config, train_data, val_data, epochs, seed, teacher=None, observer=None):
     random.seed(seed)
     torch.manual_seed(seed)
     generator = torch.Generator().manual_seed(seed)
@@ -139,6 +139,7 @@ def train(variant, config, train_data, val_data, epochs, seed, teacher=None):
             target = F.max_pool2d(mask, 4, stride=4)
             class_loss = F.binary_cross_entropy_with_logits(score, labels)
             loss = class_loss
+            pixel_loss = None
             if map_weight:
                 pixel_loss = F.binary_cross_entropy_with_logits(grid, target, pos_weight=torch.tensor(18.0))
                 loss = loss + map_weight * pixel_loss
@@ -148,6 +149,8 @@ def train(variant, config, train_data, val_data, epochs, seed, teacher=None):
                 loss = loss + .25 * F.smooth_l1_loss(score, teacher_score) + .15 * F.smooth_l1_loss(grid, teacher_map)
             optimizer.zero_grad(set_to_none=True)
             loss.backward()
+            if observer is not None:
+                observer.batch(network, class_loss, pixel_loss)
             optimizer.step()
             total += loss.item() * len(labels)
         scheduler.step()
@@ -159,6 +162,8 @@ def train(variant, config, train_data, val_data, epochs, seed, teacher=None):
             best = rank
             checkpoint = {key: value.clone() for key, value in network.state_dict().items()}
         curve.append({"epoch": epoch + 1, "train_loss": total / len(train_data), **val})
+        if observer is not None:
+            observer.epoch(epoch + 1, outputs, curve[-1])
     network.load_state_dict(checkpoint)
     return network, curve
 

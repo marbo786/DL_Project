@@ -118,6 +118,10 @@ class ManifestDocuments(Dataset):
         return len(self.rows)
 
     def __getitem__(self, index):
+        image, mask, label = self.load(index)
+        return example_tensors(perturb(image, self.stress), mask, label)
+
+    def load(self, index):
         row = self.rows[index]
         with Image.open(self.root / row["image_path"]) as original:
             image = ImageOps.exif_transpose(original).convert("RGB")
@@ -131,4 +135,4 @@ class ManifestDocuments(Dataset):
             raise ValueError("pixel masks are required for manipulated training and evaluation samples")
         else:
             mask = Image.new("L", image.size)
-        return example_tensors(perturb(image, self.stress), mask, label)
+        return image, mask, label
