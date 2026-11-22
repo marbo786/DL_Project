@@ -1,0 +1,11 @@
+{
+  "parity_examples": 80,
+  "max_abs_error": {
+    "score_logit": 1.4901161193847656e-07,
+    "heatmap_logit": 2.980232238769531e-07
+  },
+  "export_size_bytes": 20420,
+  "batch_1_cpu_median_ms": 2.8139500063844025,
+  "batch_1_cpu_p95_ms": 3.298024967079982,
+  "timing_scope": "NumPy forward pass only, after 10 warm-up images"
+}

@@ -9,4 +9,5 @@ node_modules/
 *.pth
 /data/
 /artifacts/
-test-results/*.zip
+test-results/
+*.zip

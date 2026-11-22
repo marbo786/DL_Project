@@ -1,0 +1,12 @@
+.git
+.venv
+.env
+__pycache__
+**/__pycache__
+.pytest_cache
+**/node_modules
+**/.next
+data
+artifacts
+test-results
+*.zip

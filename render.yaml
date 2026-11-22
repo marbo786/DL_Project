@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: forgerylens
+    runtime: docker
+    plan: free
+    healthCheckPath: /api/v1/health

@@ -1,0 +1,297 @@
+{
+  "run_id": "synthetic-cpu-12ep-144src-v2",
+  "scope": "synthetic",
+  "epochs": 12,
+  "seeds": [
+    17,
+    42,
+    71
+  ],
+  "selected_model": "local",
+  "temperature": 0.05,
+  "bias": 2.0943817905829754,
+  "confidence_threshold": 0.6500000000000001,
+  "coverage_curve": [
+    {
+      "confidence_threshold": 0.5,
+      "coverage": 1.0,
+      "error_rate": 0.2375
+    },
+    {
+      "confidence_threshold": 0.5204166666666666,
+      "coverage": 0.9625,
+      "error_rate": 0.22077922077922077
+    },
+    {
+      "confidence_threshold": 0.5408333333333333,
+      "coverage": 0.8625,
+      "error_rate": 0.2028985507246377
+    },
+    {
+      "confidence_threshold": 0.56125,
+      "coverage": 0.725,
+      "error_rate": 0.1724137931034483
+    },
+    {
+      "confidence_threshold": 0.5816666666666667,
+      "coverage": 0.6375,
+      "error_rate": 0.17647058823529413
+    },
+    {
+      "confidence_threshold": 0.6020833333333333,
+      "coverage": 0.5625,
+      "error_rate": 0.13333333333333333
+    },
+    {
+      "confidence_threshold": 0.6225,
+      "coverage": 0.4875,
+      "error_rate": 0.1282051282051282
+    },
+    {
+      "confidence_threshold": 0.6429166666666667,
+      "coverage": 0.4,
+      "error_rate": 0.0625
+    },
+    {
+      "confidence_threshold": 0.6633333333333333,
+      "coverage": 0.2875,
+      "error_rate": 0.043478260869565216
+    },
+    {
+      "confidence_threshold": 0.68375,
+      "coverage": 0.2375,
+      "error_rate": 0.05263157894736842
+    },
+    {
+      "confidence_threshold": 0.7041666666666666,
+      "coverage": 0.2125,
+      "error_rate": 0.058823529411764705
+    },
+    {
+      "confidence_threshold": 0.7245833333333334,
+      "coverage": 0.1875,
+      "error_rate": 0.0
+    },
+    {
+      "confidence_threshold": 0.745,
+      "coverage": 0.175,
+      "error_rate": 0.0
+    },
+    {
+      "confidence_threshold": 0.7654166666666666,
+      "coverage": 0.175,
+      "error_rate": 0.0
+    },
+    {
+      "confidence_threshold": 0.7858333333333334,
+      "coverage": 0.15,
+      "error_rate": 0.0
+    },
+    {
+      "confidence_threshold": 0.80625,
+      "coverage": 0.15,
+      "error_rate": 0.0
+    },
+    {
+      "confidence_threshold": 0.8266666666666667,
+      "coverage": 0.125,
+      "error_rate": 0.0
+    },
+    {
+      "confidence_threshold": 0.8470833333333333,
+      "coverage": 0.1,
+      "error_rate": 0.0
+    },
+    {
+      "confidence_threshold": 0.8674999999999999,
+      "coverage": 0.1,
+      "error_rate": 0.0
+    },
+    {
+      "confidence_threshold": 0.8879166666666667,
+      "coverage": 0.1,
+      "error_rate": 0.0
+    },
+    {
+      "confidence_threshold": 0.9083333333333333,
+      "coverage": 0.075,
+      "error_rate": 0.0
+    },
+    {
+      "confidence_threshold": 0.92875,
+      "coverage": 0.05,
+      "error_rate": 0.0
+    },
+    {
+      "confidence_threshold": 0.9491666666666667,
+      "coverage": 0.0375,
+      "error_rate": 0.0
+    },
+    {
+      "confidence_threshold": 0.9695833333333334,
+      "coverage": 0.0375,
+      "error_rate": 0.0
+    },
+    {
+      "confidence_threshold": 0.99,
+      "coverage": 0.0,
+      "error_rate": null
+    }
+  ],
+  "test_before": {
+    "examples": 120,
+    "macro_f1": 0.5373636289065704,
+    "manipulated_recall": 0.21666666666666667,
+    "roc_auc": 0.7936111111111112,
+    "pr_auc": 0.8471448849928107,
+    "ece": 0.08173119748632113,
+    "reliability": [
+      {
+        "bin": 4,
+        "count": 107,
+        "mean_probability": 0.47112607955932617,
+        "observed_fraction": 0.4392523467540741
+      },
+      {
+        "bin": 5,
+        "count": 13,
+        "mean_probability": 0.507903516292572,
+        "observed_fraction": 1.0
+      }
+    ],
+    "confusion_matrix": [
+      [
+        60,
+        0
+      ],
+      [
+        47,
+        13
+      ]
+    ],
+    "selective": {
+      "confidence_threshold": 0.5,
+      "coverage": 1.0,
+      "error_rate": 0.39166666666666666
+    },
+    "mean_mask_iou": 0.03635040885040885
+  },
+  "test_after": {
+    "examples": 120,
+    "macro_f1": 0.7333333333333334,
+    "manipulated_recall": 0.5,
+    "roc_auc": 0.7936111111111112,
+    "pr_auc": 0.8471448849928107,
+    "ece": 0.07121305204927922,
+    "reliability": [
+      {
+        "bin": 2,
+        "count": 15,
+        "mean_probability": 0.2766318917274475,
+        "observed_fraction": 0.20000000298023224
+      },
+      {
+        "bin": 3,
+        "count": 35,
+        "mean_probability": 0.35217636823654175,
+        "observed_fraction": 0.34285715222358704
+      },
+      {
+        "bin": 4,
+        "count": 40,
+        "mean_probability": 0.4360005259513855,
+        "observed_fraction": 0.375
+      },
+      {
+        "bin": 5,
+        "count": 1,
+        "mean_probability": 0.5924301743507385,
+        "observed_fraction": 1.0
+      },
+      {
+        "bin": 6,
+        "count": 3,
+        "mean_probability": 0.6478976607322693,
+        "observed_fraction": 1.0
+      },
+      {
+        "bin": 7,
+        "count": 3,
+        "mean_probability": 0.7422564029693604,
+        "observed_fraction": 1.0
+      },
+      {
+        "bin": 8,
+        "count": 12,
+        "mean_probability": 0.8555864691734314,
+        "observed_fraction": 1.0
+      },
+      {
+        "bin": 9,
+        "count": 11,
+        "mean_probability": 0.940015971660614,
+        "observed_fraction": 1.0
+      }
+    ],
+    "confusion_matrix": [
+      [
+        60,
+        0
+      ],
+      [
+        30,
+        30
+      ]
+    ],
+    "selective": {
+      "confidence_threshold": 0.6500000000000001,
+      "coverage": 0.4666666666666667,
+      "error_rate": 0.14285714285714285
+    },
+    "mean_mask_iou": 0.03635040885040885
+  },
+  "shifted_after": {
+    "examples": 120,
+    "macro_f1": 0.3333333333333333,
+    "manipulated_recall": 0.0,
+    "roc_auc": 0.5116666666666667,
+    "pr_auc": 0.5273934804813072,
+    "ece": 0.12478847752014796,
+    "reliability": [
+      {
+        "bin": 2,
+        "count": 16,
+        "mean_probability": 0.26137417554855347,
+        "observed_fraction": 0.5
+      },
+      {
+        "bin": 3,
+        "count": 55,
+        "mean_probability": 0.35589003562927246,
+        "observed_fraction": 0.4909090995788574
+      },
+      {
+        "bin": 4,
+        "count": 49,
+        "mean_probability": 0.43407028913497925,
+        "observed_fraction": 0.5102040767669678
+      }
+    ],
+    "confusion_matrix": [
+      [
+        60,
+        0
+      ],
+      [
+        60,
+        0
+      ]
+    ],
+    "selective": {
+      "confidence_threshold": 0.6500000000000001,
+      "coverage": 0.325,
+      "error_rate": 0.48717948717948717
+    },
+    "mean_mask_iou": 0.0
+  }
+}

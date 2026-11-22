@@ -1,0 +1,422 @@
+{
+  "run_id": "synthetic-cpu-12ep-144src-v2",
+  "scope": "synthetic",
+  "epochs": 12,
+  "seeds": [
+    17,
+    42,
+    71
+  ],
+  "selected_model": "local",
+  "clean": {
+    "examples": 120,
+    "macro_f1": 0.7333333333333334,
+    "manipulated_recall": 0.5,
+    "roc_auc": 0.7936111111111112,
+    "pr_auc": 0.8471448849928107,
+    "ece": 0.07121305204927922,
+    "reliability": [
+      {
+        "bin": 2,
+        "count": 15,
+        "mean_probability": 0.2766318917274475,
+        "observed_fraction": 0.20000000298023224
+      },
+      {
+        "bin": 3,
+        "count": 35,
+        "mean_probability": 0.35217636823654175,
+        "observed_fraction": 0.34285715222358704
+      },
+      {
+        "bin": 4,
+        "count": 40,
+        "mean_probability": 0.4360005259513855,
+        "observed_fraction": 0.375
+      },
+      {
+        "bin": 5,
+        "count": 1,
+        "mean_probability": 0.5924301743507385,
+        "observed_fraction": 1.0
+      },
+      {
+        "bin": 6,
+        "count": 3,
+        "mean_probability": 0.6478976607322693,
+        "observed_fraction": 1.0
+      },
+      {
+        "bin": 7,
+        "count": 3,
+        "mean_probability": 0.7422564029693604,
+        "observed_fraction": 1.0
+      },
+      {
+        "bin": 8,
+        "count": 12,
+        "mean_probability": 0.8555864691734314,
+        "observed_fraction": 1.0
+      },
+      {
+        "bin": 9,
+        "count": 11,
+        "mean_probability": 0.940015971660614,
+        "observed_fraction": 1.0
+      }
+    ],
+    "confusion_matrix": [
+      [
+        60,
+        0
+      ],
+      [
+        30,
+        30
+      ]
+    ],
+    "selective": {
+      "confidence_threshold": 0.6500000000000001,
+      "coverage": 0.4666666666666667,
+      "error_rate": 0.14285714285714285
+    },
+    "mean_mask_iou": 0.03635040885040885
+  },
+  "stress": {
+    "blur": {
+      "examples": 120,
+      "macro_f1": 0.7569444444444444,
+      "manipulated_recall": 0.5666666666666667,
+      "roc_auc": 0.7930555555555556,
+      "pr_auc": 0.8477778405387209,
+      "ece": 0.12382378280162812,
+      "reliability": [
+        {
+          "bin": 2,
+          "count": 8,
+          "mean_probability": 0.28166013956069946,
+          "observed_fraction": 0.0
+        },
+        {
+          "bin": 3,
+          "count": 32,
+          "mean_probability": 0.3530445396900177,
+          "observed_fraction": 0.375
+        },
+        {
+          "bin": 4,
+          "count": 44,
+          "mean_probability": 0.4514257609844208,
+          "observed_fraction": 0.3181818127632141
+        },
+        {
+          "bin": 5,
+          "count": 6,
+          "mean_probability": 0.5079962611198425,
+          "observed_fraction": 0.6666666865348816
+        },
+        {
+          "bin": 6,
+          "count": 4,
+          "mean_probability": 0.6353864073753357,
+          "observed_fraction": 1.0
+        },
+        {
+          "bin": 7,
+          "count": 6,
+          "mean_probability": 0.760566234588623,
+          "observed_fraction": 1.0
+        },
+        {
+          "bin": 8,
+          "count": 12,
+          "mean_probability": 0.8593530654907227,
+          "observed_fraction": 1.0
+        },
+        {
+          "bin": 9,
+          "count": 8,
+          "mean_probability": 0.9368222951889038,
+          "observed_fraction": 1.0
+        }
+      ],
+      "confusion_matrix": [
+        [
+          58,
+          2
+        ],
+        [
+          26,
+          34
+        ]
+      ],
+      "selective": {
+        "confidence_threshold": 0.6500000000000001,
+        "coverage": 0.43333333333333335,
+        "error_rate": 0.1346153846153846
+      },
+      "mean_mask_iou": 0.019371028581554896
+    },
+    "low_light": {
+      "examples": 120,
+      "macro_f1": 0.3333333333333333,
+      "manipulated_recall": 1.0,
+      "roc_auc": 0.5022222222222223,
+      "pr_auc": 0.5149448247449283,
+      "ece": 0.3961392730474472,
+      "reliability": [
+        {
+          "bin": 8,
+          "count": 62,
+          "mean_probability": 0.8733375668525696,
+          "observed_fraction": 0.5
+        },
+        {
+          "bin": 9,
+          "count": 58,
+          "mean_probability": 0.9205135107040405,
+          "observed_fraction": 0.5
+        }
+      ],
+      "confusion_matrix": [
+        [
+          0,
+          60
+        ],
+        [
+          0,
+          60
+        ]
+      ],
+      "selective": {
+        "confidence_threshold": 0.6500000000000001,
+        "coverage": 1.0,
+        "error_rate": 0.5
+      },
+      "mean_mask_iou": 0.0
+    },
+    "jpeg": {
+      "examples": 120,
+      "macro_f1": 0.7454465657230634,
+      "manipulated_recall": 0.5333333333333333,
+      "roc_auc": 0.7802777777777777,
+      "pr_auc": 0.8430748499816854,
+      "ece": 0.09262013124922912,
+      "reliability": [
+        {
+          "bin": 2,
+          "count": 13,
+          "mean_probability": 0.28158217668533325,
+          "observed_fraction": 0.23076923191547394
+        },
+        {
+          "bin": 3,
+          "count": 34,
+          "mean_probability": 0.3459537625312805,
+          "observed_fraction": 0.3529411852359772
+        },
+        {
+          "bin": 4,
+          "count": 40,
+          "mean_probability": 0.4453670382499695,
+          "observed_fraction": 0.32499998807907104
+        },
+        {
+          "bin": 5,
+          "count": 4,
+          "mean_probability": 0.519585371017456,
+          "observed_fraction": 0.75
+        },
+        {
+          "bin": 6,
+          "count": 4,
+          "mean_probability": 0.6647804975509644,
+          "observed_fraction": 1.0
+        },
+        {
+          "bin": 7,
+          "count": 2,
+          "mean_probability": 0.7521538734436035,
+          "observed_fraction": 1.0
+        },
+        {
+          "bin": 8,
+          "count": 15,
+          "mean_probability": 0.8565925359725952,
+          "observed_fraction": 1.0
+        },
+        {
+          "bin": 9,
+          "count": 8,
+          "mean_probability": 0.9384684562683105,
+          "observed_fraction": 1.0
+        }
+      ],
+      "confusion_matrix": [
+        [
+          59,
+          1
+        ],
+        [
+          28,
+          32
+        ]
+      ],
+      "selective": {
+        "confidence_threshold": 0.6500000000000001,
+        "coverage": 0.525,
+        "error_rate": 0.14285714285714285
+      },
+      "mean_mask_iou": 0.02797739297739298
+    },
+    "occlusion": {
+      "examples": 120,
+      "macro_f1": 0.5907928388746804,
+      "manipulated_recall": 0.75,
+      "roc_auc": 0.7651388888888888,
+      "pr_auc": 0.8203646479828213,
+      "ece": 0.13843530205388863,
+      "reliability": [
+        {
+          "bin": 3,
+          "count": 21,
+          "mean_probability": 0.36102238297462463,
+          "observed_fraction": 0.2380952388048172
+        },
+        {
+          "bin": 4,
+          "count": 21,
+          "mean_probability": 0.4471926987171173,
+          "observed_fraction": 0.4761904776096344
+        },
+        {
+          "bin": 5,
+          "count": 47,
+          "mean_probability": 0.5574300289154053,
+          "observed_fraction": 0.3404255211353302
+        },
+        {
+          "bin": 6,
+          "count": 7,
+          "mean_probability": 0.6167042851448059,
+          "observed_fraction": 0.7142857313156128
+        },
+        {
+          "bin": 7,
+          "count": 3,
+          "mean_probability": 0.7670927047729492,
+          "observed_fraction": 1.0
+        },
+        {
+          "bin": 8,
+          "count": 7,
+          "mean_probability": 0.8618049621582031,
+          "observed_fraction": 1.0
+        },
+        {
+          "bin": 9,
+          "count": 14,
+          "mean_probability": 0.9376111626625061,
+          "observed_fraction": 1.0
+        }
+      ],
+      "confusion_matrix": [
+        [
+          27,
+          33
+        ],
+        [
+          15,
+          45
+        ]
+      ],
+      "selective": {
+        "confidence_threshold": 0.6500000000000001,
+        "coverage": 0.2833333333333333,
+        "error_rate": 0.029411764705882353
+      },
+      "mean_mask_iou": 0.02814935064935065
+    }
+  },
+  "shifted": {
+    "examples": 120,
+    "macro_f1": 0.3333333333333333,
+    "manipulated_recall": 0.0,
+    "roc_auc": 0.5116666666666667,
+    "pr_auc": 0.5273934804813072,
+    "ece": 0.12478847752014796,
+    "reliability": [
+      {
+        "bin": 2,
+        "count": 16,
+        "mean_probability": 0.26137417554855347,
+        "observed_fraction": 0.5
+      },
+      {
+        "bin": 3,
+        "count": 55,
+        "mean_probability": 0.35589003562927246,
+        "observed_fraction": 0.4909090995788574
+      },
+      {
+        "bin": 4,
+        "count": 49,
+        "mean_probability": 0.43407028913497925,
+        "observed_fraction": 0.5102040767669678
+      }
+    ],
+    "confusion_matrix": [
+      [
+        60,
+        0
+      ],
+      [
+        60,
+        0
+      ]
+    ],
+    "selective": {
+      "confidence_threshold": 0.6500000000000001,
+      "coverage": 0.325,
+      "error_rate": 0.48717948717948717
+    },
+    "mean_mask_iou": 0.0
+  },
+  "shifted_failure_cases": [
+    {
+      "shifted_test_index": 17,
+      "expected": 1,
+      "predicted": 0,
+      "manipulation_probability": 0.2443777620792389,
+      "mask_iou": 0.0
+    },
+    {
+      "shifted_test_index": 69,
+      "expected": 1,
+      "predicted": 0,
+      "manipulation_probability": 0.24967394769191742,
+      "mask_iou": 0.0
+    },
+    {
+      "shifted_test_index": 27,
+      "expected": 1,
+      "predicted": 0,
+      "manipulation_probability": 0.2514173686504364,
+      "mask_iou": 0.0
+    },
+    {
+      "shifted_test_index": 73,
+      "expected": 1,
+      "predicted": 0,
+      "manipulation_probability": 0.25898975133895874,
+      "mask_iou": 0.0
+    },
+    {
+      "shifted_test_index": 115,
+      "expected": 1,
+      "predicted": 0,
+      "manipulation_probability": 0.26742735505104065,
+      "mask_iou": 0.0
+    }
+  ]
+}
