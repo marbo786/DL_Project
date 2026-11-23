@@ -1,0 +1,19 @@
+# ForgeryLens presentation outline
+
+Use this as a rehearsal scaffold. The presenters should write the final explanations and confirm each technical claim against the linked records. Allow about eight minutes including the live comparison.
+
+| Time | Segment | Evidence or action |
+| --- | --- | --- |
+| 0:00–0:45 | Research question | Can a system identify and localize edited regions in a document image, and what changes when the examiner has a trusted reference? Define document detection and pixel/region localization separately. |
+| 0:45–1:45 | Image-only detector | Show the historical synthetic holdout and shifted holdout AUROC of 0.794 and 0.512. For the frozen AIForge in-domain and shifted sets, the local teacher reached 0.500 and 0.504 AUROC. Explain the observed distribution sensitivity and near-chance transfer. [Experiment summary](EXPERIMENT_SUMMARY.md) |
+| 1:45–2:45 | Patches, negatives, and MIL | Annotation-guided 112px crops reached 0.574 ± 0.019 AUROC in development validation. Image-only tiling reached 0.520 in its 64-pair screen. Background negatives improved the seed-42 tile hit rates while receipt discrimination stayed weak. Attention MIL reached 0.503–0.510 on all 228 development pairs. These are different evaluation tasks and cohorts. [Patch evidence](PATCH_EVIDENCE_ANALYSIS.md) · [Hard negatives](HARD_NEGATIVE_ANALYSIS.md) · [MIL](MIL_ANALYSIS.md) |
+| 2:45–4:00 | Trusted reference and Phase E | Explain image registration and scoring on valid overlap. Show the recorded [ordinary-simulation comparison figure](figures/phase-e-ordinary-auroc.svg) and label it as simulated development validation. Registered SSIM reached 0.647 AUROC against 0.512 for the strongest evaluated Siamese control in the ordinary simulation. The fixed comparison directly uses aligned image structure. Different raster resolutions and the scope of the learned controls limit causal claims about the architectures. [Phase E study](REFERENCE_VERIFICATION_ANALYSIS.md) |
+| 4:00–4:45 | Frozen decision and abstention | Explain the frozen document threshold of 0.5850, separate region overlay, and rejection on unreliable registration. Demonstrate how an examiner can see differences without a document-level flag. A flagged difference can reflect an authorized change. [Frozen policy](REAL_WORLD_VERIFICATION_ANALYSIS.md) |
+| 4:45–6:45 | Live workbench | Compare Unchanged, Altered total, Misaligned, and Different reference. Zoom into the altered amount and toggle region and heatmap layers. Explain each outcome using the actual result on screen. [Demo guide](DEMO_GUIDE.md) |
+| 6:45–8:00 | Limitations and follow-up | A high score cannot identify the correct source. No independent physical-capture accuracy is available. Collect rights-cleared recaptures, localized edits, legitimate revisions, and wrong-reference controls. Apply the frozen Phase F protocol before making field reliability claims. [Collection guide](REAL_CAPTURE_COLLECTION_GUIDE.md) |
+
+## Rehearsal notes
+
+- Run the reference workbench directly on loopback and use bundled fictional examples. Start from a clean view and verify the two panes and four examples before presenting.
+- If the demo cannot run, use screenshots captured from a verified rehearsal and explicitly identify them as recorded. Keep both the unchanged and altered-total decisions visible. Use the Phase E figure directly from the repository.
+- Check the course instructions for accepted files, length, grading criteria, and AI disclosure format. The available project brief limits AI assistance to scaffolding and boilerplate with disclosure. The submission team should independently verify the evidence, author the final interpretation and presentation, and accurately disclose prior assistance already recorded in the repository. Confirm any additional submission details with the course staff or official course materials.

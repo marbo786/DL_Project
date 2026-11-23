@@ -1,7 +1,10 @@
 *
 !Dockerfile
 !api/
-!api/*.py
+!api/__init__.py
+!api/contracts.py
+!api/main.py
+!api/signal.py
 !api/requirements.txt
 !web/
 !web/public/

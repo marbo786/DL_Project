@@ -7,7 +7,7 @@ const examples = {
   unchanged: ["north-quay", "north-quay", "Unchanged fictional receipt."],
   altered: ["north-quay", "changed-total", "Fictional receipt with a deliberately changed total."],
   misaligned: ["north-quay", "misaligned", "Fictional receipt with a severe crop and rotation."],
-  different: ["different-reference", "north-quay", "The two fictional documents have different identities. The score cannot verify the pairing."],
+  different: ["different-reference", "north-quay", "These fictional documents have different identities by design. A high difference score cannot establish reference identity or confirm a valid pairing."],
 };
 const viewports = [get("reference-view"), get("candidate-view")];
 const reference = viewports[0].querySelector("img");
@@ -71,6 +71,7 @@ function resetResult() {
   get("comparison-decision").removeAttribute("data-state");
   get("comparison-detail").textContent = "Check the reference and candidate, then compare.";
   get("diagnostics").hidden = true;
+  get("visual-evidence").hidden = true;
   get("swipe-view").disabled = true;
   get("overlays").disabled = true;
   for (const image of Object.values(overlayImages)) {
@@ -185,13 +186,13 @@ function showResult(result) {
   const alignment = result.alignment;
   state.accepted = alignment.supported;
   const decisions = {
-    difference_detected: "Visible difference flagged",
-    no_difference_flagged: "No difference exceeded the threshold",
+    difference_detected: "Document-level difference flagged",
+    no_difference_flagged: "No document-level difference flagged",
     inconclusive: "Inconclusive comparison",
   };
   get("comparison-decision").textContent = decisions[result.decision];
   get("comparison-decision").dataset.state = result.decision;
-  get("comparison-detail").textContent = state.accepted ? "The score describes differences in the valid aligned area."
+  get("comparison-detail").textContent = state.accepted ? "This decision comes from comparing the document score with the frozen threshold."
     : result.reason === "unsupported_dimensions" ? "The image dimensions are unsupported."
     : "Registration was unreliable. Check the pairing and try a clearer, full-page capture.";
   get("score").textContent = state.accepted ? result.score.toFixed(4) : "Unavailable";
@@ -200,7 +201,11 @@ function showResult(result) {
   get("overlap").textContent = state.accepted ? (alignment.valid_overlap * 100).toFixed(1) + "%" : "Unavailable";
   get("inliers").textContent = alignment.inliers ?? "Unavailable";
   get("diagnostics").hidden = false;
+  get("visual-evidence").hidden = !state.accepted;
   if (state.accepted) {
+    get("evidence-detail").textContent = result.region_pixels > 0
+      ? "The region overlay highlights local structural differences. Regions can be visible even when the document score stays below the threshold."
+      : "No region met the overlay criteria. The heatmap shows structural variation within the valid overlap.";
     const images = result.previews;
     reference.src = images.reference;
     candidate.src = images.aligned_candidate;

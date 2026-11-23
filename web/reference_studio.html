@@ -55,8 +55,9 @@
     <aside class="findings" aria-label="Comparison findings">
       <h2>Findings</h2><p id="comparison-status" role="status" aria-live="polite"></p>
       <p id="example-note" hidden></p>
-      <section id="comparison-result">
-        <h3 id="comparison-decision">Ready for comparison</h3>
+      <section id="comparison-result" aria-labelledby="decision-label">
+        <h3 id="decision-label">Document decision</h3>
+        <p id="comparison-decision" role="status">Ready for comparison</p>
         <p id="comparison-detail">Choose a fictional pair or supply two authorized images.</p>
         <dl id="diagnostics" hidden>
           <div><dt>SSIM difference score</dt><dd id="score">—</dd></div>
@@ -65,6 +66,10 @@
           <div><dt>Valid overlap</dt><dd id="overlap">—</dd></div>
           <div><dt>Registration inliers</dt><dd id="inliers">—</dd></div>
         </dl>
+      </section>
+      <section id="visual-evidence" aria-labelledby="evidence-label" hidden>
+        <h3 id="evidence-label">Localized visual evidence</h3>
+        <p id="evidence-detail"></p>
       </section>
       <fieldset id="overlays" disabled>
         <legend>Candidate overlays</legend>

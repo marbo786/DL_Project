@@ -68,6 +68,7 @@ def comparison_payload(reference, candidate):
         outline[..., 3] = result.mask * np.uint8(185)
         overlay = Image.alpha_composite(Image.fromarray(alignment.image).convert("RGBA"), Image.fromarray(outline))
         response["alignment"]["valid_overlap"] = float(alignment.valid.mean())
+        response["region_pixels"] = int(np.count_nonzero(result.mask))
         response["previews"] = {
             "reference": png(result.reference), "aligned_candidate": png(alignment.image),
             "heatmap": png(heat), "region_overlay": png(np.asarray(overlay)),
