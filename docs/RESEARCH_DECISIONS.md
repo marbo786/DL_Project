@@ -17,4 +17,20 @@ AI assistance disclosure template. Identify the boilerplate modules used, descri
 
 ## Phase A diagnostic decision
 
-The original tiny CNN failed to fit 48 training images under its existing combined objective and resize. Keep the existing checkpoint as the historical comparison. The next comparison isolates the classification and localization losses on the same source pairs, then changes one training factor at a time. Holdout evaluation and promotion to public inference remain gated on measured evidence of learning and useful validation performance. The baseline run was executed with AI assistance and is documented in [the failure analysis](MODEL_FAILURE_ANALYSIS.md).
+Controlled training on 24 AIForge receipt pairs identified width and update schedule as contributors to the original CNN's weak in-sample fit. The width-24, batch-8 recipe reached 0.82813 training AUROC, but validation AUROC stayed near 0.50 across width and batch controls. Retain the original benchmark as historical, and keep the wider configurations research-only. The next experiment targets local visual evidence with matched receipt patches and fixed validation tiling. The test partitions were excluded from model selection. AI assistance executed and analyzed the runs. [Measured controls and validation](MODEL_FAILURE_ANALYSIS.md)
+
+## Phase B diagnostic decision
+
+The crop study found modest held-out discrimination with known edit locations. Fixed tiling and trained pooling showed weak receipt-level transfer. Retain the patch experiments for research and prioritize same-source off-mask negatives before changing backbones. The final test partitions were excluded. [Measured results and AI-assistance attribution](PATCH_EVIDENCE_ANALYSIS.md)
+
+## Phase C diagnostic decision
+
+Same-source off-mask negatives improved localization on the 64-pair validation screen. One round of training-only mining gave weaker localization than random sampling at the same seed, and neither approach materially improved receipt AUROC. Follow Outcome B. Preserve PatchNet for one controlled document-supervision comparison before a backbone change. Test partitions and public inference were outside this study. [Measured results and AI-assistance attribution](HARD_NEGATIVE_ANALYSIS.md)
+
+## Phase D diagnostic decision
+
+Frozen document-level attention and spatial pooling stayed near chance on the full validation set. The matched MobileNetV3 comparison measured a small pretrained advantage over random initialization and insufficient receipt-level separation. Stop expanding PatchNet MIL. The next comparison should isolate the task and data limitations with a trusted-reference verification baseline and source- and generator-disjoint evaluation for image-only detection. Final test partitions were excluded. [Measured results and AI-assistance attribution](MIL_ANALYSIS.md)
+
+## Phase E diagnostic decision
+
+Preserve reference-aligned SSIM as the classical baseline. Exact pairs were easy, simulated acquisition changes lowered recall at low false-positive rates, and the evaluated Siamese model added no benefit. Freeze the existing production path and prioritize an independently captured paired benchmark with legitimate revisions and separately audited source and manipulation provenance. [Measured results and attribution](REFERENCE_VERIFICATION_ANALYSIS.md)

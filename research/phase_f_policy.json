@@ -1,0 +1,19 @@
+{
+  "version": "registered-ssim-phase-f-v1",
+  "phase_e_commit": "ce65ce68c34fb127ac59bc2a2cabd36cd001d21e",
+  "phase_e_measurements_sha256": "333eb64dd81f6c874c7fc9ca5e4d5a5877d25eb554eea472e080614f2b1f0b15",
+  "source_lf_sha256": {
+    "reference_compare.py": "f7df22a47b3ac024e93e3824faaf2fcf4fdd805f01dc4c5083a857b37c22ac5b",
+    "reference_data.py": "706cddfdcbec78820aaf8c7286d74b579f7b168db3eb503e4957a9302d2908bf",
+    "phase_f_compare.py": "bc8b066d77be4e77f4212c4c210dcf13b6883171bb6159b07e86de557c34d88d"
+  },
+  "long_side": 512,
+  "primary_nominal_fpr": "5%",
+  "score_thresholds_strict_greater_than": {
+    "5%": 0.5850238270653461,
+    "10%": 0.5132816869413678,
+    "20%": 0.4876910396336857
+  },
+  "pixel_threshold_strict_greater_than": 0.13,
+  "policy": "EXIF-oriented single-frame RGB. Resize the reference to a 512px long side and the candidate to that raster, both with INTER_AREA. Abstain on native or resized dimensions below 24px or on Phase E ORB registration rejection. Evaluate only within the accepted valid overlap. No score on abstention."
+}

@@ -25,9 +25,9 @@ const specimenReady = loadSpecimen();
 
 const layouts = {
   "/methodology": ["Methodology", [
-    ["Source groups", "Each original document and its variants belong to one partition. A held-out generator tests how well results transfer to another editing method."],
-    ["Model comparison", "The study compares whole-image and local-region evidence. Run records will document model versions, preprocessing and experimental conditions."],
-    ["Uncertainty and localization", "Validation data determines calibration and rejection settings. Candidate regions show where the model found suspicious patterns."],
+    ["Source groups", "Each original document and its variants belong to one partition. The external receipt holdout changes document corpus within the same editing generator."],
+    ["Model comparison", "Image-only receipt models ranked external examples near chance. The local Reference Studio compares two images using classical registered SSIM."],
+    ["Limits of the evidence", "Reference experiments applied simulated acquisition changes. Independent physical-capture accuracy is still unmeasured. A visible difference can have a legitimate cause."],
   ]],
   "/about": ["About ForgeryLens", [
     ["AI341 research prototype", "ForgeryLens is a document image inspection project for the Deep Neural Networks course at GIKI."],
@@ -43,8 +43,8 @@ function homepage() {
   main.innerHTML = `
     <section class="hero">
       <div>
-        <h1>Every document tells a story.<br>Some have been rewritten.</h1>
-        <p>ForgeryLens examines document images for signs of localized AI manipulation, combining visual forensic analysis with uncertainty-aware predictions.</p>
+        <h1>Inspect document changes</h1>
+        <p>ForgeryLens is a research prototype. The local Reference Studio compares visible differences between two images. The historical single-image demo uses fictional receipts.</p>
         <div class="actions"><a class="button primary" href="/studio">Open Forensic Studio</a><a class="button" href="/research">Explore the Research</a></div>
       </div>
       <div class="stage hero-preview">
@@ -55,7 +55,7 @@ function homepage() {
     </section>
     <section class="info-grid" aria-label="Inspection features">
       <article><h2>Inspect the document</h2><p>Zoom in and pan across receipts or supported form images.</p></article>
-      <article><h2>Review the evidence</h2><p>Compare the original view with candidate regions when a trained model is available.</p></article>
+      <article><h2>Review visible differences</h2><p>In local research mode, align a candidate to a trusted reference and inspect structural differences in the overlap.</p></article>
       <article><h2>Account for uncertainty</h2><p>Use inconclusive results to flag documents for further review.</p></article>
     </section>`;
   specimenReady.then(() => {
@@ -80,7 +80,7 @@ async function api(path, options) {
 
 function studio() {
   main.innerHTML = `
-    <div class="mast"><div><h1>Forensic Studio</h1><p>Inspect a document image and review localized evidence.</p></div>
+    <div class="mast"><div><h1>Forensic Studio</h1><p>Historical single-image demonstration on fictional receipts.</p></div>
     <span class="status" id="model-status" role="status">Checking model</span></div>
     <div class="desk">
       <section class="viewer" aria-label="Document viewer">
@@ -479,7 +479,8 @@ function renderMetrics(section, key, report) {
 
 function research() {
   main.innerHTML = `<section class="copy"><h1>Research explorer</h1>
-    <p>Inspect published experiment artifacts as the team completes and verifies its runs.</p>
+    <p>The artifacts below describe the historical synthetic release. The final report covers the external receipt experiments, simulated reference tests, and the remaining independent evaluation.</p>
+    <p><a href="https://github.com/marbo786/DL_Project/blob/phase-a-controls/docs/FINAL_RESEARCH_REPORT.md">Read the final research report</a></p>
     <div id="reports"></div><p><a href="/methodology">Read the methodology</a></p></section>`;
   for (const [key, title] of [
     ["summary", "Dataset, baseline and efficiency"], ["ablations", "Controlled ablations"],
@@ -506,7 +507,7 @@ function research() {
   }
 }
 
-if (route === "/studio") studio();
+if (route === "/studio" || route === "/studio/single") studio();
 else if (route === "/research") research();
 else if (layouts[route]) {
   const [title, sections] = layouts[route];

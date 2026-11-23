@@ -1,0 +1,14 @@
+FROM forgerylens:release-qa
+USER root
+WORKDIR /app
+COPY api/requirements-dev.txt api/requirements-dev.txt
+COPY research/requirements.txt research/requirements-reference.txt research/
+RUN python -m pip install --no-cache-dir -r api/requirements-dev.txt -r research/requirements-reference.txt && python -m pip check
+COPY api/ api/
+COPY research/ research/
+COPY tests/ tests/
+COPY pytest.ini ./
+COPY web/reference_studio.html web/
+COPY web/public/reference_studio.css web/public/reference_studio.js web/public/
+COPY web/public/comparison-examples/ web/public/comparison-examples/
+USER 10001

@@ -79,6 +79,13 @@ async def health():
     return {"status": "ok", "model_ready": app.state.predictor is not None}
 
 
+@app.get("/api/v1/ready", include_in_schema=False)
+async def readiness():
+    if app.state.predictor is None:
+        raise HTTPException(503, "The configured release model is unavailable.")
+    return {"status": "ready"}
+
+
 @app.get("/api/v1/model-info")
 async def model_info():
     predictor = app.state.predictor
@@ -160,10 +167,26 @@ def experiments(section: str):
 
 
 @app.get("/", include_in_schema=False)
-@app.get("/studio", include_in_schema=False)
+@app.get("/studio/single", include_in_schema=False)
 @app.get("/research", include_in_schema=False)
 @app.get("/methodology", include_in_schema=False)
 @app.get("/about", include_in_schema=False)
 @app.get("/privacy", include_in_schema=False)
 def frontend():
     return FileResponse(PUBLIC / "index.html")
+
+
+REFERENCE_RESEARCH = os.getenv("FORGERYLENS_REFERENCE_RESEARCH") == "1"
+REFERENCE_STUDIO = ROOT / "web" / "reference_studio.html"
+
+if REFERENCE_RESEARCH:
+    from .reference_research import install, local_research, studio_response
+
+    install(app, REFERENCE_STUDIO)
+
+
+@app.get("/studio", include_in_schema=False)
+def studio(request: Request):
+    if REFERENCE_RESEARCH and local_research(request):
+        return studio_response(REFERENCE_STUDIO)
+    return frontend()

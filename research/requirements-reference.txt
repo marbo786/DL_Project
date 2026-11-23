@@ -1,0 +1,4 @@
+-r requirements.txt
+opencv-python-headless==4.12.0.88
+python-multipart==0.0.32; python_version < "3.11"
+python-multipart==0.0.34; python_version >= "3.11"

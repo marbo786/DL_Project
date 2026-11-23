@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#14181b">
+  <title>Reference Studio · ForgeryLens</title>
+  <link rel="stylesheet" href="/assets/reference_studio.css">
+  <script src="/assets/reference_studio.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to comparison</a>
+<header class="top"><nav class="shell nav" aria-label="Main navigation">
+  <a class="wordmark" href="/">ForgeryLens</a>
+  <div><a href="/studio" aria-current="page">Reference Studio</a><a href="/studio/single">Single-image demo</a><a href="/research">Research</a></div>
+</nav></header>
+<main id="main" class="shell">
+  <header class="intro">
+    <div><h1>Reference comparison</h1><p>Compare two views of the same document. Confirm the reference’s identity before interpreting a difference.</p></div>
+    <span>Experimental · registered SSIM</span>
+  </header>
+  <form id="comparison-form" aria-label="Document comparison">
+    <div class="tools"><span>Fictional examples</span><div class="examples">
+      <button type="button" data-example="unchanged">Unchanged</button>
+      <button type="button" data-example="altered">Altered total</button>
+      <button type="button" data-example="misaligned">Misaligned</button>
+      <button type="button" data-example="different">Different reference</button>
+    </div><div class="form-actions"><button type="button" id="clear-pair" disabled>Clear</button><button class="compare" type="submit" disabled>Compare documents</button></div></div>
+    <div class="uploads">
+      <label class="upload" data-slot="reference"><strong>Trusted reference</strong><span class="filename">Drop an image or choose a file</span><span class="picker" aria-hidden="true">Choose image</span><input type="file" name="reference" accept="image/png,image/jpeg,image/webp" aria-label="Choose trusted reference image"></label>
+      <label class="upload" data-slot="candidate"><strong>Candidate document</strong><span class="filename">Drop an image or choose a file</span><span class="picker" aria-hidden="true">Choose image</span><input type="file" name="candidate" accept="image/png,image/jpeg,image/webp" aria-label="Choose candidate image"></label>
+    </div>
+  </form>
+  <div class="desk">
+    <section class="inspection" aria-label="Document inspection">
+      <div class="viewer-tools">
+        <div class="tool-group" role="group" aria-label="Inspection view">
+          <button type="button" id="side-by-side" aria-pressed="true">Side by side</button>
+          <button type="button" id="swipe-view" aria-pressed="false" disabled>Before / after</button>
+        </div>
+        <div class="tool-group" role="group" aria-label="Shared zoom">
+          <button type="button" id="zoom-out" aria-label="Zoom out" disabled>−</button>
+          <output id="zoom-level">100%</output>
+          <button type="button" id="zoom-in" aria-label="Zoom in" disabled>+</button>
+          <button type="button" id="reset-view" disabled>Reset view</button>
+        </div>
+      </div>
+      <div id="viewers" class="viewers">
+        <div class="pane"><h2>Trusted reference</h2><div class="viewport" id="reference-view" tabindex="0" aria-label="Reference viewer" aria-describedby="viewer-help"><span class="empty">Select a trusted reference or an example.</span><div class="layer" hidden><img alt="Trusted reference preview" draggable="false"></div></div></div>
+        <div class="pane"><h2 id="candidate-title">Candidate</h2><div class="viewport" id="candidate-view" tabindex="0" aria-label="Candidate viewer" aria-describedby="viewer-help"><span class="empty">Select a candidate or an example.</span><div class="layer" hidden><img class="candidate" alt="Candidate preview" draggable="false"><img class="heat" alt="" draggable="false" hidden><img class="regions" alt="" draggable="false" hidden><img class="overlap" alt="" draggable="false" hidden></div><div class="before" hidden><div class="layer"><img alt="Reference before comparison" draggable="false"></div></div><div class="split-line" hidden></div></div></div>
+      </div>
+      <label id="swipe-row" class="swipe-row" hidden>Before / after position <input type="range" id="swipe" value="50" min="0" max="100"></label>
+      <p id="viewer-help">Zoom both documents together. When zoomed, drag or use the arrow keys in either viewer to pan.</p>
+    </section>
+    <aside class="findings" aria-label="Comparison findings">
+      <h2>Findings</h2><p id="comparison-status" role="status" aria-live="polite"></p>
+      <p id="example-note" hidden></p>
+      <section id="comparison-result" aria-labelledby="decision-label">
+        <h3 id="decision-label">Document decision</h3>
+        <p id="comparison-decision" role="status">Ready for comparison</p>
+        <p id="comparison-detail">Choose a fictional pair or supply two authorized images.</p>
+        <dl id="diagnostics" hidden>
+          <div><dt>SSIM difference score</dt><dd id="score">—</dd></div>
+          <div><dt>Frozen threshold</dt><dd id="threshold">—</dd></div>
+          <div><dt>Alignment</dt><dd id="alignment">—</dd></div>
+          <div><dt>Valid overlap</dt><dd id="overlap">—</dd></div>
+          <div><dt>Registration inliers</dt><dd id="inliers">—</dd></div>
+        </dl>
+      </section>
+      <section id="visual-evidence" aria-labelledby="evidence-label" hidden>
+        <h3 id="evidence-label">Localized visual evidence</h3>
+        <p id="evidence-detail"></p>
+      </section>
+      <fieldset id="overlays" disabled>
+        <legend>Candidate overlays</legend>
+        <label><input type="checkbox" id="show-heat" checked> Structural difference heatmap</label>
+        <label><input type="checkbox" id="show-regions" checked> Difference regions</label>
+        <label><input type="checkbox" id="show-overlap"> Valid overlap mask</label>
+        <label class="opacity">Heatmap opacity <output id="opacity-value">65%</output><input id="opacity" type="range" min="0" max="100" value="65"></label>
+      </fieldset>
+      <p class="limits">Region highlights can appear below the document threshold. A difference may be legitimate. A low score cannot verify authenticity. The comparison cannot determine identity, authorization, or fraudulent intent.</p>
+    </aside>
+  </div>
+</main>
+<footer class="shell footer"><span>ForgeryLens · AI341 research prototype</span><span>Local image processing. Fictional examples contain no personal data.</span></footer>
+</body>
+</html>
+

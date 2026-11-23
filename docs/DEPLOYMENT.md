@@ -1,8 +1,10 @@
 # Deploy ForgeryLens
 
+For current readiness, reference-mode isolation, and measured Phase G behavior, see the [Phase G deployment guide](DEPLOYMENT_GUIDE.md). This page records the historical single-image deployment.
+
 ## Single service
 
-Build from the project root with `docker build -t forgerylens .` and run with `docker run --rm -p 8000:8000 forgerylens`. The container bundles the frontend, comparison artifacts, and NumPy model. The Render Blueprint targets a Docker web service and checks `/api/v1/health`. Use an authorized Render account, import the repository, and verify that the image starts and loads a model.
+Build from the project root with `docker build -t forgerylens .` and run with `docker run --rm -p 8000:8000 forgerylens`. The container bundles the historical frontend, aggregate experiment artifacts, and NumPy model. The Render Blueprint targets a Docker web service and checks `/api/v1/ready`. Use an authorized Render account, import the repository, and verify that the image starts and loads a model.
 
 Run `python tests/smoke.py https://your-host --image web/public/edited.png`. This requires a real model response, plus the frontend routes, asset and readiness checks. The bundled model produces research scores for the demo specimens and returns inconclusive for unfamiliar documents.
 
