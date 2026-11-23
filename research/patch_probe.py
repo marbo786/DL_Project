@@ -29,11 +29,14 @@ class PatchNet(nn.Module):
         self.layers = nn.Sequential(block(6, 8), block(8, 16), block(16, 24), block(24, 32))
         self.head = nn.Linear(64, 1)
 
-    def forward(self, image):
+    def encode(self, image):
         image = image.float().div(255).sub(.5)
         smooth = F.avg_pool2d(image, 3, stride=1, padding=1, count_include_pad=False)
         features = self.layers(torch.cat((image, 3 * (image - smooth)), dim=1))
-        return self.head(torch.cat((features.mean((2, 3)), features.amax((2, 3))), dim=1)).flatten()
+        return torch.cat((features.mean((2, 3)), features.amax((2, 3))), dim=1)
+
+    def forward(self, image):
+        return self.head(self.encode(image)).flatten()
 
 
 def quantiles(values):

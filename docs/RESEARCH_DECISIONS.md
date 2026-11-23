@@ -26,3 +26,7 @@ The crop study found modest held-out discrimination with known edit locations. F
 ## Phase C diagnostic decision
 
 Same-source off-mask negatives improved localization on the 64-pair validation screen. One round of training-only mining gave weaker localization than random sampling at the same seed, and neither approach materially improved receipt AUROC. Follow Outcome B. Preserve PatchNet for one controlled document-supervision comparison before a backbone change. Test partitions and public inference were outside this study. [Measured results and AI-assistance attribution](HARD_NEGATIVE_ANALYSIS.md)
+
+## Phase D diagnostic decision
+
+Frozen document-level attention and spatial pooling stayed near chance on the full validation set. The matched MobileNetV3 comparison measured a small pretrained advantage over random initialization and insufficient receipt-level separation. Stop expanding PatchNet MIL. The next comparison should isolate the task and data limitations with a trusted-reference verification baseline and source- and generator-disjoint evaluation for image-only detection. Final test partitions were excluded. [Measured results and AI-assistance attribution](MIL_ANALYSIS.md)
