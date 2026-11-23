@@ -22,3 +22,7 @@ Controlled training on 24 AIForge receipt pairs identified width and update sche
 ## Phase B diagnostic decision
 
 The crop study found modest held-out discrimination with known edit locations. Fixed tiling and trained pooling showed weak receipt-level transfer. Retain the patch experiments for research and prioritize same-source off-mask negatives before changing backbones. The final test partitions were excluded. [Measured results and AI-assistance attribution](PATCH_EVIDENCE_ANALYSIS.md)
+
+## Phase C diagnostic decision
+
+Same-source off-mask negatives improved localization on the 64-pair validation screen. One round of training-only mining gave weaker localization than random sampling at the same seed, and neither approach materially improved receipt AUROC. Follow Outcome B. Preserve PatchNet for one controlled document-supervision comparison before a backbone change. Test partitions and public inference were outside this study. [Measured results and AI-assistance attribution](HARD_NEGATIVE_ANALYSIS.md)
