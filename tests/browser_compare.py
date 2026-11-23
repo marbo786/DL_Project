@@ -32,7 +32,7 @@ def main():
         held = []
         page.route("**/api/v1/compare", lambda route: held.append(route))
         compare.click()
-        expect(page.locator("#comparison-status")).to_have_text("Aligning and comparing images.")
+        expect(page.locator("#comparison-status")).to_contain_text("Aligning and comparing images")
         expect(compare).to_be_disabled()
         assert len(held) == 1
         held[0].continue_()

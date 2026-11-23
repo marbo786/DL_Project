@@ -18,6 +18,7 @@ Decode both images, apply EXIF orientation, and enforce explicit byte and pixel 
 | `threshold`, `policy_version` | Frozen primary score cutoff and comparison policy identifier |
 | `alignment` | Support status and, when available, inlier count, inlier ratio, reprojection residual, and valid overlap fraction |
 | `raster` | Width, height, and coordinate frame identifier `normalized_reference`, present on accepted alignment. |
+| `region_pixels` | Pixel count in the isolated region overlay after policy filtering. Available on accepted alignment and independent of whether the document score crosses its cutoff. |
 | `previews` | Reference, aligned candidate, heatmap, valid support, isolated region layer and composed region overlay as PNG data URLs in the normalized reference raster. Present only when registration is accepted. |
 | `inference_ms` | Decode through scoring and preview encoding latency, excluding upload and network transport |
 

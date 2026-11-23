@@ -110,5 +110,7 @@ def test_raster_and_overlays_share_reference_coordinates(client):
     assert not images["heatmap"][invalid, 3].any()
     assert not images["regions"][invalid, 3].any()
     ys, xs = np.nonzero(images["regions"][:, :, 3])
+    assert data["region_pixels"] == len(xs) > 0
+    assert data["decision"] == "no_difference_flagged"
     assert np.median(xs) / raster["width"] > .65
     assert .60 < np.median(ys) / raster["height"] < .70
