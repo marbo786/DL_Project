@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0b0f12">
+  <title>Compare references · ForgeryLens</title>
+  <link rel="stylesheet" href="/assets/studio.css">
+  <link rel="stylesheet" href="/assets/reference_studio.css">
+  <script src="/assets/reference_studio.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <nav class="wrap nav" aria-label="Main navigation">
+    <a class="wordmark" href="/"><span class="mark" aria-hidden="true"></span>ForgeryLens</a>
+    <div class="links"><a href="/studio">Studio</a><a href="/studio/compare" aria-current="page">Compare references</a></div>
+  </nav>
+</header>
+<main id="main" class="wrap comparison">
+  <h1>Compare with a trusted reference</h1>
+  <p>Research demonstration using registered SSIM. Verify that both images show the same document before comparing. Visual evidence cannot establish authorization or fraud.</p>
+  <form id="comparison-form">
+    <div class="comparison-grid">
+      <label>Trusted reference <input type="file" name="reference" accept="image/png,image/jpeg,image/webp" required></label>
+      <label>Candidate document <input type="file" name="candidate" accept="image/png,image/jpeg,image/webp" required></label>
+    </div>
+    <button type="submit">Compare documents</button>
+  </form>
+  <p id="comparison-status" role="status" aria-live="polite"></p>
+  <section id="comparison-result" hidden aria-label="Comparison result">
+    <h2 id="comparison-decision"></h2>
+    <p id="comparison-detail"></p>
+    <div class="comparison-grid comparison-images" id="comparison-images"></div>
+  </section>
+</main>
+<footer class="wrap footer"><span>ForgeryLens / AI341 research prototype</span><a href="/privacy">Privacy</a></footer>
+</body>
+</html>

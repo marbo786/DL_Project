@@ -11,7 +11,7 @@ from uuid import uuid4
 
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from PIL import Image, ImageOps, UnidentifiedImageError
 from starlette.concurrency import run_in_threadpool
@@ -167,3 +167,18 @@ def experiments(section: str):
 @app.get("/privacy", include_in_schema=False)
 def frontend():
     return FileResponse(PUBLIC / "index.html")
+
+
+if os.getenv("FORGERYLENS_REFERENCE_RESEARCH") == "1":
+    from .reference_research import install
+
+    install(app, ROOT / "web" / "reference_studio.html")
+
+    @app.middleware("http")
+    async def reference_studio_link(request: Request, call_next):
+        if request.method == "GET" and request.url.path == "/studio":
+            html = (PUBLIC / "index.html").read_text(encoding="utf-8")
+            html = html.replace("</header>", '<p class="wrap"><a href="/studio/compare">'
+                                'Compare references</a></p>\n</header>', 1)
+            return HTMLResponse(html, headers={"Cache-Control": "no-store"})
+        return await call_next(request)

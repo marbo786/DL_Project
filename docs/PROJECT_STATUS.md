@@ -13,5 +13,6 @@
 | Off-mask negatives | Random negatives improved top-tile localization across all three seeds. Mined negatives reached 0.521 top-3-pooled receipt AUROC, close to the 0.520 historical max result. See the [Phase C analysis](HARD_NEGATIVE_ANALYSIS.md). |
 | Document-level MIL | Frozen PatchNet attention reached 0.510 AUROC at best across three full-validation seeds. ImageNet MobileNetV3 attention reached 0.507 on the full split, compared with 0.500 for the randomized control. The research checkpoint remains unsuitable for deployment. See the [MIL analysis](MIL_ANALYSIS.md). |
 | Reference-assisted verification | Registered SSIM reached 0.647 AUROC on simulated ordinary acquisition differences and 6.7% recall at 4.9% FPR. The Siamese controls stayed near chance. See the [Phase E analysis](REFERENCE_VERIFICATION_ANALYSIS.md). |
+| Independent reference verification | Frozen registered SSIM policy, private dataset audit, evaluator, and opt-in two-image research Studio implemented. Independent evaluation is blocked on a rights-cleared collection of physical recaptures, edits, revisions, and wrong-reference controls. See the [Phase F analysis](REAL_WORLD_VERIFICATION_ANALYSIS.md). |
 
 See the technical report, model card, and release JSON for complete experiment details.
