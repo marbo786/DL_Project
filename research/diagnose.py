@@ -2,6 +2,7 @@
 
 import argparse
 from collections import defaultdict
+from hashlib import sha256
 import json
 from pathlib import Path
 import random
@@ -141,9 +142,21 @@ def score_diagnostics(outputs, temperature=1., bias=0.):
 
 
 class TrainingTrace:
-    def __init__(self, path):
+    def __init__(self, path, reference_masks=None):
         self.path = path
+        self.reference_masks = reference_masks
         self.batches = []
+        self.gradient_cosine = None
+
+    def objectives(self, model, classification, localization):
+        if self.batches:
+            return
+        parameters = tuple(parameter for block in (model.first, model.second, model.map) for parameter in block.parameters())
+        first = torch.autograd.grad(classification, parameters, retain_graph=True)
+        second = torch.autograd.grad(localization, parameters, retain_graph=True)
+        first = torch.cat([gradient.reshape(-1) for gradient in first])
+        second = torch.cat([gradient.reshape(-1) for gradient in second])
+        self.gradient_cosine = F.cosine_similarity(first, second, dim=0).item()
 
     def batch(self, model, class_loss, pixel_loss):
         gradient = torch.stack([parameter.grad.norm() for parameter in model.parameters() if parameter.grad is not None])
@@ -155,16 +168,37 @@ class TrainingTrace:
             "epoch": epoch, "train_loss": metrics["train_loss"], "classification_loss_mean_per_batch": class_loss,
             "localization_loss_mean_per_batch": pixel_loss, "gradient_l2_mean_per_batch": gradient,
             "gradient_l2_by_batch": distribution(np.asarray(self.batches)[:, 2]),
+            "first_batch_shared_gradient_cosine": self.gradient_cosine,
             **score_diagnostics(outputs),
         }
+        if self.reference_masks is not None:
+            scores, grid, _, labels = outputs
+            reference_grid = F.interpolate(torch.from_numpy(grid[:, None]), size=self.reference_masks.shape[-2:],
+                                           mode="area")[:, 0].numpy()
+            reference = measures((scores, reference_grid, self.reference_masks, labels))
+            row["reference_grid_mean_mask_iou"] = reference["mean_mask_iou"]
         with self.path.open("a", encoding="utf-8") as stream:
             stream.write(json.dumps(row, allow_nan=False) + "\n")
         self.batches.clear()
 
 
+def compare_widths(training, validation, epochs, seed, batch_size):
+    candidates = {}
+    for width in (8, 24):
+        model, curve = train("local", {"width": width}, training, validation, epochs, seed, batch_size=batch_size)
+        candidates[width] = {
+            "parameters": sum(p.numel() for p in model.parameters()),
+            "training": score_diagnostics(collect(model, training)),
+            "validation": score_diagnostics(collect(model, validation)),
+            "validation_curve": curve,
+        }
+        print(f"Width {width}: validation AUROC {candidates[width]['validation']['roc_auc']:.4f}", flush=True)
+    return candidates
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("mode", choices=("inspect", "overfit", "calibration"))
+    parser.add_argument("mode", choices=("inspect", "overfit", "calibration", "width-screen"))
     parser.add_argument("--manifest", type=Path, required=True)
     parser.add_argument("--asset-root", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
@@ -174,22 +208,27 @@ def main():
     parser.add_argument("--epochs", type=int, default=80)
     parser.add_argument("--threads", type=int, default=4)
     parser.add_argument("--checkpoint", type=Path)
-    overfit = parser.add_argument_group("overfit controls")
-    overfit.add_argument("--resolution", type=int, choices=(1, 2), default=1)
-    overfit.add_argument("--class-weight", type=float, default=1.)
-    overfit.add_argument("--map-weight", type=float, default=.65)
-    overfit.add_argument("--learning-rate", type=float, default=.003)
+    parser.add_argument("--resolution", type=int, default=1, help="Integer multiplier of the original input size.")
+    parser.add_argument("--class-weight", type=float, default=1.)
+    parser.add_argument("--map-weight", type=float, default=.65)
+    parser.add_argument("--positive-weight", type=float, default=18.)
+    parser.add_argument("--learning-rate", type=float, default=.003)
+    parser.add_argument("--width", type=int, choices=(8, 16, 24, 32), default=8)
+    parser.add_argument("--batch-size", type=int, choices=(8, 16, 32), default=32)
     args = parser.parse_args()
     if min(args.pairs, args.epochs, args.threads) < 1 or args.previews < 0:
         parser.error("use positive counts and a nonnegative number of previews")
     if args.mode == "calibration" and args.checkpoint is None:
         parser.error("calibration requires the existing benchmark --checkpoint")
-    settings = (args.resolution, args.class_weight, args.map_weight, args.learning_rate)
-    if args.mode != "overfit" and settings != (1, 1., .65, .003):
-        parser.error("training controls are only available in overfit mode")
-    weights = (args.class_weight, args.map_weight)
-    if not all(np.isfinite(settings)) or min(weights) < 0 or not any(weights) or args.learning_rate <= 0:
-        parser.error("use finite nonnegative loss weights, at least one active loss, and a positive learning rate")
+    if not 1 <= args.resolution <= 4:
+        parser.error("resolution must be 1-4")
+    weights = (args.class_weight, args.map_weight, args.positive_weight, args.learning_rate)
+    if not all(np.isfinite(weights)) or min(weights) < 0 or min(weights[2:]) == 0 or sum(weights[:2]) == 0:
+        parser.error("provide finite nonnegative loss weights and a positive learning rate and foreground weight")
+    if args.mode != "overfit" and (args.resolution, args.width, *weights) != (1, 8, 1., .65, 18., .003):
+        parser.error("resolution, width and loss controls are only available in overfit mode")
+    if args.mode not in ("overfit", "width-screen") and args.batch_size != 32:
+        parser.error("batch size only applies to training modes")
     torch.set_num_threads(args.threads)
     size = tuple(axis * args.resolution for axis in SIZE)
     dataset = ManifestDocuments(args.manifest, args.asset_root, "validation" if args.mode == "calibration" else "train", size=size)
@@ -210,23 +249,39 @@ def main():
     else:
         pairs = select_pairs(dataset, args.pairs, args.seed)
         result = {"scope": "train", "seed": args.seed, "pair_count": len(pairs), "input_size": list(size)}
+        pair_ids = [dataset.rows[good]["source_document_id"] for good, _ in pairs]
+        result["manifest_sha256"] = sha256(args.manifest.read_bytes()).hexdigest()
+        result["ordered_sources_sha256"] = sha256(json.dumps(pair_ids).encode("utf-8")).hexdigest()
         if args.mode == "inspect":
             result["pairs"] = [
                 inspect_pair(dataset, pair, args.output / f"pair-{index + 1:03}.png" if index < args.previews else None)
                 for index, pair in enumerate(pairs)
             ]
+        elif args.mode == "width-screen":
+            indices = [index for pair in pairs for index in pair]
+            training = cache(Subset(dataset, indices))
+            validation = cache(ManifestDocuments(args.manifest, args.asset_root, "validation"))
+            result.update(scope="train and validation width screen", epochs=args.epochs, validation_examples=len(validation),
+                          batch_size=args.batch_size,
+                          candidates=compare_widths(training, validation, args.epochs, args.seed, args.batch_size))
         else:
-            batch = cache(Subset(dataset, [index for pair in pairs for index in pair]))
+            indices = [index for pair in pairs for index in pair]
+            batch = cache(Subset(dataset, indices))
+            reference_masks = None
+            if size != SIZE:
+                native = ManifestDocuments(args.manifest, args.asset_root, "train")
+                masks = torch.stack([native[index][1] for index in indices])
+                reference_masks = F.max_pool2d(masks, 4, stride=4)[:, 0].numpy()
             result["epochs"] = args.epochs
             result["scope"] = "train-only memorization"
-            result["objective"] = {
-                "classification_weight": args.class_weight,
-                "localization_weight": args.map_weight,
-                "learning_rate": args.learning_rate,
-            }
-            train("local", {"width": 8}, batch, batch, args.epochs, args.seed,
-                  observer=TrainingTrace(args.output / "epochs.jsonl"), class_weight=args.class_weight,
-                  map_weight=args.map_weight, learning_rate=args.learning_rate)
+            result["width"] = args.width
+            result["batch_size"] = args.batch_size
+            result["objective"] = {"classification": args.class_weight, "localization": args.map_weight,
+                                   "foreground": args.positive_weight, "learning_rate": args.learning_rate}
+            train("local", {"width": args.width}, batch, batch, args.epochs, args.seed,
+                  observer=TrainingTrace(args.output / "epochs.jsonl", reference_masks), class_weight=args.class_weight,
+                  map_weight=args.map_weight, positive_weight=args.positive_weight, learning_rate=args.learning_rate,
+                  batch_size=args.batch_size)
     (args.output / "diagnostics.json").write_text(json.dumps(result, indent=2, allow_nan=False) + "\n", encoding="utf-8")
     print(args.output.resolve())
 

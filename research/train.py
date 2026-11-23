@@ -122,18 +122,18 @@ def summary_metrics(outputs, **options):
 
 
 def train(variant, config, train_data, val_data, epochs, seed, teacher=None, observer=None, *,
-          class_weight=1., map_weight=None, learning_rate=.003):
+          class_weight=1., map_weight=None, learning_rate=.003, positive_weight=18., batch_size=32):
     random.seed(seed)
     torch.manual_seed(seed)
     generator = torch.Generator().manual_seed(seed)
-    loader = DataLoader(train_data, batch_size=32, shuffle=True, generator=generator)
+    loader = DataLoader(train_data, batch_size=batch_size, shuffle=True, generator=generator)
     network = ReceiptNet(**config)
     optimizer = torch.optim.AdamW(network.parameters(), lr=learning_rate, weight_decay=.003)
-    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, epochs, eta_min=.0004 * (learning_rate / .003))
+    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, epochs, eta_min=learning_rate * (2 / 15))
     checkpoint, best, curve = None, -float("inf"), []
     if map_weight is None:
         map_weight = 0 if variant in ("baseline", "classification_only") else .65
-    foreground_weight = torch.tensor(18.0)
+    foreground_weight = torch.tensor(positive_weight)
     for epoch in range(epochs):
         network.train()
         total = 0.0
@@ -152,6 +152,8 @@ def train(variant, config, train_data, val_data, epochs, seed, teacher=None, obs
                 with torch.no_grad():
                     teacher_score, teacher_map = teacher(image)
                 loss = loss + .25 * F.smooth_l1_loss(score, teacher_score) + .15 * F.smooth_l1_loss(grid, teacher_map)
+            if observer is not None and class_weight and map_weight:
+                observer.objectives(network, class_loss, pixel_loss)
             optimizer.zero_grad(set_to_none=True)
             loss.backward()
             if observer is not None:
