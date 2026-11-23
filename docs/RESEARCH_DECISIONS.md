@@ -30,3 +30,7 @@ Same-source off-mask negatives improved localization on the 64-pair validation s
 ## Phase D diagnostic decision
 
 Frozen document-level attention and spatial pooling stayed near chance on the full validation set. The matched MobileNetV3 comparison measured a small pretrained advantage over random initialization and insufficient receipt-level separation. Stop expanding PatchNet MIL. The next comparison should isolate the task and data limitations with a trusted-reference verification baseline and source- and generator-disjoint evaluation for image-only detection. Final test partitions were excluded. [Measured results and AI-assistance attribution](MIL_ANALYSIS.md)
+
+## Phase E diagnostic decision
+
+Preserve reference-aligned SSIM as the classical baseline. Exact pairs were easy, simulated acquisition changes lowered recall at low false-positive rates, and the evaluated Siamese model added no benefit. Freeze the existing production path and prioritize an independently captured paired benchmark with legitimate revisions and separately audited source and manipulation provenance. [Measured results and attribution](REFERENCE_VERIFICATION_ANALYSIS.md)

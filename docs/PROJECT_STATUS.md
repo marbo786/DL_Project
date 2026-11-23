@@ -12,5 +12,6 @@
 | Native patch evidence | Tight oracle crops averaged 0.574 AUROC across three seeds. Fixed image-only tiling reached 0.520 AUROC with max pooling in a 64-pair validation screen. See the [Phase B analysis](PATCH_EVIDENCE_ANALYSIS.md). |
 | Off-mask negatives | Random negatives improved top-tile localization across all three seeds. Mined negatives reached 0.521 top-3-pooled receipt AUROC, close to the 0.520 historical max result. See the [Phase C analysis](HARD_NEGATIVE_ANALYSIS.md). |
 | Document-level MIL | Frozen PatchNet attention reached 0.510 AUROC at best across three full-validation seeds. ImageNet MobileNetV3 attention reached 0.507 on the full split, compared with 0.500 for the randomized control. The research checkpoint remains unsuitable for deployment. See the [MIL analysis](MIL_ANALYSIS.md). |
+| Reference-assisted verification | Registered SSIM reached 0.647 AUROC on simulated ordinary acquisition differences and 6.7% recall at 4.9% FPR. The Siamese controls stayed near chance. See the [Phase E analysis](REFERENCE_VERIFICATION_ANALYSIS.md). |
 
 See the technical report, model card, and release JSON for complete experiment details.
