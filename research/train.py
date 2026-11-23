@@ -121,16 +121,19 @@ def summary_metrics(outputs, **options):
     return {key: value for key, value in metrics.items() if key not in ("reliability", "confusion_matrix", "selective")}
 
 
-def train(variant, config, train_data, val_data, epochs, seed, teacher=None, observer=None):
+def train(variant, config, train_data, val_data, epochs, seed, teacher=None, observer=None, *,
+          class_weight=1., map_weight=None, learning_rate=.003):
     random.seed(seed)
     torch.manual_seed(seed)
     generator = torch.Generator().manual_seed(seed)
     loader = DataLoader(train_data, batch_size=32, shuffle=True, generator=generator)
     network = ReceiptNet(**config)
-    optimizer = torch.optim.AdamW(network.parameters(), lr=.003, weight_decay=.003)
-    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, epochs, eta_min=.0004)
+    optimizer = torch.optim.AdamW(network.parameters(), lr=learning_rate, weight_decay=.003)
+    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, epochs, eta_min=.0004 * (learning_rate / .003))
     checkpoint, best, curve = None, -float("inf"), []
-    map_weight = 0 if variant in ("baseline", "classification_only") else .65
+    if map_weight is None:
+        map_weight = 0 if variant in ("baseline", "classification_only") else .65
+    foreground_weight = torch.tensor(18.0)
     for epoch in range(epochs):
         network.train()
         total = 0.0
@@ -138,11 +141,13 @@ def train(variant, config, train_data, val_data, epochs, seed, teacher=None, obs
             score, grid = network(image)
             target = F.max_pool2d(mask, 4, stride=4)
             class_loss = F.binary_cross_entropy_with_logits(score, labels)
-            loss = class_loss
+            loss = class_weight * class_loss if class_weight else None
             pixel_loss = None
+            if map_weight or observer is not None:
+                pixel_loss = F.binary_cross_entropy_with_logits(grid, target, pos_weight=foreground_weight)
             if map_weight:
-                pixel_loss = F.binary_cross_entropy_with_logits(grid, target, pos_weight=torch.tensor(18.0))
-                loss = loss + map_weight * pixel_loss
+                weighted_map_loss = map_weight * pixel_loss
+                loss = weighted_map_loss if loss is None else loss + weighted_map_loss
             if teacher is not None:
                 with torch.no_grad():
                     teacher_score, teacher_map = teacher(image)
@@ -157,7 +162,7 @@ def train(variant, config, train_data, val_data, epochs, seed, teacher=None, obs
         network.eval()
         outputs = collect(network, val_data)
         val = summary_metrics(outputs, localized=bool(map_weight))
-        rank = val["roc_auc"] + .25 * val.get("mean_mask_iou", 0)
+        rank = val["roc_auc"] + .25 * val.get("mean_mask_iou", 0) if class_weight else val["mean_mask_iou"]
         if rank > best:
             best = rank
             checkpoint = {key: value.clone() for key, value in network.state_dict().items()}

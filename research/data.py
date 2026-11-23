@@ -17,13 +17,13 @@ SYNTHETIC_SPLITS = {"train": (1000, 144), "validation": (10000, 40),
                     "test": (24000, 60), "shifted_test": (35000, 60)}
 
 
-def features(image):
-    return torch.from_numpy(pixels(image)[None])
+def features(image, size=SIZE):
+    return torch.from_numpy(pixels(image, size)[None])
 
 
-def example_tensors(image, mask, label):
-    target = np.asarray(mask.resize(SIZE, Image.Resampling.NEAREST), dtype=np.float32) / 255.0
-    return features(image), torch.from_numpy(target[None]), float(label)
+def example_tensors(image, mask, label, size=SIZE):
+    target = np.asarray(mask.resize(size, Image.Resampling.NEAREST), dtype=np.float32) / 255.0
+    return features(image, size), torch.from_numpy(target[None]), float(label)
 
 
 @lru_cache(maxsize=16)
@@ -107,19 +107,20 @@ class Specimens(Dataset):
 
 
 class ManifestDocuments(Dataset):
-    def __init__(self, manifest, root, split, stress=None):
+    def __init__(self, manifest, root, split, stress=None, *, size=SIZE):
         with Path(manifest).open(newline="", encoding="utf-8-sig") as stream:
             self.rows = [row for row in csv.DictReader(stream) if row["split"] == split]
         if not self.rows:
             raise ValueError(f"manifest contains no {split} rows")
         self.root, self.stress = Path(root), stress
+        self.size = size
 
     def __len__(self):
         return len(self.rows)
 
     def __getitem__(self, index):
         image, mask, label = self.load(index)
-        return example_tensors(perturb(image, self.stress), mask, label)
+        return example_tensors(perturb(image, self.stress), mask, label, self.size)
 
     def load(self, index):
         row = self.rows[index]

@@ -48,4 +48,19 @@ The original recipe failed to memorize this subset. Poor validation results ther
 
 The controlled follow-up was started with the same training subset, seed, and epoch budget. It included classification-only, localization-only, the original combined loss, a lighter mask loss, doubled input dimensions, and a higher learning rate. The Windows execution environment became unavailable before the logs could be inspected. The status of these runs and the epoch-by-epoch baseline trace remains unverified. The script for the baseline writes its trace to `artifacts/phase-a/memorization/epochs.jsonl`.
 
+## Controlled repeat
+
+Run each row with the original overfit command, keeping 24 pairs, 80 epochs, seed 42, and the same thread count. Give each run a fresh output directory. The flags below change one factor relative to the combined run.
+
+| Control | Additional flags |
+| --- | --- |
+| Original combined objective | None |
+| Classification only | `--map-weight 0` |
+| Localization only | `--class-weight 0` |
+| Lighter localization loss | `--map-weight 0.15` |
+| Higher input resolution | `--resolution 2` |
+| Higher learning rate | `--learning-rate 0.01` |
+
+Use epoch-level accuracy and AUROC for classification, and mask IoU for localization. Each trace records both loss components even when only one drives updates. Scores from the untrained classification objective in the localization-only run are descriptive. The higher-resolution run measures IoU on a finer grid, so its raw IoU is tied to that grid. Comparing localization across resolutions requires projecting both predictions to a common evaluation grid.
+
 AI assistance executed the baseline run and documented the measured results. It is an engineering diagnostic for the project record.

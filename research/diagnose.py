@@ -174,13 +174,25 @@ def main():
     parser.add_argument("--epochs", type=int, default=80)
     parser.add_argument("--threads", type=int, default=4)
     parser.add_argument("--checkpoint", type=Path)
+    overfit = parser.add_argument_group("overfit controls")
+    overfit.add_argument("--resolution", type=int, choices=(1, 2), default=1)
+    overfit.add_argument("--class-weight", type=float, default=1.)
+    overfit.add_argument("--map-weight", type=float, default=.65)
+    overfit.add_argument("--learning-rate", type=float, default=.003)
     args = parser.parse_args()
     if min(args.pairs, args.epochs, args.threads) < 1 or args.previews < 0:
         parser.error("use positive counts and a nonnegative number of previews")
     if args.mode == "calibration" and args.checkpoint is None:
         parser.error("calibration requires the existing benchmark --checkpoint")
+    settings = (args.resolution, args.class_weight, args.map_weight, args.learning_rate)
+    if args.mode != "overfit" and settings != (1, 1., .65, .003):
+        parser.error("training controls are only available in overfit mode")
+    weights = (args.class_weight, args.map_weight)
+    if not all(np.isfinite(settings)) or min(weights) < 0 or not any(weights) or args.learning_rate <= 0:
+        parser.error("use finite nonnegative loss weights, at least one active loss, and a positive learning rate")
     torch.set_num_threads(args.threads)
-    dataset = ManifestDocuments(args.manifest, args.asset_root, "validation" if args.mode == "calibration" else "train")
+    size = tuple(axis * args.resolution for axis in SIZE)
+    dataset = ManifestDocuments(args.manifest, args.asset_root, "validation" if args.mode == "calibration" else "train", size=size)
     args.output.mkdir(parents=True, exist_ok=False)
     if args.mode == "calibration":
         checkpoint = torch.load(args.checkpoint, map_location="cpu", weights_only=True)
@@ -197,7 +209,7 @@ def main():
         }
     else:
         pairs = select_pairs(dataset, args.pairs, args.seed)
-        result = {"scope": "train", "seed": args.seed, "pair_count": len(pairs), "input_size": list(SIZE)}
+        result = {"scope": "train", "seed": args.seed, "pair_count": len(pairs), "input_size": list(size)}
         if args.mode == "inspect":
             result["pairs"] = [
                 inspect_pair(dataset, pair, args.output / f"pair-{index + 1:03}.png" if index < args.previews else None)
@@ -207,8 +219,14 @@ def main():
             batch = cache(Subset(dataset, [index for pair in pairs for index in pair]))
             result["epochs"] = args.epochs
             result["scope"] = "train-only memorization"
+            result["objective"] = {
+                "classification_weight": args.class_weight,
+                "localization_weight": args.map_weight,
+                "learning_rate": args.learning_rate,
+            }
             train("local", {"width": 8}, batch, batch, args.epochs, args.seed,
-                  observer=TrainingTrace(args.output / "epochs.jsonl"))
+                  observer=TrainingTrace(args.output / "epochs.jsonl"), class_weight=args.class_weight,
+                  map_weight=args.map_weight, learning_rate=args.learning_rate)
     (args.output / "diagnostics.json").write_text(json.dumps(result, indent=2, allow_nan=False) + "\n", encoding="utf-8")
     print(args.output.resolve())
 

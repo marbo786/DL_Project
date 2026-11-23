@@ -11,8 +11,8 @@ SIZE = (112, 160)
 RESAMPLE = Image.Resampling.BILINEAR
 
 
-def pixels(image):
-    raw = np.asarray(image.convert("L").resize(SIZE, RESAMPLE), dtype=np.float32)
+def pixels(image, size=SIZE):
+    raw = np.asarray(image.convert("L").resize(size, RESAMPLE), dtype=np.float32)
     return raw / 255.0 - 0.5
 
 
