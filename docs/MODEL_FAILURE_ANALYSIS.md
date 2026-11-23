@@ -94,3 +94,5 @@ py -m research.diagnose width-screen --manifest data/aiforge/manifest_deduplicat
 ```
 
 Manifest SHA-256 `3a4723b5bbec3b2fec496836fe48b0fa45a7732437956f1839a7dfce952cfc80`. Ordered 24-source sample SHA-256 `e4df74dee29c9557e8d1d4f05473b626c8bdd60ded6f28a47bb99773e17a6494`. Complete raw traces and experiment settings are in their respective local directories under `artifacts/phase-a`. The runs used PyTorch 2.12.0+cpu, scikit-learn 1.7.2, and PyMuPDF 1.27.2.3. Some installed API dependencies differ from the repository pins. The 19 project tests passed with the Windows socket-free test runner. AI assistance recovered the logs, executed the missing runs, implemented the research controls, and generated this engineering record from measurements.
+
+The [Phase B patch evidence experiment](PATCH_EVIDENCE_ANALYSIS.md) tested this follow-up. Tight oracle crops showed modest discrimination. Fixed image-only tiling remained near chance for whole receipts.
