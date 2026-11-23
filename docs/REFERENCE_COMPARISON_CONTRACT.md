@@ -1,6 +1,6 @@
 # Reference comparison contract
 
-`POST /api/v1/compare` is available for local research when `FORGERYLENS_REFERENCE_RESEARCH=1`. The existing single-image route serves the synthetic demonstration. The [Phase F specification](REAL_WORLD_VERIFICATION_ANALYSIS.md) records the frozen operating point and data requirements.
+`POST /api/v1/compare` is available for direct loopback clients when `FORGERYLENS_REFERENCE_RESEARCH=1`. The existing single-image route serves the synthetic demonstration. The [Phase F specification](REAL_WORLD_VERIFICATION_ANALYSIS.md) records the frozen operating point and data requirements.
 
 ## Request
 
@@ -17,7 +17,8 @@ Decode both images, apply EXIF orientation, and enforce explicit byte and pixel 
 | `score` | Registered SSIM difference score, nullable on abstention |
 | `threshold`, `policy_version` | Frozen primary score cutoff and comparison policy identifier |
 | `alignment` | Support status and, when available, inlier count, inlier ratio, reprojection residual, and valid overlap fraction |
-| `previews` | Reference, aligned candidate, heatmap, valid support, and region overlay as PNG data URLs in the normalized reference raster. Present only when registration is accepted. |
+| `raster` | Width, height, and coordinate frame identifier `normalized_reference`, present on accepted alignment. |
+| `previews` | Reference, aligned candidate, heatmap, valid support, isolated region layer and composed region overlay as PNG data URLs in the normalized reference raster. Present only when registration is accepted. |
 | `inference_ms` | Decode through scoring and preview encoding latency, excluding upload and network transport |
 
 The comparison endpoint returns an uncalibrated visual-difference score. Reference identity is a caller responsibility; a high score cannot identify a wrong reference. Responses have a no-store cache directive.

@@ -3,4 +3,8 @@ services:
     name: forgerylens
     runtime: docker
     plan: free
-    healthCheckPath: /api/v1/health
+    branch: main
+    healthCheckPath: /api/v1/ready
+    envVars:
+      - key: FORGERYLENS_REFERENCE_RESEARCH
+        value: "0"

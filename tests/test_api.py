@@ -36,6 +36,7 @@ def sample(client, content):
 
 def test_missing_model_is_explicit(client):
     assert client.get("/api/v1/health").json() == {"status": "ok", "model_ready": False}
+    assert client.get("/api/v1/ready").status_code == 503
     assert client.get("/api/v1/model-info").json()["available"] is False
     assert sample(client, b"fixture").status_code == 503
     assert client.get("/api/v1/experiments/summary").json()["status"] == "pending"
@@ -45,6 +46,7 @@ def test_routes_and_assets(client):
     for route in ("/", "/studio", "/research", "/methodology", "/about", "/privacy"):
         assert "ForgeryLens" in client.get(route).text
     assert client.get("/assets/original.png").content.startswith(b"\x89PNG")
+    assert client.get("/studio/single").status_code == 200
     assert client.get("/missing").status_code == 404
 
 

@@ -1,17 +1,30 @@
 # ForgeryLens
 
-ForgeryLens detects localized edits in a measured benchmark of fictional receipts. The Studio shows document previews, inspection tools, predicted heatmaps and evidence regions. The released model accepts its known demo specimens for scoring and abstains on unfamiliar uploads.
+ForgeryLens is an AI341 research prototype for inspecting visible document changes. The local Reference Studio compares two images using frozen registered SSIM. The historical single-image model scores its known fictional specimens and abstains on unfamiliar inputs. The independent real-world evaluation is still awaiting an authorized capture set.
+
+[Final report](docs/FINAL_RESEARCH_REPORT.md) · [Recorded experiments](docs/EXPERIMENT_SUMMARY.md) · [Demo guide](docs/DEMO_GUIDE.md) · [Deployment guide](docs/DEPLOYMENT_GUIDE.md) · [Physical capture protocol](docs/REAL_CAPTURE_COLLECTION_GUIDE.md)
 
 ## Run on Windows
 
-Open PowerShell at the project root. Use Python 3.11 or newer for the pinned setup.
+Open PowerShell at the project root. For the two-document research Studio, install the research requirements and opt in on loopback.
+
+```powershell
+py -m pip install -r research/requirements-reference.txt
+$env:FORGERYLENS_REFERENCE_RESEARCH = '1'
+py -m uvicorn api.main:app --host 127.0.0.1 --port 8000 --no-proxy-headers --no-access-log
+```
+
+Open [Forensic Studio](http://127.0.0.1:8000/studio), choose a fictional example, and select **Compare documents**. Use **Single-image demo** for the historical workflow. The SSIM score measures differences in the registration overlap. Check reference identity independently.
+
+For the historical release alone, leave research mode off and install only the API dependencies.
 
 ```powershell
 py -m pip install -r api/requirements.txt
+$env:FORGERYLENS_REFERENCE_RESEARCH = '0'
 py -m uvicorn api.main:app --host 127.0.0.1 --port 8000 --no-access-log
 ```
 
-Open [Forensic Studio](http://127.0.0.1:8000/studio). Choose Original specimen or Edited specimen and click Analyze. The Low-quality specimen demonstrates abstention while still displaying the model heatmap. The separate Research page displays measured experiment artifacts. The curated demo pair was selected from a separate fictional population and is excluded from test metrics.
+Choose Original specimen or Edited specimen and click Analyze. The Low-quality specimen demonstrates abstention while still displaying the historical model heatmap. The separate Research page displays measured experiment artifacts. The curated demo pair was selected from a separate fictional population and is excluded from test metrics.
 
 ## Reproduce the released run
 

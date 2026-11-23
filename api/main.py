@@ -11,7 +11,7 @@ from uuid import uuid4
 
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse, HTMLResponse
+from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from PIL import Image, ImageOps, UnidentifiedImageError
 from starlette.concurrency import run_in_threadpool
@@ -77,6 +77,13 @@ def decode_document(content: bytes) -> Image.Image:
 @app.get("/api/v1/health")
 async def health():
     return {"status": "ok", "model_ready": app.state.predictor is not None}
+
+
+@app.get("/api/v1/ready", include_in_schema=False)
+async def readiness():
+    if app.state.predictor is None:
+        raise HTTPException(503, "The configured release model is unavailable.")
+    return {"status": "ready"}
 
 
 @app.get("/api/v1/model-info")
@@ -160,7 +167,7 @@ def experiments(section: str):
 
 
 @app.get("/", include_in_schema=False)
-@app.get("/studio", include_in_schema=False)
+@app.get("/studio/single", include_in_schema=False)
 @app.get("/research", include_in_schema=False)
 @app.get("/methodology", include_in_schema=False)
 @app.get("/about", include_in_schema=False)
@@ -169,16 +176,17 @@ def frontend():
     return FileResponse(PUBLIC / "index.html")
 
 
-if os.getenv("FORGERYLENS_REFERENCE_RESEARCH") == "1":
-    from .reference_research import install
+REFERENCE_RESEARCH = os.getenv("FORGERYLENS_REFERENCE_RESEARCH") == "1"
+REFERENCE_STUDIO = ROOT / "web" / "reference_studio.html"
 
-    install(app, ROOT / "web" / "reference_studio.html")
+if REFERENCE_RESEARCH:
+    from .reference_research import install, local_research, studio_response
 
-    @app.middleware("http")
-    async def reference_studio_link(request: Request, call_next):
-        if request.method == "GET" and request.url.path == "/studio":
-            html = (PUBLIC / "index.html").read_text(encoding="utf-8")
-            html = html.replace("</header>", '<p class="wrap"><a href="/studio/compare">'
-                                'Compare references</a></p>\n</header>', 1)
-            return HTMLResponse(html, headers={"Cache-Control": "no-store"})
-        return await call_next(request)
+    install(app, REFERENCE_STUDIO)
+
+
+@app.get("/studio", include_in_schema=False)
+def studio(request: Request):
+    if REFERENCE_RESEARCH and local_research(request):
+        return studio_response(REFERENCE_STUDIO)
+    return frontend()

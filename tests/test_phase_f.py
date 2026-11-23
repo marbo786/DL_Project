@@ -133,17 +133,22 @@ def test_mismatch_score_is_not_an_identity_decision():
 
 
 def test_research_routes_opt_in_and_suppress_unreliable_previews():
-    pytest.importorskip("multipart")
+    pytest.importorskip("python_multipart")
     from api import main
     from api.reference_research import install
 
     assert "/api/v1/compare" not in {route.path for route in main.app.routes}
     app = FastAPI()
     install(app, Path(__file__).resolve().parents[1] / "web" / "reference_studio.html")
+    @app.middleware("http")
+    async def local_peer(request, call_next):
+        request.scope["client"] = ("127.0.0.1", 40000)
+        return await call_next(request)
+
     blank = encoded(np.full((320, 256, 3), 210, dtype=np.uint8))
     original = encoded(texture())
-    with TestClient(app) as client:
-        assert "Compare with a trusted reference" in client.get("/studio/compare").text
+    with TestClient(app, base_url="http://localhost") as client:
+        assert "Reference comparison" in client.get("/studio/compare").text
         assert client.post("/api/v1/compare", files={"reference": ("a.png", original)}).status_code == 400
         for candidate, expected in [(blank, "inconclusive"), (original, "no_difference_flagged")]:
             response = client.post("/api/v1/compare", files={"reference": ("a.png", original),
