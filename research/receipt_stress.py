@@ -1,0 +1,232 @@
+"""Evaluate the frozen receipt model under paired stress and open-set probes."""
+
+import argparse
+from collections import defaultdict
+import csv
+from dataclasses import asdict
+from hashlib import sha256
+from io import BytesIO
+import json
+from pathlib import Path
+import platform
+
+import numpy as np
+from PIL import Image, ImageDraw, ImageFont
+from sklearn import datasets
+from sklearn.metrics import roc_auc_score
+import torch
+
+from research.data import ManifestDocuments
+from research.manifest import file_sha256
+from research.patch_data import load_pair
+from research.receipt_demo import CONFIDENCE_CUTOFF, LOCK_PATH, LOCK_SHA256, POLICY_VERSION, ROOT, FrozenReceiptDemo, decode_upload
+from research.receipt_model import disturb
+from research.receipt_protocol import verify_groups
+
+
+SOURCE_LIMIT = 24
+BOOTSTRAP_SEED = 235
+BOOTSTRAP_REPEATS = 500
+CONDITIONS = {
+    "clean": None, "blur-1": .7, "blur-2": 1.6, "brightness-1": .85, "brightness-2": .65,
+    "jpeg-1": 78, "jpeg-2": 42, "random-occlusion-1": .15, "random-occlusion-2": .30,
+    "edit-occlusion-1": .15, "edit-occlusion-2": .30,
+}
+FORMS = (
+    "Library registration", "Laboratory access", "Equipment inventory", "Room booking",
+    "Maintenance request", "Course change request", "Campus visitor pass", "Workshop registration",
+)
+
+
+def write_json(path, data):
+    with path.open("x", encoding="utf-8") as stream:
+        json.dump(data, stream, indent=2, allow_nan=False)
+        stream.write("\n")
+
+
+def write_csv(path, rows):
+    with path.open("x", newline="", encoding="utf-8") as stream:
+        writer = csv.DictWriter(stream, fieldnames=rows[0].keys())
+        writer.writeheader()
+        writer.writerows(rows)
+
+
+def pair_indices(documents):
+    groups = sorted({row["source_group"] for row in documents.rows},
+                    key=lambda group: sha256(f"receipt-stress-v1:{group}".encode()).digest())[:SOURCE_LIMIT]
+    selected = set(groups)
+    pairs = defaultdict(dict)
+    for index, row in enumerate(documents.rows):
+        if row["source_group"] in selected:
+            key = (row["source_group"], row["sample_id"].split(":")[0])
+            if row["label"] in pairs[key]:
+                raise ValueError("Duplicate version of stress-test receipt")
+            pairs[key][row["label"]] = index
+    if len(groups) != SOURCE_LIMIT or any(set(pair) != {"genuine", "manipulated"} for pair in pairs.values()):
+        raise ValueError("Cannot assemble the locked paired development sample")
+    return groups, [(pair["genuine"], pair["manipulated"]) for pair in pairs.values()]
+
+
+def occlusion_box(mask, condition, pair_id):
+    width, height = mask.size
+    fraction = CONDITIONS[condition]
+    w, h = max(1, round(width * fraction)), max(1, round(height * fraction))
+    if condition.startswith("random"):
+        digest = sha256(f"receipt-occlusion-v1:{pair_id}:{condition}".encode()).digest()
+        rng = np.random.default_rng(int.from_bytes(digest[:8], "big"))
+        x, y = int(rng.integers(width - w + 1)), int(rng.integers(height - h + 1))
+    else:
+        ys, xs = np.nonzero(np.asarray(mask))
+        pixel = len(xs) // 2
+        x, y = min(max(int(xs[pixel]) - w // 2, 0), width - w), min(max(int(ys[pixel]) - h // 2, 0), height - h)
+    return x, y, x + w, y + h
+
+
+def transform(image, condition, group, box):
+    if box is None:
+        return disturb(image, condition, group)
+    changed = image.copy()
+    changed.paste((127, 127, 127), box)
+    return changed
+
+
+def open_set_inputs(root):
+    for name in ("desktop", "mobile", "tablet"):
+        path = root / "artifacts/phase-h" / f"{name}.png"
+        yield "screenshot", f"reference-studio-{name}", path.read_bytes(), path.relative_to(root).as_posix()
+    photos = Path(datasets.__file__).parent / "images"
+    for name in ("china.jpg", "flower.jpg"):
+        yield "photo", name, (photos / name).read_bytes(), f"sklearn.datasets/images/{name}"
+    for index, name in enumerate(FORMS):
+        width, height = 640 + (index % 3) * 80, 520 + (index // 3) * 150
+        image = Image.new("RGB", (width, height), (252, 252 - index, 246))
+        draw = ImageDraw.Draw(image)
+        draw.rectangle((28, 25, width - 28, 97), fill=(24 + 8 * index, 58, 83))
+        draw.text((48, 46), name, fill="white", font=ImageFont.load_default(26))
+        for row in range(5 + index % 4):
+            y = 125 + row * 46
+            draw.text((48, y), ("Name", "Department", "Date", "Reference", "Notes")[row % 5], fill="#19394c")
+            draw.rectangle((145, y - 5, width - 49, y + 24), outline="#778c9c")
+        draw.line((48, height - 54, width // 2, height - 54), fill="#19394c", width=1)
+        draw.text((48, height - 42), "Authorization", fill="#19394c")
+        stream = BytesIO()
+        image.save(stream, format="PNG")
+        yield "unsupported form", name, stream.getvalue(), "deterministic blank form generated by this runner"
+
+
+def policy_metrics(labels, logits, accepted, cutoff):
+    edited = labels == 1
+    flags = logits > cutoff
+    return {
+        "auroc": float(roc_auc_score(labels, logits)),
+        "recall": float(flags[edited].mean()), "fpr": float(flags[~edited].mean()),
+        "coverage_genuine": float(accepted[~edited].mean()), "coverage_edited": float(accepted[edited].mean()),
+    }
+
+
+def summarize(rows, cutoff):
+    by_condition = {condition: [row for row in rows if row["condition"] == condition] for condition in CONDITIONS}
+    clean = by_condition["clean"]
+    identities = [(row["sample_id"], row["source_group"], row["label"]) for row in clean]
+    labels = np.array([row["label"] for row in clean])
+    groups = np.array([row["source_group"] for row in clean])
+    positions = [np.flatnonzero(groups == group) for group in np.unique(groups)]
+    rng = np.random.default_rng(BOOTSTRAP_SEED)
+    draws = [np.concatenate([positions[i] for i in rng.integers(len(positions), size=len(positions))])
+             for _ in range(BOOTSTRAP_REPEATS)]
+    arrays = {}
+    for condition, items in by_condition.items():
+        if [(row["sample_id"], row["source_group"], row["label"]) for row in items] != identities:
+            raise ValueError(f"Unmatched development stress rows for {condition}")
+        arrays[condition] = (np.array([row["logit"] for row in items]),
+                             np.array([row["decision"] != "Inconclusive" for row in items]))
+
+    base = policy_metrics(labels, *arrays["clean"], cutoff)
+    paired_fields = ("auroc", "recall", "fpr", "coverage_genuine", "coverage_edited")
+    boot_clean = [policy_metrics(labels[take], *(values[take] for values in arrays["clean"]), cutoff) for take in draws]
+    result = {"clean": base}
+    for condition, current in list(arrays.items())[1:]:
+        metrics = policy_metrics(labels, *current, cutoff)
+        boot_cond = [policy_metrics(labels[take], *(values[take] for values in current), cutoff) for take in draws]
+        metrics["paired_delta"] = {field: metrics[field] - base[field] for field in paired_fields}
+        metrics["paired_delta_95"] = {
+            field: np.quantile([new[field] - old[field] for new, old in zip(boot_cond, boot_clean)], (.025, .975)).tolist()
+            for field in paired_fields
+        }
+        if "occlusion" in condition:
+            edit_coverage = [row["mask_fraction_covered"] for row in by_condition[condition] if row["label"] == 1]
+            metrics["mean_edit_mask_fraction_covered"] = float(np.mean(edit_coverage))
+            metrics["edit_masks_intersected"] = sum(fraction > 0 for fraction in edit_coverage)
+        result[condition] = metrics
+    return result
+
+
+def run(args):
+    torch.set_num_threads(2)
+    verify_groups(args.manifest)
+    demo = FrozenReceiptDemo()
+    if file_sha256(args.manifest) != json.loads((ROOT / LOCK_PATH).read_text(encoding="utf-8"))["manifest_sha256"]:
+        raise ValueError("Use the development manifest from the frozen receipt study")
+    documents = ManifestDocuments(args.manifest, args.root, "validation")
+    groups, pairs = pair_indices(documents)
+    open_inputs = list(open_set_inputs(ROOT))
+    inputs = [{"type": kind, "name": name, "source": source, "sha256": sha256(content).hexdigest()}
+              for kind, name, content, source in open_inputs]
+    args.output.mkdir(parents=True)
+    lock_path = args.output / "lock.json"
+    write_json(lock_path, {"run_id": args.output.name, "scope": "paired development only and local open set",
+                          "manifest_sha256": file_sha256(args.manifest), "demo_lock_sha256": LOCK_SHA256,
+                          "checkpoint_sha256": demo.checkpoint_sha256, "policy": POLICY_VERSION,
+                          "logit_cutoff": demo.review_cutoff, "confidence_cutoff": CONFIDENCE_CUTOFF,
+                          "platt": {"slope": demo.slope, "intercept": demo.intercept},
+                          "conditions": CONDITIONS, "occlusion_fill_rgb": [127, 127, 127],
+                          "groups": groups, "pairs": [[documents.rows[i]["sample_id"] for i in pair] for pair in pairs],
+                          "bootstrap_seed": BOOTSTRAP_SEED, "bootstrap_repeats": BOOTSTRAP_REPEATS,
+                          "open_set": inputs, "threads": 2, "tile_batch_size": demo.batch_size,
+                          "python": platform.python_version(), "torch": torch.__version__})
+
+    rows = []
+    for pair_index, (original_index, edited_index) in enumerate(pairs, 1):
+        original, edited, mask = load_pair(documents, (original_index, edited_index))
+        group = documents.rows[original_index]["source_group"]
+        pair_id = documents.rows[original_index]["sample_id"].split(":")[0]
+        edit_pixels = mask.histogram()[255]
+        for condition in CONDITIONS:
+            box = occlusion_box(mask, condition, pair_id) if "occlusion" in condition else None
+            fraction = mask.crop(box).histogram()[255] / edit_pixels if box is not None else None
+            for index, image, label in ((original_index, original, 0), (edited_index, edited, 1)):
+                result = demo.score(transform(image, condition, group, box))
+                rows.append({"sample_id": documents.rows[index]["sample_id"], "source_group": group,
+                             "label": label, "condition": condition, **asdict(result),
+                             "occlusion_box": box, "mask_fraction_covered": fraction})
+        if pair_index % 6 == 0:
+            print(f"Scored {pair_index}/{len(pairs)} paired receipts across the stress grid", flush=True)
+    stress_path = args.output / "stress-scores.csv"
+    write_csv(stress_path, rows)
+
+    open_rows = []
+    open_metrics = {}
+    for item, (_, _, content, _) in zip(inputs, open_inputs):
+        result = demo.score(decode_upload(content))
+        open_rows.append({**item, **asdict(result)})
+    for kind in dict.fromkeys(item["type"] for item in inputs):
+        subset = [row for row in open_rows if row["type"] == kind]
+        priority = sum(row["decision"] == "Prioritize review" for row in subset)
+        normal = sum(row["decision"] == "Normal queue" for row in subset)
+        open_metrics[kind] = {"inputs": len(subset), "prioritize": priority, "normal": normal,
+                              "inconclusive": len(subset) - priority - normal,
+                              "confidence_gate_pass": sum(row["confidence"] >= CONFIDENCE_CUTOFF for row in subset),
+                              "inappropriate_acceptance": (priority + normal) / len(subset)}
+    open_path = args.output / "open-set-scores.csv"
+    write_csv(open_path, open_rows)
+    write_json(args.output / "summary.json", {"run_id": args.output.name, "lock_sha256": file_sha256(lock_path),
+                                             "stress_sha256": file_sha256(stress_path), "open_set_sha256": file_sha256(open_path),
+                                             "groups": len(groups), "pairs": len(pairs),
+                                             "stress": summarize(rows, demo.review_cutoff), "open_set": open_metrics})
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description=__doc__)
+    for argument in ("manifest", "root", "output"):
+        parser.add_argument("--" + argument, required=True, type=Path)
+    run(parser.parse_args())

@@ -122,7 +122,10 @@ def summary_metrics(outputs, **options):
 
 
 def train(variant, config, train_data, val_data, epochs, seed, teacher=None, observer=None, *,
-          class_weight=1., map_weight=None, learning_rate=.003, positive_weight=18., batch_size=32):
+          class_weight=1., map_weight=None, learning_rate=.003, positive_weight=18., batch_size=32,
+          checkpoint_rule="historical"):
+    if checkpoint_rule not in ("historical", "final epoch"):
+        raise ValueError("Unknown checkpoint selection rule")
     random.seed(seed)
     torch.manual_seed(seed)
     generator = torch.Generator().manual_seed(seed)
@@ -165,7 +168,8 @@ def train(variant, config, train_data, val_data, epochs, seed, teacher=None, obs
         outputs = collect(network, val_data)
         val = summary_metrics(outputs, localized=bool(map_weight))
         rank = val["roc_auc"] + .25 * val.get("mean_mask_iou", 0) if class_weight else val["mean_mask_iou"]
-        if rank > best:
+        if (checkpoint_rule == "final epoch" and epoch == epochs - 1
+                or checkpoint_rule == "historical" and rank > best):
             best = rank
             checkpoint = {key: value.clone() for key, value in network.state_dict().items()}
         curve.append({"epoch": epoch + 1, "train_loss": total / len(train_data), **val})

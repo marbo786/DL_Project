@@ -107,13 +107,12 @@ class Specimens(Dataset):
 
 
 class ManifestDocuments(Dataset):
-    def __init__(self, manifest, root, split, stress=None, *, size=SIZE):
+    def __init__(self, manifest, root, split, stress=None, size=SIZE):
         with Path(manifest).open(newline="", encoding="utf-8-sig") as stream:
             self.rows = [row for row in csv.DictReader(stream) if row["split"] == split]
         if not self.rows:
             raise ValueError(f"manifest contains no {split} rows")
-        self.root, self.stress = Path(root), stress
-        self.size = size
+        self.root, self.stress, self.size = Path(root), stress, size
 
     def __len__(self):
         return len(self.rows)
