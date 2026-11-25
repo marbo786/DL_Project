@@ -5,8 +5,8 @@ from types import SimpleNamespace
 
 import torch
 
-from research import receipt_ablations as a
-from research import receipt_model
+from research.receipt import ablations as a
+from research.receipt import model as receipt_model
 from research.data import ManifestDocuments
 from research.manifest import file_sha256
 

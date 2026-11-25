@@ -7,9 +7,9 @@ import torch
 
 from research.data import ManifestDocuments
 from research.manifest import file_sha256
-from research.receipt_ablations import read_json, write_json, write_rows
-from research.receipt_demo import FrozenReceiptDemo, ROOT, RUN_PATH
-from research.receipt_explain import pair_audit
+from research.receipt.ablations import read_json, write_json, write_rows
+from research.receipt.demo import FrozenReceiptDemo, ROOT, RUN_PATH
+from research.receipt.explain import pair_audit
 
 
 def summarize(rows):

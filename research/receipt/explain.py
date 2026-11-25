@@ -12,10 +12,10 @@ import torch
 from research.data import ManifestDocuments
 from research.manifest import file_sha256
 from research.patch_data import load_pair, rgb_crop
-from research.receipt_demo import LOCK_PATH, LOCK_SHA256, ROOT, RUN_PATH, FrozenReceiptDemo
-from research.receipt_model import SIDE, inference_tiles, pooled_logit, tile_logits
-from research.receipt_report import plt, save
-from research.receipt_stress import pair_indices, write_json
+from research.receipt.demo import LOCK_PATH, LOCK_SHA256, ROOT, RUN_PATH, FrozenReceiptDemo
+from research.receipt.model import SIDE, inference_tiles, pooled_logit, tile_logits
+from research.receipt.report import plt, save
+from research.receipt.stress import pair_indices, write_json
 
 
 CASES = {

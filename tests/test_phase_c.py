@@ -7,7 +7,7 @@ import torch
 
 from research.hard_negatives import BackgroundTiles, require_training, select_background
 from research.patch_data import check_source_splits, tile_boxes
-from research.phase_c import localization, paired_intervals, pooling
+from research.hard_negative_study import localization, paired_intervals, pooling
 
 
 def fixture(size, split="train"):

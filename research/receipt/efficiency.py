@@ -16,7 +16,7 @@ from torch.ao.quantization import get_default_qconfig_mapping
 from torch.ao.quantization.quantize_fx import convert_fx, prepare_fx
 
 from research.data import ManifestDocuments
-from research.receipt_model import SIDE, load_detector, inference_tiles, predict
+from research.receipt.model import SIDE, load_detector, inference_tiles, predict
 from research.manifest import file_sha256
 
 

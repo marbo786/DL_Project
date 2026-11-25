@@ -11,7 +11,7 @@ from PIL import Image, ImageOps
 
 from research.manifest import file_sha256, resolve_image
 from research.patch_data import tile_boxes
-from research.receipt_model import SIDE
+from research.receipt.model import SIDE
 
 TRUFOR_COMMIT = "ae54475df6f41a491d7615100feb19263dec13f7"
 SPLITS = ("calibration", "validation", "test", "shifted_test")

@@ -66,9 +66,9 @@ def test_multipart_duplicate_truncated_oversized_and_recovery(client, monkeypatc
 
 
 def test_pixel_limit_before_conversion(client, monkeypatch):
-    from research import phase_f_compare
+    from research import reference_verification
 
-    monkeypatch.setattr(phase_f_compare, "MAX_PIXELS", 100)
+    monkeypatch.setattr(reference_verification, "MAX_PIXELS", 100)
     raw = (EXAMPLES / "north-quay.png").read_bytes()
     response = compare(client, files=upload(reference=raw, candidate=raw))
     assert response.status_code == 415

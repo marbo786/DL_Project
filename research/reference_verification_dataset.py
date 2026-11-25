@@ -9,7 +9,7 @@ from pathlib import Path
 import numpy as np
 from PIL import Image
 
-from research.phase_f_compare import MAX_BYTES, decode
+from research.reference_verification import MAX_BYTES, decode
 from research.reference_data import PINNED_MANIFEST
 
 SCENARIOS = {"recapture", "localized_edit", "legitimate_revision", "wrong_reference"}

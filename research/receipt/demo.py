@@ -10,10 +10,10 @@ from PIL import Image, ImageDraw, ImageOps, UnidentifiedImageError
 import torch
 
 from research.manifest import file_sha256
-from research.receipt_model import load_detector, predict
+from research.receipt.model import load_detector, predict
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 RUN_PATH = Path("artifacts/receipt-study-v1/residual-42")
 LOCK_PATH = Path("artifacts/receipt-retrospective-v1/freeze.json")
 LOCK_SHA256 = "d65421f5457ad6ecb91747b1ed6cd2fb4a86ea0c40a023124290a8239d6688e0"

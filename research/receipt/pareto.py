@@ -16,11 +16,11 @@ import torch
 
 from research.data import ManifestDocuments
 from research.manifest import file_sha256, resolve_image
-from research.receipt_demo import FrozenReceiptDemo, LOCK_PATH, POLICY_VERSION, RUN_PATH, route_receipt
-from research.receipt_efficiency import load_image, quantize, ranked_paths
-from research.receipt_metrics import frozen_thresholds
-from research.receipt_model import inference_tiles, load_detector, predict
-from research.receipt_report import plt, save
+from research.receipt.demo import FrozenReceiptDemo, LOCK_PATH, POLICY_VERSION, RUN_PATH, route_receipt
+from research.receipt.efficiency import load_image, quantize, ranked_paths
+from research.receipt.metrics import frozen_thresholds
+from research.receipt.model import inference_tiles, load_detector, predict
+from research.receipt.report import plt, save
 
 
 BUDGET = .10

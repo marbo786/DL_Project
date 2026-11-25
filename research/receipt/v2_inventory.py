@@ -7,7 +7,7 @@ import json
 from pathlib import Path
 
 from research.manifest import file_sha256
-from research.receipt_generator_pairs import read_csv
+from research.receipt.generator_pairs import read_csv
 
 
 def build_inventory(dataset, assignments, output):

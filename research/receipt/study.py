@@ -11,9 +11,9 @@ import torch
 
 from research.data import ManifestDocuments
 from research.manifest import file_sha256
-from research.receipt_metrics import evaluate
-from research.receipt_model import CONDITIONS, MODES, score, train, training_data
-from research.receipt_protocol import verify_groups
+from research.receipt.metrics import evaluate
+from research.receipt.model import CONDITIONS, MODES, score, train, training_data
+from research.receipt.protocol import verify_groups
 
 
 def run_stress(base, checkpoint, folder, sources):

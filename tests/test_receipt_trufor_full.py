@@ -1,7 +1,7 @@
 import torch
 from torch import nn
 
-from research.receipt_trufor_full import bounded_attention
+from research.receipt.trufor_full import bounded_attention
 
 
 def test_large_attention_matches_direct_softmax():

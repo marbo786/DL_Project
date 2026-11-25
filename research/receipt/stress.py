@@ -19,9 +19,9 @@ import torch
 from research.data import ManifestDocuments
 from research.manifest import file_sha256
 from research.patch_data import load_pair
-from research.receipt_demo import CONFIDENCE_CUTOFF, LOCK_PATH, LOCK_SHA256, POLICY_VERSION, ROOT, FrozenReceiptDemo, decode_upload
-from research.receipt_model import disturb
-from research.receipt_protocol import verify_groups
+from research.receipt.demo import CONFIDENCE_CUTOFF, LOCK_PATH, LOCK_SHA256, POLICY_VERSION, ROOT, FrozenReceiptDemo, decode_upload
+from research.receipt.model import disturb
+from research.receipt.protocol import verify_groups
 
 
 SOURCE_LIMIT = 24

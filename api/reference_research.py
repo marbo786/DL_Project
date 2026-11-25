@@ -12,7 +12,7 @@ from fastapi.responses import FileResponse, JSONResponse
 from PIL import Image
 from starlette.concurrency import run_in_threadpool
 
-from research.phase_f_compare import MAX_BYTES, POLICY, PRIMARY, compare, decode, verify_freeze
+from research.reference_verification import MAX_BYTES, POLICY, PRIMARY, compare, decode, verify_freeze
 
 from .comparison_upload import comparison_files
 

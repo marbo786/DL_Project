@@ -13,8 +13,8 @@ import torch
 
 from research.data import ManifestDocuments
 from research.manifest import file_sha256
-from research.receipt_efficiency import load_image, process, quantize, ranked_paths
-from research.receipt_model import inference_tiles, load_detector
+from research.receipt.efficiency import load_image, process, quantize, ranked_paths
+from research.receipt.model import inference_tiles, load_detector
 
 
 def worker(args):
@@ -58,7 +58,7 @@ def run(args):
             for item in batches[:3]:
                 torch.testing.assert_close(loaded(item), model(item), rtol=1e-5, atol=1e-6)
         child = subprocess.run(
-            [sys.executable, "-m", "research.receipt_memory", "--worker", str(destination),
+            [sys.executable, "-m", "research.receipt.memory", "--worker", str(destination),
              "--mode", fp32.mode, "--manifest", str(args.manifest), "--root", str(args.root),
              "--threads", str(args.threads)], check=True, capture_output=True, text=True,
         )

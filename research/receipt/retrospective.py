@@ -8,9 +8,9 @@ from types import SimpleNamespace
 import torch
 
 from research.manifest import file_sha256
-from research.receipt_metrics import evaluate
-from research.receipt_model import MODES, score
-from research.receipt_protocol import verify_groups
+from research.receipt.metrics import evaluate
+from research.receipt.model import MODES, score
+from research.receipt.protocol import verify_groups
 
 
 def run(args):

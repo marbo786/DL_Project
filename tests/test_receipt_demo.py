@@ -9,7 +9,7 @@ import pytest
 import torch
 
 from research.manifest import file_sha256, resolve_image
-from research.receipt_demo import FrozenReceiptDemo, LOCK_PATH, ROOT, RUN_PATH, decode_upload, route_receipt
+from research.receipt.demo import FrozenReceiptDemo, LOCK_PATH, ROOT, RUN_PATH, decode_upload, route_receipt
 
 
 @pytest.mark.parametrize(("logit", "probability", "outcome"), [

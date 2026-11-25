@@ -15,8 +15,8 @@ from torch.nn import functional as F
 
 from research.manifest import file_sha256, resolve_image
 from research.patch_data import tile_boxes
-from research.receipt_independent_metrics import assess, check_manifest
-from research.receipt_trufor import input_name
+from research.receipt.independent_metrics import assess, check_manifest
+from research.receipt.trufor import input_name
 
 ARTIFACTS = Path("artifacts")
 UPSTREAM = ARTIFACTS / "trufor-upstream"

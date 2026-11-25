@@ -20,7 +20,7 @@ from research.mil_bags import build_bags, make_encoder
 from research.mil_heads import BagAttention, spatial_groups
 from research.patch_data import check_source_splits
 from research.patch_probe import metrics, quantiles
-from research.phase_c import POOLS, localization, paired_intervals, pooling
+from research.hard_negative_study import POOLS, localization, paired_intervals, pooling
 
 EXPECTED_MANIFEST = "3a4723b5bbec3b2fec496836fe48b0fa45a7732437956f1839a7dfce952cfc80"
 

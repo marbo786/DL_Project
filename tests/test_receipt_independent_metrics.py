@@ -2,7 +2,7 @@ import numpy as np
 import pytest
 from sklearn.metrics import average_precision_score, roc_auc_score
 
-from research.receipt_independent_metrics import intervals, operating_point, ranking
+from research.receipt.independent_metrics import intervals, operating_point, ranking
 
 
 def test_rank_metrics_match_sklearn_with_repeated_group_and_ties():

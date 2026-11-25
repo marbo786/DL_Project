@@ -1,7 +1,7 @@
 import numpy as np
 from PIL import Image
 
-from research.receipt_stress import occlusion_box, policy_metrics, transform
+from research.receipt.stress import occlusion_box, policy_metrics, transform
 
 
 def test_occlusion_is_paired_and_targeted_rectangle_covers_border_edit():

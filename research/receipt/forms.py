@@ -13,9 +13,9 @@ from PIL import Image, ImageOps
 import torch
 
 from research.manifest import file_sha256, resolve_image
-from research.receipt_metrics import evaluate
-from research.receipt_model import score
-from research.receipt_protocol import decoded_image, difference_hash, perceptually_close, pixel_digest, verify_groups
+from research.receipt.metrics import evaluate
+from research.receipt.model import score
+from research.receipt.protocol import decoded_image, difference_hash, perceptually_close, pixel_digest, verify_groups
 
 
 def forms_manifest(package, receipt_manifest, receipt_root, output):

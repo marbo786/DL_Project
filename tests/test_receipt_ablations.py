@@ -2,7 +2,7 @@ import torch
 from torch.utils.data import TensorDataset
 
 from research import train as legacy
-from research.receipt_model import Detector, predict
+from research.receipt.model import Detector, predict
 
 
 def test_legacy_final_epoch_rule_ignores_earlier_validation_rank(monkeypatch):

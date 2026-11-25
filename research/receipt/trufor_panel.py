@@ -10,7 +10,7 @@ import shutil
 from types import SimpleNamespace
 
 from research.manifest import file_sha256
-from research.receipt_trufor import SPLITS, stage
+from research.receipt.trufor import SPLITS, stage
 
 
 def build_panel(manifest, root, output):

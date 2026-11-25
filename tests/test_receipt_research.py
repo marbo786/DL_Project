@@ -8,10 +8,10 @@ import pytest
 import torch
 
 from research.manifest import file_sha256
-from research.receipt_metrics import bootstrap, frozen_thresholds, reliability, risk_coverage
-from research.receipt_model import Detector, disturb, inference_tiles, load_detector, predict
-from research.receipt_protocol import freeze, pixel_digest, verify_groups
-from research.receipt_trufor import collect, input_name, read_map, stage
+from research.receipt.metrics import bootstrap, frozen_thresholds, reliability, risk_coverage
+from research.receipt.model import Detector, disturb, inference_tiles, load_detector, predict
+from research.receipt.protocol import freeze, pixel_digest, verify_groups
+from research.receipt.trufor import collect, input_name, read_map, stage
 
 
 def test_decoded_duplicates_quarantine_connected_historical_roles(tmp_path):

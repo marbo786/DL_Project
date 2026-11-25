@@ -13,7 +13,7 @@ from torch import nn
 from research.diagnose import select_pairs
 from research.patch_data import rgb_crop, tile_boxes
 from research.patch_probe import PatchNet
-from research.phase_c import SIDE, STRIDE, load_rgb
+from research.hard_negative_study import SIDE, STRIDE, load_rgb
 
 
 class MobileFeatures(nn.Module):

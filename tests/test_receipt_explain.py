@@ -1,7 +1,7 @@
 import torch
 from PIL import Image
 
-from research.receipt_explain import matched_control, neutralize, offset_boxes, restricted
+from research.receipt.explain import matched_control, neutralize, offset_boxes, restricted
 
 
 def test_control_excludes_overlay_and_mask_and_matches_luminance():

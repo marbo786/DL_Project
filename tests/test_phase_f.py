@@ -11,9 +11,9 @@ from fastapi.testclient import TestClient
 
 cv2 = pytest.importorskip("cv2")
 
-from research.phase_f_compare import POLICY, PRIMARY, Result, compare, verify_freeze
-from research.phase_f_dataset import audit
-from research.phase_f_evaluate import evaluate, summarize
+from research.reference_verification import POLICY, PRIMARY, Result, compare, verify_freeze
+from research.reference_verification_dataset import audit
+from research.reference_verification_evaluate import evaluate, summarize
 
 
 def encoded(image):

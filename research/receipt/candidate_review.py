@@ -12,7 +12,7 @@ import numpy as np
 from PIL import Image
 
 from research.manifest import file_sha256, resolve_image
-from research.receipt_protocol import decoded_image
+from research.receipt.protocol import decoded_image
 
 
 def load_rows(path):

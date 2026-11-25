@@ -12,8 +12,8 @@ import numpy as np
 from PIL import __version__ as pillow_version
 from sklearn.metrics import roc_auc_score
 
-from research.phase_f_compare import POLICY, POLICY_PATH, PRIMARY, THRESHOLDS, compare, decode, verify_freeze
-from research.phase_f_dataset import PHYSICAL, audit, excluded_sources, load_mask, read_hashed
+from research.reference_verification import POLICY, POLICY_PATH, PRIMARY, THRESHOLDS, compare, decode, verify_freeze
+from research.reference_verification_dataset import PHYSICAL, audit, excluded_sources, load_mask, read_hashed
 from research.reference_compare import project
 
 

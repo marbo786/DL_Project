@@ -19,7 +19,7 @@ from torchvision.models import mobilenet_v3_small
 from research.data import ManifestDocuments
 from research.manifest import file_sha256
 from research.patch_data import load_pair, rgb_crop, tile_boxes
-from research.receipt_protocol import verify_groups
+from research.receipt.protocol import verify_groups
 
 SIDE = 112
 MODES = ("frozen", "partial", "full", "residual", "whole")

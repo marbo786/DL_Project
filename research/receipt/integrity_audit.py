@@ -9,8 +9,8 @@ from torch import nn
 
 from research.data import ManifestDocuments
 from research.manifest import file_sha256
-from research.receipt_efficiency import load_image, quantize, ranked_paths
-from research.receipt_model import Detector, inference_tiles, load_detector, predict, training_data
+from research.receipt.efficiency import load_image, quantize, ranked_paths
+from research.receipt.model import Detector, inference_tiles, load_detector, predict, training_data
 
 ART = Path("artifacts")
 ROOT = Path("data/aiforge/assets")

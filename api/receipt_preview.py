@@ -12,8 +12,8 @@ from PIL import Image, ImageOps, UnidentifiedImageError
 from starlette.concurrency import run_in_threadpool
 from starlette.requests import ClientDisconnect
 
-from research.receipt_demo import FORMATS, MAX_BYTES, MAX_PIXELS, POLICY_VERSION, FrozenReceiptDemo, route_receipt
-from research.receipt_model import inference_tiles, pooled_logit, tile_logits
+from research.receipt.demo import FORMATS, MAX_BYTES, MAX_PIXELS, POLICY_VERSION, FrozenReceiptDemo, route_receipt
+from research.receipt.model import inference_tiles, pooled_logit, tile_logits
 
 router = APIRouter()
 busy = asyncio.Lock()

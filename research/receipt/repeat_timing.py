@@ -9,10 +9,10 @@ import torch
 
 from research.data import ManifestDocuments
 from research.manifest import file_sha256
-from research.receipt_ablations import read_json, write_json, write_rows
-from research.receipt_efficiency import ranked_paths
-from research.receipt_model import load_detector
-from research.receipt_pareto import timed_score
+from research.receipt.ablations import read_json, write_json, write_rows
+from research.receipt.efficiency import ranked_paths
+from research.receipt.model import load_detector
+from research.receipt.pareto import timed_score
 
 
 def run(manifest, assets, artifacts, output):

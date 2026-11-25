@@ -9,7 +9,7 @@ from pathlib import Path
 from scipy.stats import hypergeom
 
 from research.manifest import file_sha256
-from research.receipt_demo import route_receipt
+from research.receipt.demo import route_receipt
 
 
 def audit(artifacts):

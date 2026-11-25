@@ -5,7 +5,7 @@ import csv
 from pathlib import Path
 
 from research.manifest import resolve_image
-from research.receipt_protocol import decoded_image, pixel_digest
+from research.receipt.protocol import decoded_image, pixel_digest
 
 
 def read_csv(path):

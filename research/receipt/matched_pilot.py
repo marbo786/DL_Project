@@ -6,12 +6,14 @@ from types import SimpleNamespace
 import torch
 from torch.nn import functional as F
 
-from research import receipt_ablations as audit, receipt_model, train as legacy
+from research import train as legacy
+from research.receipt import ablations as audit
+from research.receipt import model as receipt_model
 from research.data import ManifestDocuments
 from research.manifest import file_sha256
 from research.patch_probe import PatchNet
-from research.receipt_metrics import evaluate
-from research.receipt_protocol import verify_groups
+from research.receipt.metrics import evaluate
+from research.receipt.protocol import verify_groups
 
 
 def fit_student(folder, triplets, seed, pair_weight, manifest):
