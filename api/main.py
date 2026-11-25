@@ -56,6 +56,12 @@ app.add_middleware(
     allow_headers=["Content-Type"],
 )
 app.mount("/assets", StaticFiles(directory=PUBLIC), name="assets")
+
+if os.getenv("FORGERYLENS_FROZEN_RECEIPT") == "1":
+    from .receipt_preview import router as receipt_router
+
+    app.include_router(receipt_router)
+
 recent_requests: deque[float] = deque()
 active_requests = 0
 
