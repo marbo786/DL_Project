@@ -1,0 +1,9 @@
+{
+  "name": "patient-cake-9531",
+  "compatibility_date": "2026-11-25",
+  "workers_dev": true,
+  "assets": {
+    "directory": "./out",
+    "not_found_handling": "404-page"
+  }
+}
