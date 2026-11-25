@@ -1,22 +1,26 @@
-import importlib
+import asyncio
 import json
 import logging
 import os
-from collections import deque
+from collections import OrderedDict, deque
 from contextlib import asynccontextmanager
 from io import BytesIO
+from math import ceil
 from pathlib import Path
 from time import monotonic, perf_counter
 from uuid import uuid4
 
+import anyio
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from PIL import Image, ImageOps, UnidentifiedImageError
 from starlette.concurrency import run_in_threadpool
+from starlette.requests import ClientDisconnect
 
 from .contracts import Analysis, Prediction
+from .signal import create_predictor
 
 ROOT = Path(__file__).resolve().parents[1]
 PUBLIC = ROOT / "web" / "public"
@@ -25,26 +29,90 @@ MAX_BYTES = 8 * 1024 * 1024
 MAX_PIXELS = 16_000_000
 FORMATS = ("PNG", "JPEG", "WEBP")
 EXPERIMENTS = ("summary", "robustness", "ablations", "calibration")
+RATE_LIMIT = 30
+RATE_WINDOW_SECONDS = 60
+MAX_RATE_CLIENTS = 2048
+MAX_QUEUED_REQUESTS = 2
+QUEUE_WAIT_SECONDS = 5
+UPLOAD_TIMEOUT_SECONDS = 20
+DEFAULT_ADAPTER = "api.signal:create_predictor"
+ADAPTER_FACTORIES = {DEFAULT_ADAPTER: create_predictor}
 log = logging.getLogger(__name__)
+
+
+class AnalysisAdmission:
+    def __init__(self):
+        self.clients: OrderedDict[str, deque[float]] = OrderedDict()
+        self.worker = asyncio.Lock()
+        self.pending = 0
+
+    def check_rate(self, client: str):
+        now = monotonic()
+        cutoff = now - RATE_WINDOW_SECONDS
+        while self.clients and next(iter(self.clients.values()))[-1] <= cutoff:
+            self.clients.popitem(last=False)
+        recent = self.clients.get(client)
+        if recent is None:
+            if len(self.clients) >= MAX_RATE_CLIENTS:
+                oldest = next(iter(self.clients.values()))[-1]
+                raise HTTPException(503, "Analysis is temporarily at capacity.",
+                                    headers={"Retry-After": str(max(1, ceil(oldest + RATE_WINDOW_SECONDS - now)))})
+            recent = self.clients[client] = deque()
+        while recent and recent[0] <= cutoff:
+            recent.popleft()
+        if len(recent) >= RATE_LIMIT:
+            raise HTTPException(429, "This client has reached its analysis limit.",
+                                headers={"Retry-After": str(max(1, ceil(recent[0] + RATE_WINDOW_SECONDS - now))),
+                                         "Cache-Control": "no-store"})
+        recent.append(now)
+        self.clients.move_to_end(client)
+
+    @asynccontextmanager
+    async def slot(self):
+        retry = {"Retry-After": str(max(1, ceil(QUEUE_WAIT_SECONDS)))}
+        if self.pending >= 1 + MAX_QUEUED_REQUESTS:
+            raise HTTPException(503, "The analysis queue is full. Try again shortly.", headers=retry)
+        self.pending += 1
+        try:
+            try:
+                with anyio.fail_after(QUEUE_WAIT_SECONDS):
+                    await self.worker.acquire()
+            except TimeoutError:
+                raise HTTPException(503, "The analysis queue wait expired. Try again shortly.", headers=retry) from None
+            try:
+                yield
+            finally:
+                self.worker.release()
+        finally:
+            self.pending -= 1
+
+
+def load_predictor():
+    adapter = os.getenv("FORGERYLENS_ADAPTER")
+    if adapter is None:
+        adapter = DEFAULT_ADAPTER if (RELEASE / "model.npz").is_file() else ""
+    if not adapter:
+        return None
+    factory = ADAPTER_FACTORIES.get(adapter)
+    if factory is None:
+        log.error("Unsupported FORGERYLENS_ADAPTER setting")
+        return None
+    try:
+        predictor = factory()
+        if not isinstance(predictor.version, str) or not predictor.version.strip():
+            raise ValueError("missing model version")
+        if not callable(predictor.predict):
+            raise ValueError("missing predictor method")
+    except Exception:
+        log.exception("Model adapter failed to load")
+        return None
+    return predictor
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    app.state.predictor = None
-    adapter = os.getenv("FORGERYLENS_ADAPTER")
-    if adapter is None and (RELEASE / "model.npz").is_file():
-        adapter = "api.signal:create_predictor"
-    if adapter:
-        try:
-            module, factory = adapter.rsplit(":", 1)
-            predictor = getattr(importlib.import_module(module), factory)()
-            if not isinstance(predictor.version, str) or not predictor.version.strip():
-                raise ValueError("missing model version")
-            if not callable(predictor.predict):
-                raise ValueError("missing predictor method")
-            app.state.predictor = predictor
-        except Exception:
-            log.exception("Model adapter failed to load")
+    app.state.predictor = load_predictor()
+    app.state.analysis_admission = AnalysisAdmission()
     yield
 
 
@@ -61,10 +129,6 @@ if os.getenv("FORGERYLENS_FROZEN_RECEIPT") == "1":
     from .receipt_preview import router as receipt_router
 
     app.include_router(receipt_router)
-
-recent_requests: deque[float] = deque()
-active_requests = 0
-
 
 def decode_document(content: bytes) -> Image.Image:
     try:
@@ -127,32 +191,28 @@ def analyze_document(predictor, content: bytes) -> Analysis:
 
 @app.post("/api/v1/analyze", response_model=Analysis)
 async def analyze(request: Request):
-    global active_requests
-    predictor = app.state.predictor
+    predictor = request.app.state.predictor
     if predictor is None:
         raise HTTPException(503, "Analysis is unavailable until a trained model is installed.")
-    now = monotonic()
-    while recent_requests and now - recent_requests[0] >= 60:
-        recent_requests.popleft()
-    if len(recent_requests) >= 30 or active_requests >= 1:
-        raise HTTPException(429, "Analysis is busy. Try again shortly.", headers={"Retry-After": "5"})
-    if request.headers.get("content-type", "").split(";", 1)[0] not in (
+    if request.headers.get("content-type", "").split(";", 1)[0].strip().lower() not in (
         "image/jpeg", "image/png", "image/webp", "application/octet-stream"
     ):
         raise HTTPException(415, "Send the encoded image as the request body.")
-    recent_requests.append(now)
-    active_requests += 1
-    try:
+    admission = request.app.state.analysis_admission
+    admission.check_rate(request.client.host if request.client else "")
+    async with admission.slot():
         content = bytearray()
-        async for chunk in request.stream():
-            if len(content) + len(chunk) > MAX_BYTES:
-                raise HTTPException(413, "Use an image no larger than 8 MiB.")
-            content.extend(chunk)
+        try:
+            with anyio.fail_after(UPLOAD_TIMEOUT_SECONDS):
+                async for chunk in request.stream():
+                    if len(content) + len(chunk) > MAX_BYTES:
+                        raise HTTPException(413, "Use an image no larger than 8 MiB.")
+                    content.extend(chunk)
+        except (TimeoutError, ClientDisconnect):
+            raise HTTPException(408, "The image upload timed out or was interrupted.") from None
         if not content:
             raise HTTPException(400, "The image is empty.")
         return await run_in_threadpool(analyze_document, predictor, bytes(content))
-    finally:
-        active_requests -= 1
 
 
 @app.get("/api/v1/experiments/{section}")

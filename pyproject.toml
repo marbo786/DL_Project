@@ -8,6 +8,7 @@ version = "0.1.0"
 description = "Single-image receipt edit research and a historical reference studio"
 requires-python = ">=3.10"
 dependencies = [
+    "anyio",
     "fastapi",
     "numpy",
     "pillow",
@@ -26,7 +27,6 @@ research = [
     "torchvision",
 ]
 dev = [
-    "anyio",
     "httpx",
     "playwright",
     "pytest",
