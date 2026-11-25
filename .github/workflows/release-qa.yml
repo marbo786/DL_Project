@@ -1,15 +1,43 @@
-name: Release container QA
+name: ForgeryLens CI
 on:
   pull_request:
     branches: [main]
   push:
-    branches: [phase-a-controls]
+    branches: [main]
 permissions:
   contents: read
 concurrency:
   group: release-qa-${{ github.head_ref || github.ref }}
   cancel-in-progress: true
 jobs:
+  lint:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -c constraints.txt ruff
+      - run: make lint
+  pytest:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '2'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python scripts/setup.py
+      - run: python -c "import torch; assert torch.version.cuda is None"
+      - run: python -m pytest -q -rs
   container-qa:
     runs-on: ubuntu-24.04
     timeout-minutes: 25

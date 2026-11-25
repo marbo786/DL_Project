@@ -12,6 +12,8 @@ Run from the repository root with a compatible Python environment active.
 | Start the saved-sample studio | `make demo` | `npm --prefix web/frontend run demo` |
 | Print the inputs and access instructions | `make reproduce` | `python scripts/reproduce.py` |
 
+Tests marked `artifacts` or `data` skip with the missing paths when their inputs are absent. Run `python -m pytest -q -rs` to see those reasons, or use `python -m pytest -m "not artifacts and not data"` to select tests that require neither. GitHub Actions runs lint, CPU pytest, and the Docker/browser release checks on pushes and pull requests targeting `main`.
+
 Obtain the full paired dataset and pretrained checkpoint through the sources printed by the reproduction command. Supply the original paired ZIP, its extracted package directory, the TorchVision checkpoint, and a fresh output directory. The launcher runs the existing containment audit, training matrix, historical scoring, and XFUND evaluation. It downloads no data. Add `--plan` to inspect the stages before committing compute.
 
 Bash
