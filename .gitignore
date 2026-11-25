@@ -7,8 +7,11 @@ node_modules/
 *.onnx
 *.pt
 *.pth
+/weights/trufor.pth.tar
 /data/
 /artifacts/
+/runs/
+*.egg-info/
 /AIForge-Doc-v2.0/
 test-results/
 *.zip

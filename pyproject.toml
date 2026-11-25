@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools==65.5.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "forgerylens"
+version = "0.1.0"
+description = "Single-image receipt edit research and a historical reference studio"
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi",
+    "numpy",
+    "pillow",
+    "uvicorn",
+]
+
+[project.optional-dependencies]
+research = [
+    "matplotlib",
+    "opencv-python-headless",
+    "psutil",
+    "pymupdf",
+    "python-multipart",
+    "scikit-learn",
+    "torch",
+    "torchvision",
+]
+dev = [
+    "httpx",
+    "playwright",
+    "pytest",
+    "ruff",
+]
+
+[tool.setuptools.packages.find]
+include = ["api", "research", "research.*"]
+
+[tool.setuptools.package-data]
+research = ["phase_f_policy.json"]
+
+[tool.ruff.lint]
+select = ["E9", "F63", "F7", "F82"]
