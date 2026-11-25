@@ -19,8 +19,8 @@ Begin with a small feasibility set and report source counts and uncertainty. Pla
 Place the private inventory at `data/phase-f/inventory.json` under the authorized root. The [Phase F inventory specification](history/REAL_WORLD_VERIFICATION_ANALYSIS.md#private-dataset-and-review) gives the field names and admissible acquisition labels.
 
 ```sh
-python -m research.phase_f_evaluate audit --manifest data/phase-f/inventory.json --data-root data/phase-f --aiforge-manifest data/aiforge/manifest_deduplicated.csv
-python -m research.phase_f_evaluate evaluate --manifest data/phase-f/inventory.json --data-root data/phase-f --aiforge-manifest data/aiforge/manifest_deduplicated.csv --output artifacts/phase-f/v1/results.json
+python -m research.reference_verification_evaluate audit --manifest data/phase-f/inventory.json --data-root data/phase-f --aiforge-manifest data/aiforge/manifest_deduplicated.csv
+python -m research.reference_verification_evaluate evaluate --manifest data/phase-f/inventory.json --data-root data/phase-f --aiforge-manifest data/aiforge/manifest_deduplicated.csv --output artifacts/phase-f/v1/results.json
 ```
 
 The software checks consistency and file digests. The human review establishes physical acquisition, consent, pairing, near-duplicate provenance, and permitted disclosure.

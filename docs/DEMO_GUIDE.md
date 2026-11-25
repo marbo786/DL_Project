@@ -2,7 +2,7 @@
 
 ## Receipt Studio web preview
 
-Open the [Worker URL](https://patient-cake-9531.marboo786.workers.dev/) or follow the [local run instructions](../README.md#receipt-studio-frontend). Compare the original and edited specimen in the hero, then replay a saved specimen in the studio. Use zoom, the tile grid, and the overlay opacity to inspect the model's highest-scoring patch. The interactive charts show published aggregates. The threshold explorer uses development results.
+Open the [Worker URL](https://patient-cake-9531.marboo786.workers.dev/) or follow the [local run instructions](../README.md#try-the-demo). Compare the original and edited specimen in the hero, then replay a saved specimen in the studio. Use zoom, the tile grid, and the overlay opacity to inspect the model's highest-scoring patch. The interactive charts show published aggregates. The threshold explorer uses development results.
 
 The default export replays recorded results for the bundled fictional specimens. A custom image can be previewed locally. Live scoring requires a separately configured API. [Deployment and API setup](DEPLOYMENT.md)
 
@@ -14,12 +14,12 @@ From the repository root, with the local research artifacts available, install t
 
 ```sh
 python -m pip install -r research/requirements-receipt-demo.txt
-python -m streamlit run research/receipt_demo.py --server.address 127.0.0.1 --server.port 8501 --server.headless true --server.maxUploadSize 8 --browser.gatherUsageStats false
+python -m streamlit run research/receipt/demo.py --server.address 127.0.0.1 --server.port 8501 --server.headless true --server.maxUploadSize 8 --browser.gatherUsageStats false
 ```
 
 Open [ForgeryLens Receipt Review](http://127.0.0.1:8501). Select a receipt and choose **Analyze receipt**. Read the estimated edit probability, binary confidence, review outcome, and advice together. The highlighted tile shows the model's highest-scoring patch. Expand **Model and routing policy** for the checkpoint hash and cutoffs. The confidence gate deferred all 400 development receipts. On the historical shifted receipts, the full demo prioritized zero, routed six genuine and six edited receipts to the normal queue, and deferred 2,660. An inconclusive result illustrates the intended fallback to manual review. [Model card and evidence](MODEL_CARD.md#aiforge-v2-single-image-receipt-detector)
 
-Startup requires `artifacts/receipt-study-v1/residual-42/fit.json`, `model.pt`, and `calibration.csv`, plus `artifacts/receipt-retrospective-v1/freeze.json`. The application checks the lock and artifact hashes locally before scoring. The development parity test uses the local authorized AIForge assets and is skipped if those assets are absent. The `receipt-demo-v1` verification record is in `artifacts/receipt-demo-v1/verification.json`.
+Startup reads `fit.json`, `model.pt`, and `calibration.csv` from the private run at `artifacts/receipt-study-v1/residual-42/` and the lock at `artifacts/receipt-retrospective-v1/freeze.json`. The application checks the lock and artifact hashes locally before scoring. The development parity test uses the local authorized AIForge assets and is skipped if those assets are absent. [Fit metadata](../results/receipt-study-v1/residual-42/fit.json) · [Freeze](../results/receipt-retrospective-v1/freeze.json) · [Verification](../results/receipt-demo-v1/verification.json)
 
 ## Historical web demonstrations
 

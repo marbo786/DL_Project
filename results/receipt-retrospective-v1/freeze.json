@@ -1,0 +1,19 @@
+{
+  "evaluation_status": "retrospective_historical",
+  "configuration": "residual",
+  "seed": 42,
+  "checkpoint_sha256": "2076ae044aaa65e69df5ae941a71ecf64b397c241cd0065ff3fb3533291ff6c5",
+  "matrix_sha256": "febe8f77c4c2f22d0f9c85e71cbd59b609c4fa66e50f849f8d2486473d2bdf58",
+  "manifest_sha256": "1c395905027f9cd2e88489c26a5e741627697898dda10357490bcf8abb1f4f65",
+  "calibration_sha256": "991b0351689f6cd1f1bad3dcac2412a9d876b7214a8c60b00134b33436a2a94d",
+  "calibration": {
+    "slope": 0.16409062101259864,
+    "intercept": -0.15403736571765775,
+    "prevalence": 0.5
+  },
+  "operating_points": {
+    "0.01": 1.6341849565505981,
+    "0.05": 1.4312477111816406,
+    "0.1": 1.3420782089233398
+  }
+}

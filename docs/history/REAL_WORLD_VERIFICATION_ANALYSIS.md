@@ -45,8 +45,8 @@ Each image has `id`, `path` relative to the authorized root, `sha256`, `document
 Install `research/requirements-reference.txt` into the research environment. Run the audit first and record its output. In a fresh output directory, run the frozen comparison once the rights, provenance and source review is complete.
 
 ```sh
-python -m research.phase_f_evaluate audit --manifest data/phase-f/inventory.json --data-root data/phase-f --aiforge-manifest data/aiforge/manifest_deduplicated.csv
-python -m research.phase_f_evaluate evaluate --manifest data/phase-f/inventory.json --data-root data/phase-f --aiforge-manifest data/aiforge/manifest_deduplicated.csv --output artifacts/phase-f/v1/results.json
+python -m research.reference_verification_evaluate audit --manifest data/phase-f/inventory.json --data-root data/phase-f --aiforge-manifest data/aiforge/manifest_deduplicated.csv
+python -m research.reference_verification_evaluate evaluate --manifest data/phase-f/inventory.json --data-root data/phase-f --aiforge-manifest data/aiforge/manifest_deduplicated.csv --output artifacts/phase-f/v1/results.json
 ```
 
 The primary AUROC compares localized edits with unchanged recaptures among aligned physical pairs. Report class coverage alongside AUROC. At each threshold report recall and FPR across all requested comparisons, where abstentions count as no flags, and among scored comparisons. A missing class yields no AUROC, and sample and source group counts must accompany estimates. Results with simulated or born-digital inputs remain in their own strata. Localization applies the estimated warp to the candidate mask only after inference. Report IoU within valid overlap on evaluable edits and an all-edits IoU with failed or unobservable comparisons assigned zero. Report revision flags, mismatch alignment rejection and wrong-reference acceptance separately. No explicit mismatch detection is available, including when an accepted wrong pair yields a high score.

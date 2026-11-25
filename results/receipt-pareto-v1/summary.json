@@ -1,0 +1,89 @@
+{
+  "run_id": "receipt-pareto-v1",
+  "lock_sha256": "3070c66e006e44ce13a5f5a4a5e4b929a555fb5682607d91e645d890b9774db3",
+  "timings_sha256": "d1a4b0140267f719072dcbf72779d5631f8440adb99bde67c03ad643766b90b0",
+  "documents": 400,
+  "source_groups": 199,
+  "review_budget_documents": 40,
+  "target_median_ms": 100,
+  "results": {
+    "residual-fp32": {
+      "checkpoint_mib": 3.652743339538574,
+      "median_ms": 156.46275004837662,
+      "p95_ms": 970.2927050122455,
+      "edits_found": 21,
+      "edits_missed": 179,
+      "false_flags": 19,
+      "recall": 0.105,
+      "fpr": 0.095,
+      "precision": 0.525,
+      "boundary_score_ties": 1
+    },
+    "residual-int8": {
+      "checkpoint_mib": 1.1587629318237305,
+      "median_ms": 241.0703500499949,
+      "p95_ms": 1590.804125054272,
+      "edits_found": 21,
+      "edits_missed": 179,
+      "false_flags": 19,
+      "recall": 0.105,
+      "fpr": 0.095,
+      "precision": 0.525,
+      "boundary_score_ties": 2
+    },
+    "student": {
+      "checkpoint_mib": 0.05434131622314453,
+      "median_ms": 86.92140004131943,
+      "p95_ms": 551.9312500546209,
+      "edits_found": 21,
+      "edits_missed": 179,
+      "false_flags": 19,
+      "recall": 0.105,
+      "fpr": 0.095,
+      "precision": 0.525,
+      "boundary_score_ties": 2
+    },
+    "distilled": {
+      "checkpoint_mib": 0.05434131622314453,
+      "median_ms": 86.27754996996373,
+      "p95_ms": 534.5678200479576,
+      "edits_found": 21,
+      "edits_missed": 179,
+      "false_flags": 19,
+      "recall": 0.105,
+      "fpr": 0.095,
+      "precision": 0.525,
+      "boundary_score_ties": 2
+    }
+  },
+  "dominated_by": {
+    "checkpoint_mib": {
+      "residual-fp32": [
+        "residual-int8",
+        "student",
+        "distilled"
+      ],
+      "residual-int8": [
+        "student",
+        "distilled"
+      ],
+      "student": [],
+      "distilled": []
+    },
+    "p95_ms": {
+      "residual-fp32": [
+        "student",
+        "distilled"
+      ],
+      "residual-int8": [
+        "residual-fp32",
+        "student",
+        "distilled"
+      ],
+      "student": [
+        "distilled"
+      ],
+      "distilled": []
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "mode": "residual",
+  "seed": 42,
+  "fraction": 1.0,
+  "selected_groups": 556,
+  "trained_groups": 556,
+  "training_examples": 1755,
+  "positive_examples": 585,
+  "batch_size": 64,
+  "threads": 4,
+  "losses": [
+    0.9320027165263467,
+    0.8167443168808592,
+    0.7444641110903857
+  ],
+  "parameters": 927585,
+  "updated_parameter_tensors": 140,
+  "fit_seconds": 26.578815800021403,
+  "training_manifest_sha256": "1c395905027f9cd2e88489c26a5e741627697898dda10357490bcf8abb1f4f65",
+  "initial_weights_sha256": "047dcff4addef86ea5bc2eff13c9614dc11f47ab1160d0a71a25e7db994f4e1f",
+  "checkpoint_sha256": "2076ae044aaa65e69df5ae941a71ecf64b397c241cd0065ff3fb3533291ff6c5",
+  "torch": "2.12.0+cpu",
+  "python": "3.10.10",
+  "platform": "Windows-10-10.0.26200-SP0"
+}

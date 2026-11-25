@@ -48,7 +48,7 @@ At the nominal 5% cutoff, if **1%** of incoming receipts were edited and the dev
 
 At the 0.55 confidence gate, development coverage is **0%** for both classes, so accepted error is undefined. At confidence 0.50, coverage is **100%** and accepted error is **49.5%**. These two diagnostic points fail the proposed coverage and error requirements. Development ECE is **0.0080**, while its Brier score **0.24990** is close to **0.25000** for the constant prevalence predictor. The queue table and confidence results evaluate separate rules. The [local research demo](DEMO_GUIDE.md#frozen-receipt-detector) combines the 0.55 confidence gate with the frozen priority-review cutoff for illustration. An operational policy remains pending.
 
-Evidence for these calculations is in `artifacts/receipt-study-v1/residual-42/fit.json`, `calibration.csv`, `validation.csv`, and `metrics.json` in the same run directory. `research/receipt_metrics.py` defines the cutoff and confidence rules.
+The [fit metadata](../results/receipt-study-v1/residual-42/fit.json) and [metrics](../results/receipt-study-v1/residual-42/metrics.json) record the evidence. The private `calibration.csv` and `validation.csv` remain in the original run directory. [Metric implementation](../research/receipt/metrics.py)
 
 ## Target status and historical shift evidence
 
@@ -63,7 +63,7 @@ The following probes use previously saved outputs. Historical shift is descripti
 | CPU median ≤100 ms | **Missed.** Run `receipt-pareto-v1` measured **156.46 ms median / 970.29 ms p95** for the selected residual checkpoint from file decode through JSON output on 400 development receipts. At the common 40-review budget, it achieved **10.5% recall** and **9.5% FPR**, with binary ranking applied to all inputs before abstention. [Benchmark protocol and Pareto figures](RECEIPT_PARETO.md) |
 | ≤25 million parameters | **Met.** The residual checkpoint has **927,585** parameters. |
 
-WildReceipt evidence is from run `receipt-retrospective-v1`, `artifacts/receipt-retrospective-v1/freeze.json` and `shifted_test.json`. XFUND evidence is from run `receipt-xfund-v1`, `artifacts/receipt-xfund-v1/freeze-before-labels.json` and `metrics.json`. Timing evidence is in `artifacts/receipt-pareto-v1/summary.json`. The parameter count is from `artifacts/receipt-study-v1/residual-42/fit.json`.
+WildReceipt evidence is from run `receipt-retrospective-v1`, `results/receipt-retrospective-v1/freeze.json` and `shifted_test.json`. XFUND evidence is from run `receipt-xfund-v1`, `results/receipt-xfund-v1/freeze-before-labels.json` and `metrics.json`. Timing evidence is in `results/receipt-pareto-v1/summary.json`. The parameter count is from `results/receipt-study-v1/residual-42/fit.json`.
 
 ## Exact three-outcome preview replay
 

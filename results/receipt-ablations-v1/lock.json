@@ -1,0 +1,57 @@
+{
+  "run_id": "receipt-ablations-v1",
+  "source_manifest_sha256": "1c395905027f9cd2e88489c26a5e741627697898dda10357490bcf8abb1f4f65",
+  "initial_weights_sha256": "047dcff4addef86ea5bc2eff13c9614dc11f47ab1160d0a71a25e7db994f4e1f",
+  "scoped_manifest_sha256": "e641eb43cbd052971da5959aa6c7f79a83cd2db00d8712507f184272921a8e3a",
+  "development_group_limits": {
+    "calibration": 60,
+    "validation": 80
+  },
+  "seeds": [
+    17,
+    42,
+    71
+  ],
+  "mobile": {
+    "epochs": 3,
+    "tile_batch": 64,
+    "threads": 4,
+    "checkpoint_rule": "final epoch",
+    "adamw_weight_decay": 0.01,
+    "reference": "residual, weighted BCE, no augmentation, full fine-tuning",
+    "controls": {
+      "tail-three": {
+        "trainable_tail": 3
+      },
+      "unweighted-bce": {
+        "weighted_bce": false
+      },
+      "symmetric-brightness": {
+        "brightness_gains": [
+          0.85,
+          1.15,
+          0.95
+        ]
+      }
+    },
+    "geometry": "fixed residual weights, whole-resize versus native inference"
+  },
+  "legacy": {
+    "epochs": 8,
+    "batch_size": 32,
+    "width": 8,
+    "checkpoint_rule": "final epoch",
+    "map_weights": [
+      0.0,
+      0.65
+    ]
+  },
+  "reference_checkpoints": {
+    "residual-17": "5d58e4ef92fbf0e9c60cec6e08377ad019ff8e151d6fa52f0c54f4c0759b26f4",
+    "residual-42": "2076ae044aaa65e69df5ae941a71ecf64b397c241cd0065ff3fb3533291ff6c5",
+    "residual-71": "4d0b4b3ce18c5cc3bc5d1ca2425999691e34d095ba8e38be7114df2f49ab18cc",
+    "full-17": "6a1a9bd43e01cdc7e36cef38a985d666a7e7922187ff0fa67cbab1ebae663410",
+    "full-42": "6556696ddb2a2aa256912afa433a9fa71b0a52d32a1338a5d71329e9cef57bcc",
+    "full-71": "bf1b5a3594e2d238af78a948605767b05896c24a7c20b2ecd8b7a86aef4f77b7"
+  }
+}

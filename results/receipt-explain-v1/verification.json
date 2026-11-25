@@ -1,0 +1,18 @@
+{
+  "run_id": "receipt-explain-v1",
+  "status": "passed",
+  "baseline_documents_checked": 52,
+  "cases": 5,
+  "development_pairs": 24,
+  "regression_baselines": {
+    "full_development": {
+      "genuine": 200,
+      "edits": 200,
+      "false_flags": 21,
+      "edits_flagged": 24,
+      "edited_tile_hits": 29,
+      "localized_misses": 26
+    },
+    "background_only_genuine_flags": 2
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "version": "1-contained",
+  "input_manifest_sha256": "cfe3dad1d28fefefe86f5777ce1f8fc73bfa140c811b95926f62d74eb9d463f3",
+  "output_manifest_sha256": "1c395905027f9cd2e88489c26a5e741627697898dda10357490bcf8abb1f4f65",
+  "candidate_table_sha256": "ee56c23a0bfd7ad8f28c2b5c3a9552c7ae8f024c1be9f77c0cdec1fb629d6189",
+  "source_ids": 2617,
+  "connected_groups": 2459,
+  "quarantined_groups": 51,
+  "counts": {
+    "calibration/cord/genuine": 113,
+    "calibration/cord/manipulated": 113,
+    "calibration/sroie/genuine": 32,
+    "calibration/sroie/manipulated": 32,
+    "quarantined/cord/genuine": 94,
+    "quarantined/cord/manipulated": 94,
+    "quarantined/sroie/genuine": 36,
+    "quarantined/sroie/manipulated": 36,
+    "shifted_test/wildreceipt/genuine": 1336,
+    "shifted_test/wildreceipt/manipulated": 1336,
+    "test/cord/genuine": 164,
+    "test/cord/manipulated": 164,
+    "test/sroie/genuine": 57,
+    "test/sroie/manipulated": 57,
+    "train/cord/genuine": 464,
+    "train/cord/manipulated": 464,
+    "train/sroie/genuine": 121,
+    "train/sroie/manipulated": 121,
+    "validation/cord/genuine": 146,
+    "validation/cord/manipulated": 146,
+    "validation/sroie/genuine": 54,
+    "validation/sroie/manipulated": 54
+  },
+  "candidate_handling": {
+    "contained_as_possible_alias": 192
+  }
+}

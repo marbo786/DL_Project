@@ -1,0 +1,42 @@
+{
+  "run_id": "receipt-explain-v1",
+  "lock_sha256": "6c747ec6957538c553ca98b41509a67be078b79f222dc2e62e3aea7265b76624",
+  "faithfulness": {
+    "documents": 48,
+    "matched_documents": 48,
+    "groups": 24,
+    "mean_top_drop": 0.08933709437648456,
+    "mean_control_drop": 0.004797336334983508,
+    "mean_paired_advantage": 0.08453975804150105,
+    "paired_advantage_95": [
+      0.06338480746683975,
+      0.11027579076277712
+    ],
+    "top_wins": 48,
+    "control_wins": 0,
+    "ties": 0
+  },
+  "background_control": {
+    "edit_logit": {
+      "pairs": 24,
+      "edited_higher": 18,
+      "exact_ties": 0,
+      "mean_delta": 0.12315714498981833,
+      "mean_absolute_delta": 0.14756216838334998
+    },
+    "background_logit": {
+      "pairs": 24,
+      "edited_higher": 0,
+      "exact_ties": 24,
+      "mean_delta": 0.0,
+      "mean_absolute_delta": 0.0
+    },
+    "logit": {
+      "pairs": 24,
+      "edited_higher": 7,
+      "exact_ties": 14,
+      "mean_delta": 0.011290861914555231,
+      "mean_absolute_delta": 0.020660925656557083
+    }
+  }
+}

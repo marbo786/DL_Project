@@ -1,0 +1,52 @@
+{
+  "source_repository": "grip-unina/TruFor",
+  "source_commit": "ae54475df6f41a491d7615100feb19263dec13f7",
+  "source_git_blobs": {
+    "config.py": "db85fb19c5471e525685404ce6b9af6f441411e3",
+    "data_core.py": "43084e318a8dd51246a9102d38a37cd6fb3b4463",
+    "models/DnCNN.py": "e3bf436911abbbd29840b0bc3447d28522566482",
+    "models/__init__.py": "dc09e8e226db13c098a7dcd094aab4cfadbb44b5",
+    "models/cmx/LICENSE_CMX.txt": "7c8f5deda716fdd2f080f1ea10396313f15a0d21",
+    "models/cmx/__init__.py": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+    "models/cmx/builder_np_conf.py": "f2679a4c0edca9d07895cd89d4924d974533abbf",
+    "models/cmx/decoders/MLPDecoder.py": "649bcf59b2e8c5171fa0a838c2abf42428219157",
+    "models/cmx/encoders/dual_segformer.py": "7f2eda6383952b1f867558591e71329b7200c090",
+    "models/cmx/layer_utils.py": "fbe00b2280d25fda6dac60e83ed63cea6094e84d",
+    "models/cmx/net_utils.py": "d103a5e9417bb8962f32a70b7946b1292a848e37",
+    "models/cmx/utils/__init__.py": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+    "models/cmx/utils/init_func.py": "084dda3dd8da0e2f5b9ded3ad44a5340d3bc333a",
+    "trufor.yaml": "0fae0ac052ddd66e9d8b62930bcb2508a6ae2258",
+    "trufor_test.py": "d538ff7447961c251b5926936b9111addd17f9cd"
+  },
+  "dependency_files": [
+    {
+      "path": "yacs/config.py",
+      "repository": "rbgirshick/yacs",
+      "ref": "v0.1.8",
+      "git_blob": "806854315a957efc0723b90a9a530a6dd6738fe5"
+    },
+    {
+      "path": "timm/models/layers/drop.py",
+      "repository": "huggingface/pytorch-image-models",
+      "ref": "v0.6.13",
+      "git_blob": "1ab1c8f5ba12bd0db2f802c6b5a5dd0296dec7af"
+    },
+    {
+      "path": "timm/models/layers/helpers.py",
+      "repository": "huggingface/pytorch-image-models",
+      "ref": "v0.6.13",
+      "git_blob": "2fa296bcdd110dabe6c442238224132b6d91c79a"
+    },
+    {
+      "path": "timm/models/layers/weight_init.py",
+      "repository": "huggingface/pytorch-image-models",
+      "ref": "v0.6.13",
+      "git_blob": "943e4f4cec20eb03230748aa919010d017643303"
+    }
+  ],
+  "archive_md5": "7bee48f3476c75616c3c5721ab256ff8",
+  "checkpoint_sha256": "ac1d90e329a72e0d66e8665e123a19e94bfae3209c3ef8a4f9ca3b91578c7844",
+  "torch": "2.12.0+cpu",
+  "torchvision": "0.27.0+cpu",
+  "cpu_threads": 4
+}

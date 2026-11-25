@@ -1,0 +1,10 @@
+{
+  "forms": 418,
+  "retained_pairs": 418,
+  "retained_groups": 410,
+  "quarantined_pairs": 0,
+  "form_near_alias_edges": 9,
+  "pairs_with_changes_outside_mask": 0,
+  "mask_fraction_median": 0.00042121464302791775,
+  "manifest_sha256": "290d1d67641cd22c866871e70960f58834cb701296761255f6d979dc91f07fb5"
+}

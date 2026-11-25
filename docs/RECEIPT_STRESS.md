@@ -59,14 +59,14 @@ Bash
 
 ```bash
 export OPENBLAS_NUM_THREADS='1'
-python -m research.receipt_stress --manifest artifacts/receipt-protocol-v1-contained/manifest.csv --root data/aiforge/assets --output artifacts/receipt-residual-stress-v1
+python -m research.receipt.stress --manifest artifacts/receipt-protocol-v1-contained/manifest.csv --root data/aiforge/assets --output artifacts/receipt-residual-stress-v1
 ```
 
 PowerShell
 
 ```powershell
 $env:OPENBLAS_NUM_THREADS = '1'
-python -m research.receipt_stress --manifest artifacts/receipt-protocol-v1-contained/manifest.csv --root data/aiforge/assets --output artifacts/receipt-residual-stress-v1
+python -m research.receipt.stress --manifest artifacts/receipt-protocol-v1-contained/manifest.csv --root data/aiforge/assets --output artifacts/receipt-residual-stress-v1
 ```
 
-The run requires the existing receipt checkpoint and calibration files, development assets, and `artifacts/phase-h/desktop.png`, `mobile.png`, and `tablet.png`. Use a new output directory when rerunning. Evidence is under `artifacts/receipt-residual-stress-v1/` in `lock.json`, `stress-scores.csv`, `open-set-scores.csv`, `summary.json`, and `verification.json`. Verification independently recomputed the reported point estimates, checked all 528 stress predictions and 13 open-set routes, and matched the clean logits exactly to the saved development scores.
+The run requires the existing receipt checkpoint and calibration files, development assets, and `artifacts/phase-h/desktop.png`, `mobile.png`, and `tablet.png`. Use a new output directory when rerunning. The saved [lock](../results/receipt-residual-stress-v1/lock.json), [summary](../results/receipt-residual-stress-v1/summary.json), and [verification](../results/receipt-residual-stress-v1/verification.json) record the run. The per-document stress and open-set score tables remain in the original run directory. Verification independently recomputed the reported point estimates, checked all 528 stress predictions and 13 open-set routes, and matched the clean logits exactly to the saved development scores.

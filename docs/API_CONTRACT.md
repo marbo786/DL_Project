@@ -10,7 +10,7 @@ The approved adapter is available when `FORGERYLENS_FROZEN_RECEIPT=1` is set on 
 
 `POST /api/v1/compare` takes multipart `reference` and `candidate` images in opt-in loopback research mode. It returns an SSIM decision, reason, score, threshold, policy version, alignment, and timing, with previews and raster metadata when alignment is supported.
 
-`research/receipt_demo.py` runs the frozen `receipt-preview-v1` policy in Streamlit. The HTTP adapter uses the same frozen checkpoint, tile scorer, pooling, calibration, and routing policy. It also exposes the native tile bounds and raw logits for the overlay.
+`research/receipt/demo.py` runs the frozen `receipt-preview-v1` policy in Streamlit. The HTTP adapter uses the same frozen checkpoint, tile scorer, pooling, calibration, and routing policy. It also exposes the native tile bounds and raw logits for the overlay.
 
 ## Frozen receipt endpoint
 

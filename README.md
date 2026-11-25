@@ -6,11 +6,11 @@ ForgeryLens is an AI341 study of edit detection from a single receipt image usin
 
 | Evaluation cohort | AUROC | Underlying evidence |
 | --- | ---: | --- |
-| CORD/SROIE development | 0.5126 | `artifacts/receipt-study-v1/residual-42/metrics.json` |
-| WildReceipt retrospective shift | 0.5015 | `artifacts/receipt-retrospective-v1/shifted_test.json` |
-| XFUND held-back forms | 0.5007 | `artifacts/receipt-xfund-v1/metrics.json` |
+| CORD/SROIE development | 0.5126 | `results/receipt-study-v1/residual-42/metrics.json` |
+| WildReceipt retrospective shift | 0.5015 | `results/receipt-retrospective-v1/shifted_test.json` |
+| XFUND held-back forms | 0.5007 | `results/receipt-xfund-v1/metrics.json` |
 
-The [model card](docs/MODEL_CARD.md) explains the cohorts, frozen policy, and limitations. AUROC values are rounded from the recorded JSON. The evaluation JSON lives in the local research workspace. The public frontend ships the [published aggregate export](web/frontend/data/results.json).
+The [model card](docs/MODEL_CARD.md) explains the cohorts, frozen policy, and limitations. AUROC values are rounded from the JSON in [the evidence directory](results/README.md). The public frontend ships the [published aggregate export](web/frontend/data/results.json).
 
 ## Try the demo
 

@@ -81,6 +81,6 @@ Before deploying real detection, the system needs repeatable receipt-level valid
 
 ## Reproduction
 
-Use `python -m research.phase_c` with `--manifest data/aiforge/manifest_deduplicated.csv --asset-root data/aiforge/assets` and a fresh `--output` under `artifacts/phase-c`. The modes are `baseline --baseline artifacts/phase-b/fixed-tight-42/checkpoint.pt`, `random --seed 42`, and `hard --initial artifacts/phase-c/random-42/epoch3.pt`. Repeat random with `--seed 17` and `--seed 71`. The historical, random seed-42, and mined runs used `--gallery`. All 28 tests passed with the workstation's socket-free ASGI test runner.
+Use `python -m research.hard_negative_study` with `--manifest data/aiforge/manifest_deduplicated.csv --asset-root data/aiforge/assets` and a fresh `--output` under `artifacts/phase-c`. The modes are `baseline --baseline artifacts/phase-b/fixed-tight-42/checkpoint.pt`, `random --seed 42`, and `hard --initial artifacts/phase-c/random-42/epoch3.pt`. Repeat random with `--seed 17` and `--seed 71`. The historical, random seed-42, and mined runs used `--gallery`. All 28 tests passed with the workstation's socket-free ASGI test runner.
 
 AI assistance implemented, ran and analyzed the engineering experiment. Results are measured from AIForge, with no changes to the public inference path.

@@ -1,0 +1,7 @@
+{
+  "run_id": "receipt-residual-stress-v1",
+  "status": "passed",
+  "stress_rows": 528,
+  "open_set_rows": 13,
+  "clean_max_absolute_logit_delta_against_stored_development": 0.0
+}

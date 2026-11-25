@@ -1,0 +1,42 @@
+{
+  "run_id": "receipt-demo-v1",
+  "policy_version": "receipt-preview-v1",
+  "streamlit": "1.52.1",
+  "study_run_id": "receipt-study-v1/residual-42",
+  "freeze_path": "artifacts/receipt-retrospective-v1/freeze.json",
+  "lock_sha256": "d65421f5457ad6ecb91747b1ed6cd2fb4a86ea0c40a023124290a8239d6688e0",
+  "checkpoint_sha256": "2076ae044aaa65e69df5ae941a71ecf64b397c241cd0065ff3fb3533291ff6c5",
+  "calibration_sha256": "991b0351689f6cd1f1bad3dcac2412a9d876b7214a8c60b00134b33436a2a94d",
+  "parity_reference": "artifacts/receipt-study-v1/residual-42/validation.csv",
+  "validation_sha256": "c6eda9371746c07a23a1397bf42d7b13fc77cc812647950ac8974d424fc11e0e",
+  "parity": {
+    "test": "tests/test_receipt_demo.py::test_demo_matches_stored_development_scores",
+    "documents": 4,
+    "groups": 2,
+    "max_absolute_logit_difference": 0.0,
+    "tile_matches": 4,
+    "inconclusive": 4
+  },
+  "application_test": {
+    "framework": "streamlit.testing.v1.AppTest",
+    "status": "passed",
+    "checks": [
+      "startup",
+      "empty submission",
+      "authorized bundled fictional image injected at uploader boundary",
+      "decision",
+      "probability",
+      "confidence",
+      "tile preview"
+    ]
+  },
+  "live_browser_check": {
+    "status": "blocked",
+    "reason": "Loopback server did not become reachable in the Windows sandbox. A separate socketpair diagnostic timed out in accept."
+  },
+  "full_test_suite": {
+    "passed": 72,
+    "failed": 0,
+    "skipped": 0
+  }
+}

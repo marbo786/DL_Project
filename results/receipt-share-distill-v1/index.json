@@ -1,0 +1,54 @@
+[
+  {
+    "file": "distilled/calibration.csv",
+    "rows": 290,
+    "table_sha256": "d8f554edb090aeea20fcb452f24cddd0e85c5122c15ba8efc8ca2390d94cf69c",
+    "private_table_sha256": "9910b4b99c829c047d2eea47b1094397f841fbf16c7650d3c10dfc4d44246635",
+    "checkpoint_sha256": "f6081fdb50258f188b868a71d348f4f4166da6f09b48349fe27996149e63b849",
+    "fit_manifest_sha256": "1c395905027f9cd2e88489c26a5e741627697898dda10357490bcf8abb1f4f65",
+    "evaluation_manifest_sha256": null,
+    "mode": "distilled",
+    "seed": 42,
+    "dataset": "AIForge-Doc v2.0.1",
+    "license_reference": "https://huggingface.co/datasets/Scam-AI/AIForge-Doc-v2"
+  },
+  {
+    "file": "distilled/validation.csv",
+    "rows": 400,
+    "table_sha256": "88398d8642b182a4c30513a2c3991896637f986b81806d6e62987d3ff3a38376",
+    "private_table_sha256": "d116d560f8dddd9fa7a6e511f79e9295eb1a5c48b050064eb8d733c3ec55f965",
+    "checkpoint_sha256": "f6081fdb50258f188b868a71d348f4f4166da6f09b48349fe27996149e63b849",
+    "fit_manifest_sha256": "1c395905027f9cd2e88489c26a5e741627697898dda10357490bcf8abb1f4f65",
+    "evaluation_manifest_sha256": null,
+    "mode": "distilled",
+    "seed": 42,
+    "dataset": "AIForge-Doc v2.0.1",
+    "license_reference": "https://huggingface.co/datasets/Scam-AI/AIForge-Doc-v2"
+  },
+  {
+    "file": "student/calibration.csv",
+    "rows": 290,
+    "table_sha256": "0121010cca0efb77ace3eef52ad82d9c54fd086804380a46d1a99e5b35d468a5",
+    "private_table_sha256": "e3a6b440debb0fa3f6b9f7ec64e33de2a8a9ccdf6e7fc445586570413eebb02b",
+    "checkpoint_sha256": "f3822d8ab30374d47e6e02de9b3270478a6fed0ce7e13a3a5680d1efc07fa163",
+    "fit_manifest_sha256": "1c395905027f9cd2e88489c26a5e741627697898dda10357490bcf8abb1f4f65",
+    "evaluation_manifest_sha256": null,
+    "mode": "student",
+    "seed": 42,
+    "dataset": "AIForge-Doc v2.0.1",
+    "license_reference": "https://huggingface.co/datasets/Scam-AI/AIForge-Doc-v2"
+  },
+  {
+    "file": "student/validation.csv",
+    "rows": 400,
+    "table_sha256": "22b64c10922e02adaa0be0aca6cdacba12d9435053db8ba2e11a461d41983e3e",
+    "private_table_sha256": "477f1d5bff8a5abe25f909a54b11cf750932e6335661b5403745c5f456bfb603",
+    "checkpoint_sha256": "f3822d8ab30374d47e6e02de9b3270478a6fed0ce7e13a3a5680d1efc07fa163",
+    "fit_manifest_sha256": "1c395905027f9cd2e88489c26a5e741627697898dda10357490bcf8abb1f4f65",
+    "evaluation_manifest_sha256": null,
+    "mode": "student",
+    "seed": 42,
+    "dataset": "AIForge-Doc v2.0.1",
+    "license_reference": "https://huggingface.co/datasets/Scam-AI/AIForge-Doc-v2"
+  }
+]

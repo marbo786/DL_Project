@@ -35,7 +35,7 @@ The new student comparison holds the 21-triplet minibatches, sample order, seed,
 
 Median mask area was 0.386% for CORD, 1.420% for SROIE, and 1.414% for WildReceipt. Genuine and edited files in each pair share dimensions and a PNG raster. These data provide a useful controlled localized-edit task with many identical pixels. Compression, scanned documents, and camera captures exhibit different nuisance conditions.
 
-The historical manifest SHA-256 is `3a4723b5bbec3b2fec496836fe48b0fa45a7732437956f1839a7dfce952cfc80`. The exact-decoded audit output is `cfe3dad1d28fefefe86f5777ce1f8fc73bfa140c811b95926f62d74eb9d463f3`, and the contained manifest is `1c395905027f9cd2e88489c26a5e741627697898dda10357490bcf8abb1f4f65`. See `artifacts/receipt-protocol-v1/audit.json` and `artifacts/receipt-protocol-v1-contained/`.
+The historical manifest SHA-256 is `3a4723b5bbec3b2fec496836fe48b0fa45a7732437956f1839a7dfce952cfc80`. The exact-decoded audit output is `cfe3dad1d28fefefe86f5777ce1f8fc73bfa140c811b95926f62d74eb9d463f3`, and the contained manifest is `1c395905027f9cd2e88489c26a5e741627697898dda10357490bcf8abb1f4f65`. See `results/receipt-protocol-v1/audit.json` and `artifacts/receipt-protocol-v1-contained/`.
 
 Historical artifacts retained in the workspace include the synthetic release under `release/`, the original AIForge checkpoints and calibration under `artifacts/aiforge/`, Phase C validation score arrays, Phase D source-error and paired-delta JSON, and Phase E comparator measurements under `artifacts/phase-e/raw/`. The release model SHA-256 is `632770846fc6a0258f680c4ac406940a0b1251f6cc14ca43f1fa647854d1ead4`. The full RGB seed-42 checkpoint SHA-256 is `6556696ddb2a2aa256912afa433a9fa71b0a52d32a1338a5d71329e9cef57bcc`.
 
@@ -124,14 +124,14 @@ The score threshold was fixed from the clean calibration pool. Each group contri
 | PatchNet hard-label student | 56,981 bytes | 0.5062 / 0.5033 | See per-document scores |
 | Identical PatchNet with distillation | 56,981 bytes | 0.5017 / 0.5025 | See per-document scores |
 
-The MobileNet comparison covers 400 documents for accuracy and interleaved timing on 32 documents, repeated twice with eight warm-up documents per model. It uses a two-thread CPU setting and tile batch size 64. The timed path reads the file, decodes and orients it, constructs tiles, processes the network and serializes score and region. Both models use the same timing loop while other experiments were running. The small median difference and larger INT8 p95 provide no evidence of a meaningful speed gain. The historical FP16-labelled artifact compressed weights in storage. This INT8 graph executes quantized operators. See `artifacts/receipt-study-v1/efficiency-full-42.json` and `artifacts/receipt-distill-v1/`.
+The MobileNet comparison covers 400 documents for accuracy and interleaved timing on 32 documents, repeated twice with eight warm-up documents per model. It uses a two-thread CPU setting and tile batch size 64. The timed path reads the file, decodes and orients it, constructs tiles, processes the network and serializes score and region. Both models use the same timing loop while other experiments were running. The small median difference and larger INT8 p95 provide no evidence of a meaningful speed gain. The historical FP16-labelled artifact compressed weights in storage. This INT8 graph executes quantized operators. See `results/receipt-study-v1/efficiency-full-42.json` and `artifacts/receipt-distill-v1/`.
 
 | Exported CPU runtime | TorchScript file | Peak process working set | Median / p95 per document |
 | --- | ---: | ---: | ---: |
 | FP32 | 4,095,430 bytes | 676,872,192 bytes | 367.1 / 3,041.3 ms |
 | INT8 | 1,452,930 bytes | 681,046,016 bytes | 281.2 / 1,798.9 ms |
 
-Both exports passed score parity checks on three calibration batches. Separate processes ran the same 32-document schedule with eight warm-up documents and two repetitions. Peak working set includes the interpreter, framework, image processing, and inference. Other research activity on the host and sequential runtime launches limit timing interpretation. The serialized model shrank while measured process peak stayed approximately 650 MiB. Export hashes and measurement settings are in `artifacts/receipt-runtime-v1/runtime.json`.
+Both exports passed score parity checks on three calibration batches. Separate processes ran the same 32-document schedule with eight warm-up documents and two repetitions. Peak working set includes the interpreter, framework, image processing, and inference. Other research activity on the host and sequential runtime launches limit timing interpretation. The serialized model shrank while measured process peak stayed approximately 650 MiB. Export hashes and measurement settings are in `results/receipt-runtime-v1/runtime.json`.
 
 The independent 400-image replay reproduced the export AUROCs of 0.51070 and 0.50093, with a paired INT8 minus FP32 delta of −0.00978 [−0.01720, −0.00244]. At the same frozen FP32 cutoff, the exports flagged 49 and zero images respectively. Highest-scoring tile boxes agreed on 52 of 400 images. The eager/export parity within each precision does not extend to interchangeability between precisions.
 
@@ -141,7 +141,7 @@ The v2 receipt models are private research configurations. Current measured perf
 
 Targeted validation passed 48 tests, including four tests for the new research code and the computational reference suite using the OpenCV package retained in the Phase E workspace. A direct smoke check processed the released fictional specimen through the app's analysis code, verified abstention on an unrelated image, and checked that comparison routes are unavailable in the public configuration. The HTTP test harness stalled in Windows `socketpair`. The Docker daemon was unavailable on this host.
 
-Pseudonymized prediction exports contain 16,256 rows across the MobileNet, perturbation and holdout runs in `artifacts/receipt-share-v1/index.json`, plus 1,380 student rows in `artifacts/receipt-share-distill-v1/index.json`. The manifests and per-run results support independent recomputation. Reference verification still requires independently collected pairs.
+Pseudonymized prediction exports contain 16,256 rows across the MobileNet, perturbation and holdout runs in `results/receipt-share-v1/index.json`, plus 1,380 student rows in `results/receipt-share-distill-v1/index.json`. The manifests and per-run results support independent recomputation. Reference verification still requires independently collected pairs.
 
 ## External comparison readiness
 
@@ -166,4 +166,4 @@ The official TruFor archive matched the published MD5, and the project checkpoin
 | CORD/SROIE historical test | 0.380 [0.240, 0.490] | 0.485 | −0.105 [−0.240, +0.040] |
 | WildReceipt historical shift | 0.830 [0.710, 0.980] | 0.475 | +0.355 [+0.257, +0.540] |
 
-The WildReceipt panel ranking performance should be read alongside operating behavior. At the receipt calibration cutoff nominally targeting 5% FPR, TruFor flagged zero images in all three evaluation roles. Both the small sample and native-size caps limit transfer of these results to the full cohorts. The WildReceipt panel shares the v2 generator with the other panels. The selection manifest, paired scores and bootstrap results are in `artifacts/trufor-native-panel-v1/`. Source and dependency digests are in `artifacts/trufor-upstream/provenance.json`.
+The WildReceipt panel ranking performance should be read alongside operating behavior. At the receipt calibration cutoff nominally targeting 5% FPR, TruFor flagged zero images in all three evaluation roles. Both the small sample and native-size caps limit transfer of these results to the full cohorts. The WildReceipt panel shares the v2 generator with the other panels. The selection manifest, paired scores and bootstrap results are in `artifacts/trufor-native-panel-v1/`. Source and dependency digests are in `results/trufor-upstream/provenance.json`.

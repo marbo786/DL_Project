@@ -1,0 +1,11 @@
+{
+  "run_id": "receipt-pareto-v1",
+  "status": "passed",
+  "measured_rows": 1600,
+  "development_receipts_per_model": 400,
+  "max_absolute_logit_delta_against_existing_development_tables": {
+    "residual-fp32": 0.0,
+    "student": 0.0,
+    "distilled": 0.0
+  }
+}

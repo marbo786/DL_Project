@@ -6,9 +6,9 @@
 
 | Cohort | Evidence status | Scope |
 | --- | --- | --- |
-| CORD/SROIE, 442 images in 219 groups | Retrospective in-domain | Historical receipt test. Residual run `receipt-retrospective-v1`, `artifacts/receipt-retrospective-v1/test.json`. |
-| WildReceipt, 2,672 images in 1,293 groups | Retrospective corpus shift | Historical receipt test from a different source corpus with the same AIForge v2 generator. Run `receipt-retrospective-v1`, `artifacts/receipt-retrospective-v1/shifted_test.json`. |
-| XFUND, 836 images in 410 groups | Previously held-back form probe, now scored | Same-release category and corpus shift. The receipt recipe was locked before scoring these forms. Run `receipt-xfund-v1`, `artifacts/receipt-xfund-v1/freeze-before-labels.json` and `metrics.json`. |
+| CORD/SROIE, 442 images in 219 groups | Retrospective in-domain | Historical receipt test. Residual run `receipt-retrospective-v1`, `results/receipt-retrospective-v1/test.json`. |
+| WildReceipt, 2,672 images in 1,293 groups | Retrospective corpus shift | Historical receipt test from a different source corpus with the same AIForge v2 generator. Run `receipt-retrospective-v1`, `results/receipt-retrospective-v1/shifted_test.json`. |
+| XFUND, 836 images in 410 groups | Previously held-back form probe, now scored | Same-release category and corpus shift. The receipt recipe was locked before scoring these forms. Run `receipt-xfund-v1`, `results/receipt-xfund-v1/freeze-before-labels.json` and `metrics.json`. |
 | Matched AIForge v1/v2 edit specifications, 179 specs in 178 groups | Retrospective release and generator comparison | Historical same-source pairs selected by the existing crosswalk. Run `receipt-generator-evaluation-v1`, `artifacts/receipt-generator-evaluation-v1/matched-pairs.csv` and `summary.json`. |
 
 Fresh evaluation requires new source lineages. Repartitioning these exposed documents would carry forward their prior use. Existing locks document the scope and order of the earlier probes. The historical whole-image CNN benchmark used its own cohort and manifest. Comparative claims about the two frozen detectors on fresh data require common eligible inputs and the same evaluation protocol.
@@ -23,7 +23,7 @@ Fresh evaluation requires new source lineages. Repartitioning these exposed docu
 
 ## Illustrative prevalence scenarios
 
-Keep the balanced evaluations as the primary evidence. To show workload sensitivity, the table projects the saved development rates at the residual model's frozen logit cutoff, **12.0% recall and 10.5% FPR**, onto 1,000 hypothetical receipts at each prevalence. These rates come from `artifacts/receipt-study-v1/residual-42/metrics.json`, `operating_points.0.05`. The projection assumes those class-specific rates transfer and applies the binary cutoff before the confidence gate. The scenarios are arithmetic examples and provide no evidence about campus edit prevalence or future capture performance.
+Keep the balanced evaluations as the primary evidence. To show workload sensitivity, the table projects the saved development rates at the residual model's frozen logit cutoff, **12.0% recall and 10.5% FPR**, onto 1,000 hypothetical receipts at each prevalence. These rates come from `results/receipt-study-v1/residual-42/metrics.json`, `operating_points.0.05`. The projection assumes those class-specific rates transfer and applies the binary cutoff before the confidence gate. The scenarios are arithmetic examples and provide no evidence about campus edit prevalence or future capture performance.
 
 | Assumed edit prevalence | Priority reviews per 1,000 | Edited receipts prioritized | Genuine receipts prioritized | Edited receipts outside priority queue | Precision among priority reviews |
 | ---: | ---: | ---: | ---: | ---: | ---: |

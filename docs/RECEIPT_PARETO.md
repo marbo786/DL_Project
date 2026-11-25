@@ -37,17 +37,17 @@ Bash
 
 ```bash
 export OPENBLAS_NUM_THREADS='1'
-python -m research.receipt_pareto --manifest artifacts/receipt-protocol-v1-contained/manifest.csv --root data/aiforge/assets --students artifacts/receipt-distill-v1 --output artifacts/receipt-pareto-v1 --cpu-label 'AMD Ryzen 7 5800U'
+python -m research.receipt.pareto --manifest artifacts/receipt-protocol-v1-contained/manifest.csv --root data/aiforge/assets --students artifacts/receipt-distill-v1 --output artifacts/receipt-pareto-v1 --cpu-label 'AMD Ryzen 7 5800U'
 ```
 
 PowerShell
 
 ```powershell
 $env:OPENBLAS_NUM_THREADS = '1'
-python -m research.receipt_pareto --manifest artifacts/receipt-protocol-v1-contained/manifest.csv --root data/aiforge/assets --students artifacts/receipt-distill-v1 --output artifacts/receipt-pareto-v1 --cpu-label 'AMD Ryzen 7 5800U'
+python -m research.receipt.pareto --manifest artifacts/receipt-protocol-v1-contained/manifest.csv --root data/aiforge/assets --students artifacts/receipt-distill-v1 --output artifacts/receipt-pareto-v1 --cpu-label 'AMD Ryzen 7 5800U'
 ```
 
-Run evidence is in `artifacts/receipt-pareto-v1/lock.json`, `summary.json`, `scores-and-timings.csv`, `int8-calibration.json`, and `verification.json` within the same directory. The lock records the saved INT8 weight digest and parent checkpoint fingerprint. Verification independently checked all 1,600 timed rows and found exact parity with the saved development logits for the three preexisting checkpoints. The checked-in figures contain only aggregate measurements.
+The [lock](../results/receipt-pareto-v1/lock.json), [summary](../results/receipt-pareto-v1/summary.json), and [verification](../results/receipt-pareto-v1/verification.json) record the run evidence. The per-document `scores-and-timings.csv` and `int8-calibration.json` remain in the original run directory. The lock records the saved INT8 weight digest and parent checkpoint fingerprint. Verification independently checked all 1,600 timed rows and found exact parity with the saved development logits for the three preexisting checkpoints. The checked-in figures contain only aggregate measurements.
 
 ## Random-review benchmark
 

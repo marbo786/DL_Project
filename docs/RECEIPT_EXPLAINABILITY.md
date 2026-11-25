@@ -42,17 +42,17 @@ Bash
 
 ```bash
 export OPENBLAS_NUM_THREADS='1'
-python -m research.receipt_explain --manifest artifacts/receipt-protocol-v1-contained/manifest.csv --root data/aiforge/assets --output artifacts/receipt-explain-v1
+python -m research.receipt.explain --manifest artifacts/receipt-protocol-v1-contained/manifest.csv --root data/aiforge/assets --output artifacts/receipt-explain-v1
 ```
 
 PowerShell
 
 ```powershell
 $env:OPENBLAS_NUM_THREADS = '1'
-python -m research.receipt_explain --manifest artifacts/receipt-protocol-v1-contained/manifest.csv --root data/aiforge/assets --output artifacts/receipt-explain-v1
+python -m research.receipt.explain --manifest artifacts/receipt-protocol-v1-contained/manifest.csv --root data/aiforge/assets --output artifacts/receipt-explain-v1
 ```
 
-Use a new output directory for a repeated run. The lock, case interventions, aggregate summary, and per-pair evidence are stored in `artifacts/receipt-explain-v1/`. The `verification.json` record checks 52 unique baseline predictions and the proposed regression baselines against the saved development scores. The `case-probe-verification.json` record covers independent replays of the five interventions.
+Use a new output directory for a repeated run. The original directory contains case and per-pair records. The saved [lock](../results/receipt-explain-v1/lock.json) and [summary](../results/receipt-explain-v1/summary.json) describe the run. [Verification](../results/receipt-explain-v1/verification.json) checks 52 unique baseline predictions and the proposed regression baselines against the saved development scores. The [case-probe verification](../results/receipt-explain-v1/case-probe-verification.json) covers independent replays of the five interventions.
 
 ## All 200 development pairs
 

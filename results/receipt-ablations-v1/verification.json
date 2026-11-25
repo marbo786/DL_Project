@@ -1,0 +1,12 @@
+{
+  "run_id": "receipt-ablations-v1",
+  "scope": "development only",
+  "verified_score_rows": 6912,
+  "verified_arms": 8,
+  "verified_seeds": [
+    17,
+    42,
+    71
+  ],
+  "max_absolute_point_estimate_delta": 1.1102230246251565e-16
+}

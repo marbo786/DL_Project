@@ -1,0 +1,18 @@
+{
+  "fp32": {
+    "documents": 8,
+    "max_tile_logit_delta": 0.0,
+    "max_document_logit_delta": 0.0,
+    "max_probability_delta": 0.0,
+    "decision_matches": 8,
+    "localization_matches": 8
+  },
+  "int8": {
+    "documents": 8,
+    "max_tile_logit_delta": 0.0,
+    "max_document_logit_delta": 0.0,
+    "max_probability_delta": 0.0,
+    "decision_matches": 8,
+    "localization_matches": 8
+  }
+}

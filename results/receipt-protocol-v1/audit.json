@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "input_manifest_sha256": "3a4723b5bbec3b2fec496836fe48b0fa45a7732437956f1839a7dfce952cfc80",
+  "output_manifest_sha256": "cfe3dad1d28fefefe86f5777ce1f8fc73bfa140c811b95926f62d74eb9d463f3",
+  "counts": {
+    "calibration/cord/genuine": 126,
+    "calibration/cord/manipulated": 126,
+    "calibration/sroie/genuine": 36,
+    "calibration/sroie/manipulated": 36,
+    "shifted_test/wildreceipt/genuine": 1336,
+    "shifted_test/wildreceipt/manipulated": 1336,
+    "test/cord/genuine": 197,
+    "test/cord/manipulated": 197,
+    "test/sroie/genuine": 65,
+    "test/sroie/manipulated": 65,
+    "train/cord/genuine": 490,
+    "train/cord/manipulated": 490,
+    "train/sroie/genuine": 139,
+    "train/sroie/manipulated": 139,
+    "validation/cord/genuine": 168,
+    "validation/cord/manipulated": 168,
+    "validation/sroie/genuine": 60,
+    "validation/sroie/manipulated": 60
+  },
+  "audit": {
+    "edits": 2617,
+    "edits_with_changes_outside_mask": 0,
+    "edits_without_changed_pixels_inside": 0
+  },
+  "source_ids": 2617,
+  "connected_sources": 2617,
+  "near_duplicate_decisions": {
+    "unreviewed": 192
+  },
+  "mask_fraction_quantiles": {
+    "cord": [
+      0.0017976760864257812,
+      0.0038571887546115452,
+      0.009202103337905807
+    ],
+    "sroie": [
+      0.002796591972762526,
+      0.014195251955039425,
+      0.024273436885240272
+    ],
+    "wildreceipt": [
+      0.004750943620178041,
+      0.014136609855991545,
+      0.03442291666666667
+    ]
+  },
+  "package": {
+    "metadata_sha256": "305eedef460c4ad53bfa3f89203c52c68d9e5c00c57f66f0684a87bb6faa8844",
+    "mapping_sha256": "a93bb623dcda6ffa00516c17477d62163989a692474144c06f2ff4af1f4c070a",
+    "versions": "2.0.1",
+    "categories": {
+      "receipt": 2648,
+      "form": 418
+    },
+    "v1_assignment_leads": {
+      "gemini-nano": 2688,
+      "qwen-inpaint": 378
+    }
+  }
+}

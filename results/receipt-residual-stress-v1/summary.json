@@ -1,0 +1,411 @@
+{
+  "run_id": "receipt-residual-stress-v1",
+  "lock_sha256": "67f22252c95cc827562d647615ab57144fce3aa09a52fbd45087aca3708c9d73",
+  "stress_sha256": "e243d9767dd7fdae8ff2302a3f4c9f26f0cc2c4bf8ca764e068143766fb67590",
+  "open_set_sha256": "c70786699cc8b1098cf70f61961bcdfbda0131bee5cc1e014a92ab0306bf5623",
+  "groups": 24,
+  "pairs": 24,
+  "stress": {
+    "clean": {
+      "auroc": 0.515625,
+      "recall": 0.08333333333333333,
+      "fpr": 0.08333333333333333,
+      "coverage_genuine": 0.0,
+      "coverage_edited": 0.0
+    },
+    "blur-1": {
+      "auroc": 0.515625,
+      "recall": 0.20833333333333334,
+      "fpr": 0.20833333333333334,
+      "coverage_genuine": 0.0,
+      "coverage_edited": 0.0,
+      "paired_delta": {
+        "auroc": 0.0,
+        "recall": 0.125,
+        "fpr": 0.125,
+        "coverage_genuine": 0.0,
+        "coverage_edited": 0.0
+      },
+      "paired_delta_95": {
+        "auroc": [
+          -0.036914062500000046,
+          0.03129340277777768
+        ],
+        "recall": [
+          0.0,
+          0.29166666666666663
+        ],
+        "fpr": [
+          0.0,
+          0.29166666666666663
+        ],
+        "coverage_genuine": [
+          0.0,
+          0.0
+        ],
+        "coverage_edited": [
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "blur-2": {
+      "auroc": 0.49999999999999994,
+      "recall": 0.25,
+      "fpr": 0.25,
+      "coverage_genuine": 0.0,
+      "coverage_edited": 0.0,
+      "paired_delta": {
+        "auroc": -0.015625000000000056,
+        "recall": 0.16666666666666669,
+        "fpr": 0.16666666666666669,
+        "coverage_genuine": 0.0,
+        "coverage_edited": 0.0
+      },
+      "paired_delta_95": {
+        "auroc": [
+          -0.05902777777777768,
+          0.017816840277777787
+        ],
+        "recall": [
+          0.04166666666666666,
+          0.3333333333333333
+        ],
+        "fpr": [
+          0.04166666666666666,
+          0.3333333333333333
+        ],
+        "coverage_genuine": [
+          0.0,
+          0.0
+        ],
+        "coverage_edited": [
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "brightness-1": {
+      "auroc": 0.517361111111111,
+      "recall": 0.08333333333333333,
+      "fpr": 0.08333333333333333,
+      "coverage_genuine": 0.0,
+      "coverage_edited": 0.0,
+      "paired_delta": {
+        "auroc": 0.0017361111111110494,
+        "recall": 0.0,
+        "fpr": 0.0,
+        "coverage_genuine": 0.0,
+        "coverage_edited": 0.0
+      },
+      "paired_delta_95": {
+        "auroc": [
+          -0.01736111111111105,
+          0.022569444444444503
+        ],
+        "recall": [
+          0.0,
+          0.0
+        ],
+        "fpr": [
+          0.0,
+          0.0
+        ],
+        "coverage_genuine": [
+          0.0,
+          0.0
+        ],
+        "coverage_edited": [
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "brightness-2": {
+      "auroc": 0.5,
+      "recall": 0.0,
+      "fpr": 0.0,
+      "coverage_genuine": 0.0,
+      "coverage_edited": 0.0,
+      "paired_delta": {
+        "auroc": -0.015625,
+        "recall": -0.08333333333333333,
+        "fpr": -0.08333333333333333,
+        "coverage_genuine": 0.0,
+        "coverage_edited": 0.0
+      },
+      "paired_delta_95": {
+        "auroc": [
+          -0.0617621527777778,
+          0.010416666666666689
+        ],
+        "recall": [
+          -0.20833333333333334,
+          0.0
+        ],
+        "fpr": [
+          -0.20833333333333334,
+          0.0
+        ],
+        "coverage_genuine": [
+          0.0,
+          0.0
+        ],
+        "coverage_edited": [
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "jpeg-1": {
+      "auroc": 0.5043402777777778,
+      "recall": 0.125,
+      "fpr": 0.08333333333333333,
+      "coverage_genuine": 0.0,
+      "coverage_edited": 0.0,
+      "paired_delta": {
+        "auroc": -0.01128472222222221,
+        "recall": 0.04166666666666667,
+        "fpr": 0.0,
+        "coverage_genuine": 0.0,
+        "coverage_edited": 0.0
+      },
+      "paired_delta_95": {
+        "auroc": [
+          -0.06990017361111116,
+          0.029101562499999976
+        ],
+        "recall": [
+          0.0,
+          0.125
+        ],
+        "fpr": [
+          0.0,
+          0.0
+        ],
+        "coverage_genuine": [
+          0.0,
+          0.0
+        ],
+        "coverage_edited": [
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "jpeg-2": {
+      "auroc": 0.4904513888888889,
+      "recall": 0.08333333333333333,
+      "fpr": 0.08333333333333333,
+      "coverage_genuine": 0.0,
+      "coverage_edited": 0.0,
+      "paired_delta": {
+        "auroc": -0.025173611111111105,
+        "recall": 0.0,
+        "fpr": 0.0,
+        "coverage_genuine": 0.0,
+        "coverage_edited": 0.0
+      },
+      "paired_delta_95": {
+        "auroc": [
+          -0.10251736111111119,
+          0.017816840277777787
+        ],
+        "recall": [
+          0.0,
+          0.0
+        ],
+        "fpr": [
+          0.0,
+          0.0
+        ],
+        "coverage_genuine": [
+          0.0,
+          0.0
+        ],
+        "coverage_edited": [
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "random-occlusion-1": {
+      "auroc": 0.515625,
+      "recall": 0.08333333333333333,
+      "fpr": 0.08333333333333333,
+      "coverage_genuine": 0.0,
+      "coverage_edited": 0.0,
+      "paired_delta": {
+        "auroc": 0.0,
+        "recall": 0.0,
+        "fpr": 0.0,
+        "coverage_genuine": 0.0,
+        "coverage_edited": 0.0
+      },
+      "paired_delta_95": {
+        "auroc": [
+          -0.02042100694444447,
+          0.014344618055555524
+        ],
+        "recall": [
+          0.0,
+          0.0
+        ],
+        "fpr": [
+          0.0,
+          0.0
+        ],
+        "coverage_genuine": [
+          0.0,
+          0.0
+        ],
+        "coverage_edited": [
+          0.0,
+          0.0
+        ]
+      },
+      "mean_edit_mask_fraction_covered": 0.15744442114358445,
+      "edit_masks_intersected": 7
+    },
+    "random-occlusion-2": {
+      "auroc": 0.5052083333333334,
+      "recall": 0.041666666666666664,
+      "fpr": 0.041666666666666664,
+      "coverage_genuine": 0.0,
+      "coverage_edited": 0.0,
+      "paired_delta": {
+        "auroc": -0.01041666666666663,
+        "recall": -0.041666666666666664,
+        "fpr": -0.041666666666666664,
+        "coverage_genuine": 0.0,
+        "coverage_edited": 0.0
+      },
+      "paired_delta_95": {
+        "auroc": [
+          -0.04650607638888887,
+          0.013888888888888899
+        ],
+        "recall": [
+          -0.12500000000000003,
+          0.0
+        ],
+        "fpr": [
+          -0.12500000000000003,
+          0.0
+        ],
+        "coverage_genuine": [
+          0.0,
+          0.0
+        ],
+        "coverage_edited": [
+          0.0,
+          0.0
+        ]
+      },
+      "mean_edit_mask_fraction_covered": 0.2596621288606562,
+      "edit_masks_intersected": 11
+    },
+    "edit-occlusion-1": {
+      "auroc": 0.4991319444444444,
+      "recall": 0.08333333333333333,
+      "fpr": 0.08333333333333333,
+      "coverage_genuine": 0.0,
+      "coverage_edited": 0.0,
+      "paired_delta": {
+        "auroc": -0.01649305555555558,
+        "recall": 0.0,
+        "fpr": 0.0,
+        "coverage_genuine": 0.0,
+        "coverage_edited": 0.0
+      },
+      "paired_delta_95": {
+        "auroc": [
+          -0.06473524305555561,
+          0.015212673611111106
+        ],
+        "recall": [
+          0.0,
+          0.0
+        ],
+        "fpr": [
+          0.0,
+          0.0
+        ],
+        "coverage_genuine": [
+          0.0,
+          0.0
+        ],
+        "coverage_edited": [
+          0.0,
+          0.0
+        ]
+      },
+      "mean_edit_mask_fraction_covered": 0.6777959590937729,
+      "edit_masks_intersected": 24
+    },
+    "edit-occlusion-2": {
+      "auroc": 0.4991319444444444,
+      "recall": 0.041666666666666664,
+      "fpr": 0.041666666666666664,
+      "coverage_genuine": 0.0,
+      "coverage_edited": 0.0,
+      "paired_delta": {
+        "auroc": -0.01649305555555558,
+        "recall": -0.041666666666666664,
+        "fpr": -0.041666666666666664,
+        "coverage_genuine": 0.0,
+        "coverage_edited": 0.0
+      },
+      "paired_delta_95": {
+        "auroc": [
+          -0.06473524305555561,
+          0.015212673611111106
+        ],
+        "recall": [
+          -0.12500000000000003,
+          0.0
+        ],
+        "fpr": [
+          -0.12500000000000003,
+          0.0
+        ],
+        "coverage_genuine": [
+          0.0,
+          0.0
+        ],
+        "coverage_edited": [
+          0.0,
+          0.0
+        ]
+      },
+      "mean_edit_mask_fraction_covered": 0.8046021154724393,
+      "edit_masks_intersected": 24
+    }
+  },
+  "open_set": {
+    "screenshot": {
+      "inputs": 3,
+      "prioritize": 0,
+      "normal": 0,
+      "inconclusive": 3,
+      "confidence_gate_pass": 0,
+      "inappropriate_acceptance": 0.0
+    },
+    "photo": {
+      "inputs": 2,
+      "prioritize": 0,
+      "normal": 0,
+      "inconclusive": 2,
+      "confidence_gate_pass": 0,
+      "inappropriate_acceptance": 0.0
+    },
+    "unsupported form": {
+      "inputs": 8,
+      "prioritize": 0,
+      "normal": 0,
+      "inconclusive": 8,
+      "confidence_gate_pass": 0,
+      "inappropriate_acceptance": 0.0
+    }
+  }
+}

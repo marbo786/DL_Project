@@ -51,17 +51,17 @@ Bash
 
 ```bash
 export OPENBLAS_NUM_THREADS='1'
-python -m research.receipt_ablations --manifest artifacts/receipt-protocol-v1-contained/manifest.csv --weights artifacts/torch-cache/hub/checkpoints/mobilenet_v3_small-047dcff4.pth --root data/aiforge/assets --study artifacts/receipt-study-v1 --output artifacts/receipt-ablations-v1
+python -m research.receipt.ablations --manifest artifacts/receipt-protocol-v1-contained/manifest.csv --weights artifacts/torch-cache/hub/checkpoints/mobilenet_v3_small-047dcff4.pth --root data/aiforge/assets --study artifacts/receipt-study-v1 --output artifacts/receipt-ablations-v1
 ```
 
 PowerShell
 
 ```powershell
 $env:OPENBLAS_NUM_THREADS = '1'
-python -m research.receipt_ablations --manifest artifacts/receipt-protocol-v1-contained/manifest.csv --weights artifacts/torch-cache/hub/checkpoints/mobilenet_v3_small-047dcff4.pth --root data/aiforge/assets --study artifacts/receipt-study-v1 --output artifacts/receipt-ablations-v1
+python -m research.receipt.ablations --manifest artifacts/receipt-protocol-v1-contained/manifest.csv --weights artifacts/torch-cache/hub/checkpoints/mobilenet_v3_small-047dcff4.pth --root data/aiforge/assets --study artifacts/receipt-study-v1 --output artifacts/receipt-ablations-v1
 ```
 
-The versioned evidence is under `artifacts/receipt-ablations-v1/`. `lock.json` records the protocol and checkpoint fingerprints. `scoped-manifest.csv` records the cohorts. The per-seed directories keep calibration and development scores, fitted checkpoints for new training runs, and paired metric files. `summary.json` records the across-seed comparisons. `verification.json` records the independent recomputation from all 6,912 calibration and development score rows.
+The [lock](../results/receipt-ablations-v1/lock.json) records the protocol and checkpoint fingerprints. The private original run directory contains the cohort manifest and per-seed records. The [summary](../results/receipt-ablations-v1/summary.json) records the across-seed comparisons. [Verification](../results/receipt-ablations-v1/verification.json) records the independent recomputation from all 6,912 calibration and development score rows.
 
 ## AdamW decay follow-up
 

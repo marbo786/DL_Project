@@ -1,0 +1,192 @@
+{
+  "gradients": {
+    "frozen": {
+      "optimizer_tensors": 2,
+      "nonzero_gradient_tensors": 2,
+      "changed_encoder_parameters": 0,
+      "changed_bn_buffers": 0,
+      "frozen_encoder_blocks": 13
+    },
+    "partial": {
+      "optimizer_tensors": 31,
+      "nonzero_gradient_tensors": 31,
+      "changed_encoder_parameters": 29,
+      "changed_bn_buffers": 14,
+      "frozen_encoder_blocks": 10
+    },
+    "full": {
+      "optimizer_tensors": 140,
+      "nonzero_gradient_tensors": 134,
+      "changed_encoder_parameters": 138,
+      "changed_bn_buffers": 68,
+      "frozen_encoder_blocks": 0
+    }
+  },
+  "overfit": {
+    "actual_masks": {
+      "groups_selected": 8,
+      "groups_used": 8,
+      "tiles": 24,
+      "loss_start": 1.025107979774475,
+      "loss_end": 0.0067926556803286076,
+      "eval_mode_training_accuracy": 0.75,
+      "eval_mode_balanced_accuracy": 0.625
+    },
+    "obvious_edit": {
+      "groups_selected": 8,
+      "groups_used": 8,
+      "tiles": 24,
+      "loss_start": 1.0310392379760742,
+      "loss_end": 0.005267634987831116,
+      "eval_mode_training_accuracy": 1.0,
+      "eval_mode_balanced_accuracy": 1.0
+    },
+    "shuffled_labels": {
+      "groups_selected": 8,
+      "groups_used": 8,
+      "tiles": 24,
+      "loss_start": 0.9094836115837097,
+      "loss_end": 0.004327407106757164,
+      "eval_mode_training_accuracy": 0.75,
+      "eval_mode_balanced_accuracy": 0.78125
+    }
+  },
+  "checkpoints": {
+    "frozen-17": {
+      "changed_encoder_tensors": 0,
+      "epochs": 3,
+      "trained_groups": 556,
+      "training_examples": 1755,
+      "loss_first": 0.9199233269419765,
+      "loss_last": 0.8792541431905198
+    },
+    "frozen-42": {
+      "changed_encoder_tensors": 0,
+      "epochs": 3,
+      "trained_groups": 556,
+      "training_examples": 1755,
+      "loss_first": 0.9163504971737875,
+      "loss_last": 0.8730203265138501
+    },
+    "frozen-71": {
+      "changed_encoder_tensors": 0,
+      "epochs": 3,
+      "trained_groups": 556,
+      "training_examples": 1755,
+      "loss_first": 0.9099081098184286,
+      "loss_last": 0.8735471792710133
+    },
+    "full-17": {
+      "changed_encoder_tensors": 138,
+      "epochs": 3,
+      "trained_groups": 556,
+      "training_examples": 1755,
+      "loss_first": 0.9102113296503355,
+      "loss_last": 0.720368135450912
+    },
+    "full-42": {
+      "changed_encoder_tensors": 138,
+      "epochs": 3,
+      "trained_groups": 556,
+      "training_examples": 1755,
+      "loss_first": 0.9281248306956387,
+      "loss_last": 0.7454061668482941
+    },
+    "full-42-fraction-0.25": {
+      "changed_encoder_tensors": 138,
+      "epochs": 3,
+      "trained_groups": 139,
+      "training_examples": 426,
+      "loss_first": 0.9513048347732831,
+      "loss_last": 0.800256780055767
+    },
+    "full-42-fraction-0.5": {
+      "changed_encoder_tensors": 138,
+      "epochs": 3,
+      "trained_groups": 278,
+      "training_examples": 873,
+      "loss_first": 0.9494178964236895,
+      "loss_last": 0.7896956544698036
+    },
+    "full-71": {
+      "changed_encoder_tensors": 138,
+      "epochs": 3,
+      "trained_groups": 556,
+      "training_examples": 1755,
+      "loss_first": 0.9005152420440631,
+      "loss_last": 0.7145223742876298
+    },
+    "partial-17": {
+      "changed_encoder_tensors": 29,
+      "epochs": 3,
+      "trained_groups": 556,
+      "training_examples": 1755,
+      "loss_first": 0.9157294811346592,
+      "loss_last": 0.7692680441416226
+    },
+    "partial-42": {
+      "changed_encoder_tensors": 29,
+      "epochs": 3,
+      "trained_groups": 556,
+      "training_examples": 1755,
+      "loss_first": 0.9347532753251556,
+      "loss_last": 0.7742493929686369
+    },
+    "partial-71": {
+      "changed_encoder_tensors": 29,
+      "epochs": 3,
+      "trained_groups": 556,
+      "training_examples": 1755,
+      "loss_first": 0.9047933325129017,
+      "loss_last": 0.7481819087283903
+    },
+    "residual-17": {
+      "changed_encoder_tensors": 138,
+      "epochs": 3,
+      "trained_groups": 556,
+      "training_examples": 1755,
+      "loss_first": 0.9125470523481016,
+      "loss_last": 0.7231689019420547
+    },
+    "residual-42": {
+      "changed_encoder_tensors": 138,
+      "epochs": 3,
+      "trained_groups": 556,
+      "training_examples": 1755,
+      "loss_first": 0.9320027165263467,
+      "loss_last": 0.7444641110903857
+    },
+    "residual-71": {
+      "changed_encoder_tensors": 138,
+      "epochs": 3,
+      "trained_groups": 556,
+      "training_examples": 1755,
+      "loss_first": 0.9024111398264894,
+      "loss_last": 0.7149069677390943
+    },
+    "whole-17": {
+      "changed_encoder_tensors": 138,
+      "epochs": 3,
+      "trained_groups": 556,
+      "training_examples": 1170,
+      "loss_first": 0.7352167576806158,
+      "loss_last": 0.7122482713471111
+    },
+    "whole-42": {
+      "changed_encoder_tensors": 138,
+      "epochs": 3,
+      "trained_groups": 556,
+      "training_examples": 1170,
+      "loss_first": 0.7304393667441148,
+      "loss_last": 0.7066876800651224
+    },
+    "whole-71": {
+      "changed_encoder_tensors": 138,
+      "epochs": 3,
+      "trained_groups": 556,
+      "training_examples": 1170,
+      "loss_first": 0.7318475352393257,
+      "loss_last": 0.7061571591939682
+    }
+  }
+}

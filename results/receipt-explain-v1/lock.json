@@ -1,0 +1,66 @@
+{
+  "run_id": "receipt-explain-v1",
+  "manifest_sha256": "1c395905027f9cd2e88489c26a5e741627697898dda10357490bcf8abb1f4f65",
+  "demo_lock_sha256": "d65421f5457ad6ecb91747b1ed6cd2fb4a86ea0c40a023124290a8239d6688e0",
+  "checkpoint_sha256": "2076ae044aaa65e69df5ae941a71ecf64b397c241cd0065ff3fb3533291ff6c5",
+  "logit_cutoff": 1.4312477111816406,
+  "development_groups": [
+    "cord:cord_00460",
+    "cord:cord_00600",
+    "cord:cord_00170",
+    "sroie:sroie_X51005757282",
+    "cord:cord_00868",
+    "cord:cord_00074",
+    "cord:cord_00244",
+    "cord:cord_00529",
+    "cord:cord_00382",
+    "sroie:sroie_X51005757290",
+    "cord:cord_00588",
+    "sroie:sroie_X51005230657",
+    "cord:cord_00427",
+    "cord:cord_00667",
+    "cord:cord_00583",
+    "cord:cord_00378",
+    "cord:cord_00291",
+    "cord:cord_00188",
+    "sroie:sroie_X00016469623",
+    "sroie:sroie_X51006387950",
+    "cord:cord_00369",
+    "sroie:sroie_X51007339157(1)",
+    "sroie:sroie_X51006502534",
+    "cord:cord_00622"
+  ],
+  "cases": {
+    "A": [
+      "000003626:original",
+      "highlight intervention"
+    ],
+    "B": [
+      "000003581:original",
+      "background-only pooling"
+    ],
+    "C": [
+      "000000042:edited",
+      "half-tile grid offset"
+    ],
+    "D": [
+      "000000383:edited",
+      "top-one pooling"
+    ],
+    "E": [
+      "000003631:edited",
+      "restore edited pixels"
+    ]
+  },
+  "reference_scores_sha256": "c6eda9371746c07a23a1397bf42d7b13fc77cc812647950ac8974d424fc11e0e",
+  "neutral_fill": [
+    127,
+    127,
+    127
+  ],
+  "bootstrap_seed": 427,
+  "bootstrap_repeats": 1000,
+  "threads": 2,
+  "tile_batch": 64,
+  "torch": "2.12.0+cpu"
+}
