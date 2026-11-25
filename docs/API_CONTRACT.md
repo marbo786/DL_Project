@@ -6,6 +6,8 @@ The approved adapter is available when `FORGERYLENS_FROZEN_RECEIPT=1` is set on 
 
 `POST /api/v1/analyze` accepts raw JPEG, PNG, or WebP bytes. The bundled model scores its fictional-specimen allowlist. Its `Analysis` response includes `analysis_id`, `model_version`, `decision` (`no_strong_evidence`, `suspicious`, or `inconclusive`), nullable `predicted_class`, `calibrated_probability` and `uncertainty`, normalized `regions`, nullable bounded row-major `heatmap`, `warnings`, `inference_ms`, `image_width`, `image_height`, and `rejected`. Its timer starts after decoding. Its heatmap and regions come from the historical model.
 
+The historical analyzer returns HTTP 429 with `Retry-After` when the client's request window is exhausted. A full queue or an expired queue wait returns HTTP 503 with `Retry-After`. A timed-out or interrupted upload returns HTTP 408. Oversize uploads return HTTP 413. Unsupported and animated images return HTTP 415.
+
 `GET /api/v1/health` reports model readiness. `GET /api/v1/ready` returns 503 when the model is unavailable. `GET /api/v1/model-info` reports availability, version, scope, and input limits. `GET /api/v1/experiments/{section}` returns `{status, artifact}` for `summary`, `calibration`, `robustness`, or `ablations`; the default source is the historical `release/` directory.
 
 `POST /api/v1/compare` takes multipart `reference` and `candidate` images in opt-in loopback research mode. It returns an SSIM decision, reason, score, threshold, policy version, alignment, and timing, with previews and raster metadata when alignment is supported.

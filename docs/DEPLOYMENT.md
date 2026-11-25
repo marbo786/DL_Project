@@ -72,10 +72,12 @@ Run `python tests/smoke.py https://your-host --image web/public/edited.png`. Thi
 
 A free Render service can sleep during inactivity. Check resume time and steady-state behavior before a live demo. Test provider request limits with representative images.
 
-## Custom model
+## Adapter selection and request limits
 
-To replace the built-in model, set `FORGERYLENS_ADAPTER=package.module:create_predictor` with an installed, trusted package. The factory returns a stable `version` string and synchronous `predict(rgb_image)` method. The input is an EXIF-oriented RGB Pillow image. Responses conform to `api/contracts.py`. Regions use normalized image coordinates and heatmaps use row-major order.
+Leave `FORGERYLENS_ADAPTER` unset to discover the bundled model in `release/`. The allowlist accepts `api.signal:create_predictor`. An explicitly empty value disables the analyzer. A factory outside the allowlist leaves the model unavailable and readiness returns HTTP 503.
 
-Use `FORGERYLENS_EXPERIMENTS_DIR` to point to approved, measured JSON artifacts. Summary, robustness, ablations and calibration files require a nonempty `run_id`. The bundled API validates file signatures, supports single-frame JPEG, PNG and WebP, enforces 8 MiB and 16 MP limits, and rate-limits expensive requests per process. A public host should apply its own request timeouts and abuse controls.
+The historical analyzer tracks requests by the ASGI peer IP and serializes scoring through a bounded, timed queue. The limiter and queue live in each worker. Behind a reverse proxy, configure Uvicorn's `--forwarded-allow-ips` for your trusted proxy addresses so the ASGI peer can reflect the client. With an untrusted proxy, traffic can share the proxy's bucket. [Uvicorn settings](https://uvicorn.dev/settings/#http)
+
+Use `FORGERYLENS_EXPERIMENTS_DIR` to point to approved, measured JSON artifacts. Summary, robustness, ablations and calibration files require a nonempty `run_id`. The [API contract](API_CONTRACT.md) describes accepted image formats and retry responses.
 
 - [Render free service limits](https://render.com/docs/free)
