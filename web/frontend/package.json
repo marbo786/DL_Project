@@ -6,6 +6,7 @@
     "node": ">=20.9.0"
   },
   "scripts": {
+    "demo": "npm ci && npm run dev",
     "predev": "node scripts/copy-data.mjs",
     "dev": "next dev --webpack",
     "prebuild": "node scripts/copy-data.mjs",

@@ -23,6 +23,8 @@ button:disabled { opacity: .55; cursor: default; }
 [hidden] { display: none !important; }
 .wrap { width: min(1360px, calc(100% - 88px)); margin-inline: auto; }
 .top { border-bottom: 1px solid var(--line); }
+.research-banner { padding-block: .65rem; border-bottom: 1px solid var(--line); background: var(--surface); color: var(--warn); }
+.research-banner p { margin-block: 0; }
 .nav { min-height: 71px; display: flex; align-items: center; justify-content: space-between; gap: 18px; }
 .wordmark { font-size: 1.13rem; font-weight: 720; letter-spacing: -.035em; text-decoration: none; display: flex; align-items: center; gap: 12px; }
 .mark { width: 22px; height: 22px; border: 1px solid var(--accent); position: relative; }

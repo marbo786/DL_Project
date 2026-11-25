@@ -10,14 +10,16 @@ import Pipeline from '@/components/pipeline';
 import { steps } from '@/lib/pipeline-steps';
 import type { ResultsData } from '@/lib/results';
 
-const repository = 'https://github.com/marbo786/DL_Project';
+const repository = 'https://github.com/marbo786/Forgery_Lens';
 
 export function Workbench({ evidence, data }: { evidence: ReactNode; data: ResultsData }) {
   return (
     <div className="preview workbench">
       <a className="skip-link" href="#main">Skip to main content</a>
       <div className="workbench-chrome" data-scroll-header>
-        <div className="research-banner persistent-banner" role="note">Research prototype, not for real reimbursement decisions.</div>
+        <div className="research-banner persistent-banner" role="note">
+          Research prototype, not for real reimbursement decisions. Saved outputs from a frozen model that performs near chance.
+        </div>
         <header className="masthead wrap workbench-header">
           <a className="wordmark" href="#main"><span className="wordmark-icon" aria-hidden="true"><ScanLine size={20} strokeWidth={1.7} /></span>ForgeryLens</a>
           <ActiveNavigation />

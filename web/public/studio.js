@@ -480,7 +480,7 @@ function renderMetrics(section, key, report) {
 function research() {
   main.innerHTML = `<section class="copy"><h1>Research explorer</h1>
     <p>The artifacts below describe the historical synthetic release. The final report covers the external receipt experiments, simulated reference tests, and the remaining independent evaluation.</p>
-    <p><a href="https://github.com/marbo786/DL_Project/blob/phase-a-controls/docs/FINAL_RESEARCH_REPORT.md">Read the final research report</a></p>
+    <p><a href="https://github.com/marbo786/Forgery_Lens/blob/main/docs/history/FINAL_RESEARCH_REPORT.md">Read the historical research report</a></p>
     <div id="reports"></div><p><a href="/methodology">Read the methodology</a></p></section>`;
   for (const [key, title] of [
     ["summary", "Dataset, baseline and efficiency"], ["ablations", "Controlled ablations"],
