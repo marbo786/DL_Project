@@ -1,4 +1,8 @@
-# ForgeryLens final research report
+# ForgeryLens historical research report
+
+[Current course report on single-image receipt review (PDF)](ForgeryLens_Technical_Report.pdf).
+
+The [single-image follow-up](SINGLE_IMAGE_RESULTS.md) extends this historical report with decoded-image and perceptual candidate checks, source-group calibration, and task-specific MobileNetV3 fine-tuning under a fixed evaluation protocol.
 
 ## Abstract
 

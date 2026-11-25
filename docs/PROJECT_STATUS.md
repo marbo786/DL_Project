@@ -1,5 +1,9 @@
 # ForgeryLens project status
 
+The [course report](ForgeryLens_Technical_Report.pdf) and [receipt model card](MODEL_CARD.md) describe the single-image project. The redesigned Receipt Studio passed its local static build and browser checks. The [release checklist](RELEASE_READINESS_CHECKLIST.md#receipt-studio-release) tracks mobile performance, production verification, and the optional live API.
+
+## Historical synthetic release and Reference Studio
+
 | Area | Status |
 | --- | --- |
 | Studio and research explorer | Implemented with editable document viewport, real predictions on curated fictional demo specimens, heatmaps, and measured comparison tables and charts. |

@@ -4,6 +4,7 @@
 
 | Profile | Entry point | Evidence and deployment status |
 | --- | --- | --- |
+| Static Receipt Studio | [Cloudflare Worker](https://patient-cake-9531.marboo786.workers.dev/) or `web/frontend/out` | Recorded fictional samples and published aggregates. The redesigned export passed local checks. Production verification is pending. [Build and deployment](DEPLOYMENT.md) |
 | Historical synthetic release | Default `/studio` or `/studio/single`, with `/api/v1/analyze` | Known fictional specimens. Existing Render profile is defined in [render.yaml](../render.yaml). |
 | Local reference research | Opt-in `/studio`, also `/studio/compare`, with `/api/v1/compare` | Visual comparison with registered SSIM and a trusted reference. Local loopback only. |
 | Public reference upload | No active deployment profile | Requires separate privacy, security, capacity, and cost review plus explicit release authorization. |
@@ -19,7 +20,7 @@ $env:OPENBLAS_NUM_THREADS = '1'
 py -m uvicorn api.main:app --host 127.0.0.1 --port 8000 --no-proxy-headers --no-access-log
 ```
 
-Open [Reference Studio](http://127.0.0.1:8000/studio). Use a single worker for the demonstration. The research adapter verifies the frozen comparator source hashes at startup. The full requirements include PyTorch, which the unchanged research import chain uses even though the comparator is classical. The minimum production requirements alone cannot serve the reference Studio. The separate Next.js shell still serves the historical workflow and proxies API requests. Use the FastAPI-served interface for reference mode.
+Open [Reference Studio](http://127.0.0.1:8000/studio). Use a single worker for the demonstration. The research adapter verifies the frozen comparator source hashes at startup. The full requirements include PyTorch, which the unchanged research import chain uses even though the comparator is classical. Use the FastAPI-served interface for reference mode.
 
 ## Transport and privacy
 
@@ -39,7 +40,7 @@ The production build context is allowlisted. Render remains configured for the `
 
 For a limited public preview, prefer packaging only the four fictional examples and their precomputed responses from a documented policy run. This would keep user files in the browser and remove server-side image parsing from the public surface. A separate upload service requires sandboxed decoding, reverse-proxy body and deadline limits, admission control across workers, privacy and retention review, monitoring, load and memory testing on the intended instance, and cost approval. Establish the conditions for which the independent physical-capture evidence supports any operational performance claim. Keep all claims scoped to comparing visible structure with a separately trusted reference.
 
-## Verification status
+## Historical Phase G verification
 
 Verified the default and opt-in FastAPI modes in loopback API and Chromium workflows. The optional Next.js production build passed in an isolated copy. Its dependency ranges allow resolver drift, so the historical Docker/FastAPI image remains the deployment target. The Docker daemon was unavailable on this workstation, so container build and startup are unverified. No production rollout, externally hosted load test, or independent accuracy evaluation was performed. [Experiment summary](EXPERIMENT_SUMMARY.md)
 

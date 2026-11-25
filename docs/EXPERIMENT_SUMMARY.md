@@ -1,5 +1,7 @@
 # ForgeryLens experiment summary
 
+The [single-image receipt study ledger](SINGLE_IMAGE_RESULTS.md) indexes the newer split audit, fine-tuning comparisons, calibration and forensic-baseline access. The measurements below document the historical release.
+
 ## Evidence by partition
 
 | Partition and task | Configuration | Recorded result | Source |

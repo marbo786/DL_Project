@@ -1,4 +1,6 @@
-# Extending the ForgeryLens study
+# Historical synthetic-study handoff
+
+The [receipt study](SINGLE_IMAGE_RESULTS.md) subsequently ran on paired AIForge data. The [fresh receipt evaluation](FRESH_SHIFT_EVALUATION.md) still requires new source lineages.
 
 The completed synthetic run, model card and report describe the current demonstration. A real-document replication needs authorized data and an independent test protocol.
 
