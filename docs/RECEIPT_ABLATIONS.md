@@ -47,6 +47,15 @@ Whole-page inference reduced AUROC in all three seeds for the fixed residual che
 
 ## Reproduce
 
+Bash
+
+```bash
+export OPENBLAS_NUM_THREADS='1'
+python -m research.receipt_ablations --manifest artifacts/receipt-protocol-v1-contained/manifest.csv --weights artifacts/torch-cache/hub/checkpoints/mobilenet_v3_small-047dcff4.pth --root data/aiforge/assets --study artifacts/receipt-study-v1 --output artifacts/receipt-ablations-v1
+```
+
+PowerShell
+
 ```powershell
 $env:OPENBLAS_NUM_THREADS = '1'
 python -m research.receipt_ablations --manifest artifacts/receipt-protocol-v1-contained/manifest.csv --weights artifacts/torch-cache/hub/checkpoints/mobilenet_v3_small-047dcff4.pth --root data/aiforge/assets --study artifacts/receipt-study-v1 --output artifacts/receipt-ablations-v1

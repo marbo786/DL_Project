@@ -38,6 +38,15 @@ The proposed fixes are hypotheses for future development. The measurements above
 
 ## Reproduce
 
+Bash
+
+```bash
+export OPENBLAS_NUM_THREADS='1'
+python -m research.receipt_explain --manifest artifacts/receipt-protocol-v1-contained/manifest.csv --root data/aiforge/assets --output artifacts/receipt-explain-v1
+```
+
+PowerShell
+
 ```powershell
 $env:OPENBLAS_NUM_THREADS = '1'
 python -m research.receipt_explain --manifest artifacts/receipt-protocol-v1-contained/manifest.csv --root data/aiforge/assets --output artifacts/receipt-explain-v1

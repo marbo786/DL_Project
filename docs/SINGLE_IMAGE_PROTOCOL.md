@@ -1,6 +1,6 @@
 # Single-image evaluation protocol v1
 
-The task is detection and localization of localized visual edits from one receipt image. The reference-assisted comparator is a separate task with its own [frozen policy and acquisition protocol](REAL_WORLD_VERIFICATION_ANALYSIS.md).
+The task is detection and localization of localized visual edits from one receipt image. The reference-assisted comparator is a separate task with its own [frozen policy and acquisition protocol](history/REAL_WORLD_VERIFICATION_ANALYSIS.md).
 
 | Input partition | Role in this protocol |
 | --- | --- |

@@ -55,6 +55,15 @@ All 13 uploads reached scoring and fell below the confidence gate. The same gate
 
 ## Reproduce
 
+Bash
+
+```bash
+export OPENBLAS_NUM_THREADS='1'
+python -m research.receipt_stress --manifest artifacts/receipt-protocol-v1-contained/manifest.csv --root data/aiforge/assets --output artifacts/receipt-residual-stress-v1
+```
+
+PowerShell
+
 ```powershell
 $env:OPENBLAS_NUM_THREADS = '1'
 python -m research.receipt_stress --manifest artifacts/receipt-protocol-v1-contained/manifest.csv --root data/aiforge/assets --output artifacts/receipt-residual-stress-v1

@@ -33,6 +33,15 @@ For the **common review budget**, each system ranks the 400 development receipts
 
 Run from the repository root in the pinned [receipt CPU environment](SINGLE_IMAGE_REPRODUCTION.md#local-cpu-environment). Choose a new output directory for each repetition.
 
+Bash
+
+```bash
+export OPENBLAS_NUM_THREADS='1'
+python -m research.receipt_pareto --manifest artifacts/receipt-protocol-v1-contained/manifest.csv --root data/aiforge/assets --students artifacts/receipt-distill-v1 --output artifacts/receipt-pareto-v1 --cpu-label 'AMD Ryzen 7 5800U'
+```
+
+PowerShell
+
 ```powershell
 $env:OPENBLAS_NUM_THREADS = '1'
 python -m research.receipt_pareto --manifest artifacts/receipt-protocol-v1-contained/manifest.csv --root data/aiforge/assets --students artifacts/receipt-distill-v1 --output artifacts/receipt-pareto-v1 --cpu-label 'AMD Ryzen 7 5800U'

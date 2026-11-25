@@ -6,7 +6,46 @@ The [experiment ledger](SINGLE_IMAGE_RESULTS.md) records measured results and de
 
 The measured host uses Windows 11 x64, AMD Ryzen 7 5800U, Python 3.10.10, PyTorch 2.12.0+cpu, torchvision 0.27.0+cpu, NumPy 2.2.6, Pillow 12.0.0, scikit-learn 1.7.2, and Matplotlib 3.10.8. The script produces portable state dictionaries and local prediction tables. Use the ImageNet MobileNetV3-Small V1 checkpoint from the torchvision model distribution. Its SHA-256 is `047dcff4addef86ea5bc2eff13c9614dc11f47ab1160d0a71a25e7db994f4e1f`.
 
-The current Windows CPU environment is pinned in [requirements-receipt.txt](../research/requirements-receipt.txt) for Python 3.10 on x86-64. The earlier version details above describe the measured host. Run from the repository root. Pass new output directories for each study.
+The measured Windows CPU environment is pinned in [requirements-receipt.txt](../research/requirements-receipt.txt) for Python 3.10 on x86-64. The macOS command selects the corresponding PyPI wheels without the CPU wheel suffix. Package availability depends on platform and architecture. Run from the repository root. Pass new output directories for each study.
+
+Bash
+
+```bash
+python3.10 -m venv .venv/receipt
+source .venv/receipt/bin/activate
+if [ "$(uname -s)" = Darwin ]; then
+  python -m pip install -r <(sed -e '/^--extra-index-url /d' -e 's/+cpu$//' research/requirements-receipt.txt)
+else
+  python -m pip install -r research/requirements-receipt.txt
+fi
+python -m pip check
+export TORCH_HOME="$PWD/artifacts/torch-cache"
+python -c "from torchvision.models import MobileNet_V3_Small_Weights as W; W.IMAGENET1K_V1.get_state_dict(progress=True, check_hash=True)"
+
+# With the official paired archive already obtained
+python -m research.aiforge PATH_TO_AIFORGE_V2_ARCHIVE data/aiforge
+python -m research.manifest data/aiforge/manifest.csv data/aiforge/assets --deduplicated-output data/aiforge/manifest_deduplicated.csv
+python -m research.receipt_protocol data/aiforge/manifest_deduplicated.csv data/aiforge/assets artifacts/receipt-protocol-v1 --package AIForge-Doc-v2.0
+python -m research.receipt_candidate_review artifacts/receipt-protocol-v1 data/aiforge/assets artifacts/receipt-protocol-v1-contained
+
+manifestPath='artifacts/receipt-protocol-v1-contained/manifest.csv'
+assetsPath='data/aiforge/assets'
+weightsPath='artifacts/torch-cache/hub/checkpoints/mobilenet_v3_small-047dcff4.pth'
+studyPath='artifacts/receipt-study-v1'
+python -m research.receipt_study --manifest $manifestPath --root $assetsPath --weights $weightsPath --output $studyPath --modes full frozen partial residual whole --curve
+python -m research.receipt_study --manifest $manifestPath --root $assetsPath --weights $weightsPath --output artifacts/receipt-stress-v1/full-42 --stress-checkpoint "$studyPath/full-42" --stress-sources 24 --threads 3
+python -m research.receipt_report --manifest $manifestPath --root $assetsPath --run "$studyPath/full-42" --output artifacts/receipt-figures-v1
+python -m research.receipt_retrospective --manifest $manifestPath --root $assetsPath --study $studyPath --output artifacts/receipt-retrospective-v1 --threads 3
+python -m research.receipt_forms --package AIForge-Doc-v2.0 --manifest $manifestPath --receipt-root $assetsPath --study $studyPath --lock artifacts/receipt-retrospective-v1/freeze.json --output artifacts/receipt-xfund-v1 --threads 3
+
+python -m research.receipt_efficiency --manifest $manifestPath --root $assetsPath --checkpoint "$studyPath/full-42" --output "$studyPath/efficiency-full-42.json" --threads 2
+python -m research.receipt_memory --manifest $manifestPath --root $assetsPath --checkpoint "$studyPath/full-42" --output artifacts/receipt-runtime-v1 --threads 2
+python -m research.receipt_distill --manifest $manifestPath --root $assetsPath --teacher "$studyPath/full-42" --output artifacts/receipt-distill-v1 --threads 2
+python -m research.receipt_share $studyPath artifacts/receipt-share-v1 --stress artifacts/receipt-stress-v1/full-42 --frozen-evaluation artifacts/receipt-retrospective-v1 --frozen-evaluation artifacts/receipt-xfund-v1
+python -m pytest -q tests/test_receipt_research.py
+```
+
+PowerShell
 
 ```powershell
 py -3.10 -m venv .venv/receipt
@@ -66,7 +105,7 @@ Evidence is in `artifacts/receipt-env-smoke-v1/environment.json`, `manifest.csv`
 
 TruFor is the selected external baseline. Use official source commit `ae54475df6f41a491d7615100feb19263dec13f7`. Its CPU inference flag is `-gpu -1`. The upstream Dockerfile uses PyTorch 1.11 and a CUDA 11.3 base image even though the inference entry point supports CPU. The official zip is `TruFor_weights.zip`, published MD5 `7bee48f3476c75616c3c5721ab256ff8`. Verify the archive before extraction and record the extracted checkpoint SHA-256 plus its environment. Upstream grants informational and nonprofit use. [Official inference instructions](https://github.com/grip-unina/TruFor/blob/ae54475df6f41a491d7615100feb19263dec13f7/test_docker/README.md)
 
-```powershell
+```sh
 python -m research.receipt_trufor stage --manifest $manifestPath --root $assetsPath --split validation --smoke --output artifacts/trufor-smoke-inputs
 # With the pinned official CPU-capable container built, mount that input directory
 # as /data, mount a new output directory as /data_out, and pass
@@ -78,7 +117,7 @@ For a full comparison, stage and collect each cohort without `--smoke`. Use the 
 
 For the native-resolution CPU panel, select and stage the same 40 genuine/edit pairs with:
 
-```powershell
+```sh
 python -m research.receipt_trufor_panel --manifest $manifestPath --root $assetsPath --output artifacts/trufor-native-panel-v1
 ```
 
@@ -92,6 +131,18 @@ DocTamper's official DTD inference implementation uses additional model assets a
 
 The [independent audit](SINGLE_IMAGE_INDEPENDENT_AUDIT.md) describes the continuation findings. Run these commands from the repository root with the original private run directories present. Use a fresh output directory for a new audit.
 
+Bash
+
+```bash
+mkdir -p artifacts/receipt-verification-repeat
+python -m research.receipt_independent_metrics artifacts/receipt-verification-repeat/recomputed.json
+python -m research.receipt_integrity_audit artifacts/receipt-verification-repeat/training.json training
+python -m research.receipt_integrity_audit artifacts/receipt-verification-repeat/export.json export
+python -m research.receipt_trufor_full artifacts/receipt-verification-repeat --roles panel calibration validation test shifted_test xfund
+```
+
+PowerShell
+
 ```powershell
 New-Item -ItemType Directory artifacts/receipt-verification-repeat
 python -m research.receipt_independent_metrics artifacts/receipt-verification-repeat/recomputed.json
@@ -104,7 +155,7 @@ The independent metrics command joins each score table to its designated manifes
 
 Generate the v2 side of the planned cross-generator evaluation with the audited receipt assignments and the official v2 source metadata:
 
-```powershell
+```sh
 python -m research.receipt_v2_inventory --dataset AIForge-Doc-v2.0 --assignments $manifestPath --output artifacts/receipt-generator-inventory-v1
 ```
 
@@ -114,11 +165,28 @@ The generator join takes two normalized spec manifests with `spec_id,source_docu
 
 The local run files are under `artifacts/receipt-generator-evaluation-v1/`. To reproduce into a fresh sibling directory, copy `run.py` there and execute it from the repository root. The runner validates the frozen checkpoint, calibration, model-selection matrix, and source assignments before scoring.
 
-For actual acquisition data, use the existing [reference protocol and audit CLI](REAL_WORLD_VERIFICATION_ANALYSIS.md). Preserve unchanged recaptures, documented edits, legitimate revisions, and wrong references as separate outcome groups. Compare devices and sessions, then report coverage, rejection and wrong-reference acceptance independently of change scores.
+For actual acquisition data, use the existing [reference protocol and audit CLI](history/REAL_WORLD_VERIFICATION_ANALYSIS.md). Preserve unchanged recaptures, documented edits, legitimate revisions, and wrong references as separate outcome groups. Compare devices and sessions, then report coverage, rejection and wrong-reference acceptance independently of change scores.
 
 ## Reproduce the course-paper follow-up
 
 Run the following in the pinned receipt environment after preparing the contained corpus and the original ablation artifacts. Each training command expects a new output directory. The policy replay reads saved predictions. The training and pooling follow-ups use fitting, calibration, or development data only.
+
+Bash
+
+```bash
+assets='data/aiforge/assets'
+manifest='artifacts/receipt-protocol-v1-contained/manifest.csv'
+previous='artifacts/receipt-ablations-v1'
+scoped="$previous/scoped-manifest.csv"
+weights='artifacts/torch-cache/hub/checkpoints/mobilenet_v3_small-047dcff4.pth'
+python -m research.receipt_policy_audit
+python -m research.receipt_decay --root $assets --previous $previous --weights $weights --output artifacts/receipt-decay-repeat
+python -m research.receipt_matched_pilot --root $assets --manifest $scoped --reference "$previous/residual-42" --output artifacts/receipt-matched-repeat
+python -m research.receipt_pooling_audit --manifest $manifest --assets $assets --output artifacts/receipt-pooling-repeat
+python -m research.receipt_repeat_timing --manifest $manifest --assets $assets --artifacts artifacts --output artifacts/receipt-timing-repeat
+```
+
+PowerShell
 
 ```powershell
 $assets = 'data/aiforge/assets'

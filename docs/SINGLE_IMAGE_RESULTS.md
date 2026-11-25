@@ -8,7 +8,7 @@ The [frozen residual stress study](RECEIPT_STRESS.md) reports paired cutoff chan
 
 The [attribution and failure audit](RECEIPT_EXPLAINABILITY.md) tests the highlighted tile against matched deletion controls, compares edit-site and background score pooling, and documents five development failures with regression baselines.
 
-This ledger records the receipt study originally developed in `research/source-disjoint-forensics`. [Frozen protocol](SINGLE_IMAGE_PROTOCOL.md) · [Reproduction and access](SINGLE_IMAGE_REPRODUCTION.md) · [Historical experiment index](EXPERIMENT_SUMMARY.md)
+This ledger records the receipt study originally developed in `research/source-disjoint-forensics`. [Frozen protocol](SINGLE_IMAGE_PROTOCOL.md) · [Reproduction and access](SINGLE_IMAGE_REPRODUCTION.md) · [Historical experiment index](history/EXPERIMENT_SUMMARY.md)
 
 ## Matched development follow-up
 

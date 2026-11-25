@@ -12,7 +12,7 @@ The build copies `results.json` and `sample-results.json` from [the frontend dat
 
 From the repository root, with the local research artifacts available, install the [receipt demo environment](../research/requirements-receipt-demo.txt) and start Streamlit. The launch command limits uploads to 8 MB and keeps the service on loopback. Use only images you are authorized to process.
 
-```powershell
+```sh
 python -m pip install -r research/requirements-receipt-demo.txt
 python -m streamlit run research/receipt_demo.py --server.address 127.0.0.1 --server.port 8501 --server.headless true --server.maxUploadSize 8 --browser.gatherUsageStats false
 ```
@@ -23,7 +23,16 @@ Startup requires `artifacts/receipt-study-v1/residual-42/fit.json`, `model.pt`, 
 
 ## Historical web demonstrations
 
-Use the [local research setup](DEPLOYMENT_GUIDE.md#local-research-demonstration). Open `/studio` for reference comparison. Use **Single-image demo** for the historical synthetic model.
+Use the [local research setup](history/DEPLOYMENT_GUIDE.md#local-research-demonstration). Open `/studio` for reference comparison. Use **Single-image demo** for the historical synthetic model.
+
+For the historical single-image demo by itself, start from a fresh shell with the research flag unset. Run from the repository root in Bash or PowerShell.
+
+```sh
+python -m pip install -r api/requirements.txt
+python -m uvicorn api.main:app --host 127.0.0.1 --port 8000 --no-access-log
+```
+
+Choose **Original specimen** or **Edited specimen** and select **Analyze**. The low-quality specimen illustrates abstention. The curated pair comes from a fictional population outside the test metrics.
 
 ## Walkthrough
 
@@ -41,5 +50,5 @@ Use the [local research setup](DEPLOYMENT_GUIDE.md#local-research-demonstration)
 | Misaligned | A severe crop and rotation of the fictional original. Registration abstained. |
 | Different reference | Two deliberately unrelated fictional receipts. The comparator accepted the alignment and flagged a difference. The example defines the identity mismatch independently. A high score cannot establish identity or confirm a valid pairing. |
 
-These examples are original fictional illustrations. They do not estimate accuracy on independent camera captures. When using other examples, both images must be authorized and in JPEG, PNG or WebP format. Full-page captures with visible shared features support registration. Prefer the bundled examples for presentations. [Measured example outcomes](EXPERIMENT_SUMMARY.md#phase-g-local-interface-benchmark) · [Research conclusions](FINAL_RESEARCH_REPORT.md)
+These examples are original fictional illustrations. They do not estimate accuracy on independent camera captures. When using other examples, both images must be authorized and in JPEG, PNG or WebP format. Full-page captures with visible shared features support registration. Prefer the bundled examples for presentations. [Measured example outcomes](history/EXPERIMENT_SUMMARY.md#phase-g-local-interface-benchmark) · [Research conclusions](history/FINAL_RESEARCH_REPORT.md)
 

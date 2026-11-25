@@ -1,10 +1,23 @@
 # Deploy ForgeryLens
 
-The Receipt Studio is a static Next.js export for Cloudflare Workers. The earlier FastAPI demos have separate [release profiles](DEPLOYMENT_GUIDE.md).
+The Receipt Studio is a static Next.js export for Cloudflare Workers. The earlier FastAPI demos have separate [release profiles](history/DEPLOYMENT_GUIDE.md).
 
 ## Update the existing Cloudflare Worker
 
 Build the saved-sample release from the repository root. The build copies the checked-in result JSON and requires neither the private research artifacts nor a live inference service.
+
+Bash
+
+```bash
+npm --prefix web/frontend ci
+export NEXT_TELEMETRY_DISABLED='1'
+unset NEXT_PUBLIC_FORGERYLENS_API_URL
+npm --prefix web/frontend run build
+npx wrangler login
+npx wrangler deploy --config web/frontend/wrangler.jsonc
+```
+
+PowerShell
 
 ```powershell
 npm --prefix web/frontend ci
@@ -21,8 +34,8 @@ Use the Cloudflare account that owns `patient-cake-9531`. After deploying, run t
 
 The static uploader expects `index.html`, `_next/`, and `data/` at the archive root. Package the build output without the Wrangler configuration, source code, audit reports, or enclosing `out/` directory.
 
-```powershell
-py -c "import shutil; shutil.make_archive('ForgeryLens-Cloudflare-Static-Upload', 'zip', 'web/frontend/out')"
+```sh
+python -c "import shutil; shutil.make_archive('ForgeryLens-Cloudflare-Static-Upload', 'zip', 'web/frontend/out')"
 ```
 
 The dashboard's **Create an app** flow creates a new Worker. For an update that retains the existing URL, use the Wrangler workflow above.
@@ -30,6 +43,26 @@ The dashboard's **Create an app** flow creates a new Worker. For an update that 
 ## Optional live API
 
 Set `NEXT_PUBLIC_FORGERYLENS_API_URL` to a separately authorized HTTPS API origin before building. The API must allow the deployed frontend origin in `FORGERYLENS_ORIGINS`. The saved specimens remain available during service outages. The default static build previews custom uploads locally. [Frontend API contract](API_CONTRACT.md)
+
+For local scoring, activate the [frozen receipt environment](DEMO_GUIDE.md#frozen-receipt-detector) and start the opt-in adapter. Run the studio in another shell with `NEXT_PUBLIC_FORGERYLENS_API_URL` set to `http://127.0.0.1:8000`.
+
+Bash
+
+```bash
+python -m pip install fastapi==0.135.1 uvicorn==0.41.0
+export FORGERYLENS_FROZEN_RECEIPT='1'
+export FORGERYLENS_ORIGINS='http://localhost:3000'
+python -m uvicorn api.main:app --host 127.0.0.1 --port 8000 --no-access-log
+```
+
+PowerShell
+
+```powershell
+python -m pip install fastapi==0.135.1 uvicorn==0.41.0
+$env:FORGERYLENS_FROZEN_RECEIPT = '1'
+$env:FORGERYLENS_ORIGINS = 'http://localhost:3000'
+python -m uvicorn api.main:app --host 127.0.0.1 --port 8000 --no-access-log
+```
 
 ## Historical single service
 
