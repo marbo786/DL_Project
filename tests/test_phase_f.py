@@ -7,7 +7,6 @@ import numpy as np
 from PIL import Image
 import pytest
 from fastapi import FastAPI
-from fastapi.testclient import TestClient
 
 cv2 = pytest.importorskip("cv2")
 
@@ -132,7 +131,8 @@ def test_mismatch_score_is_not_an_identity_decision():
     assert physical["classification"]["frozen_operating_points"]["5%"]["recall_all_edits"] == 0
 
 
-def test_research_routes_opt_in_and_suppress_unreliable_previews():
+@pytest.mark.anyio
+async def test_research_routes_opt_in_and_suppress_unreliable_previews(asgi_client):
     pytest.importorskip("python_multipart")
     from api import main
     from api.reference_research import install
@@ -140,19 +140,16 @@ def test_research_routes_opt_in_and_suppress_unreliable_previews():
     assert "/api/v1/compare" not in {route.path for route in main.app.routes}
     app = FastAPI()
     install(app, Path(__file__).resolve().parents[1] / "web" / "reference_studio.html")
-    @app.middleware("http")
-    async def local_peer(request, call_next):
-        request.scope["client"] = ("127.0.0.1", 40000)
-        return await call_next(request)
-
     blank = encoded(np.full((320, 256, 3), 210, dtype=np.uint8))
     original = encoded(texture())
-    with TestClient(app, base_url="http://localhost") as client:
-        assert "Reference comparison" in client.get("/studio/compare").text
-        assert client.post("/api/v1/compare", files={"reference": ("a.png", original)}).status_code == 400
+    async with asgi_client(app) as client:
+        assert "Reference comparison" in (await client.get("/studio/compare")).text
+        partial = await client.post("/api/v1/compare", files={"reference": ("a.png", original)})
+        assert partial.status_code == 400
         for candidate, expected in [(blank, "inconclusive"), (original, "no_difference_flagged")]:
-            response = client.post("/api/v1/compare", files={"reference": ("a.png", original),
-                                                            "candidate": ("b.png", candidate)})
+            response = await client.post(
+                "/api/v1/compare", files={"reference": ("a.png", original), "candidate": ("b.png", candidate)}
+            )
             assert response.status_code == 200, response.text
             assert response.headers["cache-control"] == "no-store"
             assert response.json()["decision"] == expected

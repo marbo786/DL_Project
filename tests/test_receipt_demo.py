@@ -41,9 +41,8 @@ def test_changed_freeze_file_is_rejected(tmp_path):
         FrozenReceiptDemo(tmp_path)
 
 
+@pytest.mark.artifacts(LOCK_PATH, RUN_PATH / "fit.json")
 def test_modified_calibration_is_rejected(tmp_path):
-    if not (ROOT / LOCK_PATH).is_file() or not (ROOT / RUN_PATH / "fit.json").is_file():
-        pytest.skip("Frozen local artifacts are required")
     (tmp_path / LOCK_PATH).parent.mkdir(parents=True)
     (tmp_path / RUN_PATH).mkdir(parents=True)
     shutil.copyfile(ROOT / LOCK_PATH, tmp_path / LOCK_PATH)
@@ -53,13 +52,16 @@ def test_modified_calibration_is_rejected(tmp_path):
         FrozenReceiptDemo(tmp_path)
 
 
+@pytest.mark.data("data/aiforge/assets", "artifacts/receipt-protocol-v1-contained/manifest.csv")
+@pytest.mark.artifacts(
+    LOCK_PATH, RUN_PATH / "fit.json", RUN_PATH / "model.pt", RUN_PATH / "calibration.csv",
+    RUN_PATH / "validation.csv", RUN_PATH / "metrics.json",
+)
 def test_demo_matches_stored_development_scores():
     asset_root = ROOT / "data/aiforge/assets"
     manifest = ROOT / "artifacts/receipt-protocol-v1-contained/manifest.csv"
     run = ROOT / RUN_PATH
     validation = run / "validation.csv"
-    if not all(path.exists() for path in (asset_root, manifest, validation, run / "model.pt", ROOT / LOCK_PATH)):
-        pytest.skip("Local AIForge assets and frozen study artifacts are required")
     assert file_sha256(validation) == json.loads((run / "metrics.json").read_text())["evaluation_sha256"]
     with validation.open(newline="", encoding="utf-8") as stream:
         saved = {row["sample_id"]: row for row in csv.DictReader(stream)}

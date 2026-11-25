@@ -19,12 +19,10 @@ def test_normalized_regions():
 
 @pytest.fixture
 def trained():
-    model_path = ROOT / "release" / "model.npz"
-    if not model_path.exists():
-        pytest.skip("Build the measured release artifact before inference tests.")
-    return Predictor(model_path)
+    return Predictor(ROOT / "release" / "model.npz")
 
 
+@pytest.mark.artifacts("release/model.npz")
 def test_unknown_documents_abstain(trained):
     result = Prediction.model_validate(trained.predict(Image.new("RGB", (120, 120), "#aaa")))
     assert result.decision == "inconclusive"
@@ -32,6 +30,7 @@ def test_unknown_documents_abstain(trained):
     assert result.calibrated_probability is None
 
 
+@pytest.mark.artifacts("release/model.npz")
 def test_real_trained_predictor_on_demo_assets(trained):
     for filename in ("original.png", "edited.png", "blurred.png"):
         with Image.open(ROOT / "web" / "public" / filename) as image:
