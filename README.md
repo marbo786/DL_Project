@@ -1,10 +1,16 @@
 # ForgeryLens
 
-ForgeryLens is an AI341 research prototype for inspecting visible document changes. The local Reference Studio compares two images using frozen registered SSIM. The historical single-image model scores its known fictional specimens and abstains on unfamiliar inputs. The independent real-world evaluation is still awaiting an authorized capture set.
+ForgeryLens studies whether a single receipt image can help a university finance reviewer prioritize reimbursement claims. On historical WildReceipt, the frozen preview prioritized zero of 1,336 edits and deferred 2,660 of 2,672 receipts. The course paper explains the policy, its failure cases, and the measured CPU trade-offs.
 
-[Final report](docs/FINAL_RESEARCH_REPORT.md) · [Recorded experiments](docs/EXPERIMENT_SUMMARY.md) · [Demo guide](docs/DEMO_GUIDE.md) · [Deployment guide](docs/DEPLOYMENT_GUIDE.md) · [Physical capture protocol](docs/REAL_CAPTURE_COLLECTION_GUIDE.md)
+| Start here | What it covers |
+| --- | --- |
+| [Course report (PDF)](docs/ForgeryLens_Technical_Report.pdf) | Single-image detector, calibration, ablations, and full review-policy results |
+| [Team contributions](docs/AUTHORSHIP_AND_AI_DISCLOSURE.md) | Author roles and disclosure |
+| [Reference Studio demo guide](docs/DEMO_GUIDE.md) | Earlier two-document workflow available in this checkout |
+| [Historical research report](docs/FINAL_RESEARCH_REPORT.md) | Reference-comparison experiments and deployment scope |
+| [Archived synthetic report](docs/archive/ForgeryLens_Historical_Synthetic_Report.pdf) | Earlier fictional-specimen benchmark |
 
-## Run on Windows
+## Run the historical Reference Studio on Windows
 
 Open PowerShell at the project root. For the two-document research Studio, install the research requirements and opt in on loopback.
 
@@ -35,7 +41,7 @@ $env:OPENBLAS_NUM_THREADS='1'
 py -m research.export release/model.pt release/model.npz
 py -m research.demo release web/public
 py -m research.gallery release web/public
-py -m research.report release docs/ForgeryLens_Technical_Report.pdf
+py -m research.report release docs/archive/ForgeryLens_Historical_Synthetic_Report.pdf
 ```
 
 To evaluate authorized data, prepare a normalized manifest with group-disjoint train, validation, test, and shifted_test partitions. Include the canonical source ID and pixel mask for each localized edit. Validate the corpus with `py -m research.manifest path/to/manifest.csv path/to/assets`. Add `--manifest path/to/manifest.csv --asset-root path/to/assets` to the training command, and use a separate output directory for the run. Review validation behavior and licensing before releasing any trained artifact.
